@@ -20,7 +20,6 @@ import {Caffeine} from './lib/caffeine.js';
 import {AutoHide} from './lib/autohide.js';
 import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
-import {closeInstallDialog} from './lib/appHubInstall.js';
 import {Indicators} from './lib/indicators.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
@@ -161,7 +160,6 @@ export default class FusionDeskExtension extends Extension {
         for (const name of Object.keys(this._modules).reverse())
             this._destroyModule(name);
         destroyStore();
-        closeInstallDialog();
         this._layout.destroy();
         this._layout = null;
         this._modules = null;
