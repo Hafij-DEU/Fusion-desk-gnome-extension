@@ -13,12 +13,47 @@ All-in-one GNOME Shell 48–51 extension: one panel with a taskbar, a start menu
 - **App Hub**: optional panel button and start-menu panel for [App Hub](https://github.com/Hafij-DEU/Application-hub) (updates, installs, disk space).
 - **Conflict guard**: pauses itself (with a notification and a one-click fix) while Dash to Panel is enabled.
 
-## Install
+## Install on a fresh Ubuntu
+Needs **GNOME 50** (Ubuntu 26.04). Check yours with `gnome-shell --version`.
+
+1. Download the latest release:
+   ```bash
+   wget -O fusion-desk.zip "https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/releases/latest/download/fusion-desk@hafij-deu.github.io.shell-extension.zip"
+   ```
+2. Install it for your user (no sudo needed):
+   ```bash
+   gnome-extensions install --force fusion-desk.zip
+   ```
+3. **Log out and log back in.** GNOME on Wayland only loads new extensions at login.
+4. Turn off Ubuntu's dock (Fusion Desk has its own taskbar) and turn Fusion Desk on:
+   ```bash
+   gnome-extensions disable ubuntu-dock@ubuntu.com
+   ```
+   ```bash
+   gnome-extensions enable fusion-desk@hafij-deu.github.io
+   ```
+5. Open the settings:
+   ```bash
+   gnome-extensions prefs fusion-desk@hafij-deu.github.io
+   ```
+
+If you also use **Dash to Panel** or **ArcMenu**, turn them off (`gnome-extensions disable dash-to-panel@jderose9.github.com`, `gnome-extensions disable arcmenu@arcmenu.com`): they change the same panel and the Super key. Fusion Desk pauses itself while Dash to Panel is on and offers a one-click fix. An existing ArcMenu setup is imported once automatically.
+
+Nothing happens after enabling? Make sure user extensions are allowed: `gsettings set org.gnome.shell disable-user-extensions false`, then log out and in again. The graphical way is the **Extension Manager** app (`sudo apt install gnome-shell-extension-manager`).
+
+### Uninstall
 ```bash
-gnome-extensions pack --force --extra-source=lib --extra-source=icons -o dist .
+gnome-extensions uninstall fusion-desk@hafij-deu.github.io
+```
+Then log out and in, and re-enable Ubuntu's dock with `gnome-extensions enable ubuntu-dock@ubuntu.com`.
+
+### Build from source
+```bash
+git clone https://github.com/Hafij-DEU/Fusion-desk-gnome-extension.git
+cd Fusion-desk-gnome-extension
+gnome-extensions pack --force --extra-source=lib --extra-source=icons --extra-source=LICENSE -o dist .
 gnome-extensions install --force dist/fusion-desk@hafij-deu.github.io.shell-extension.zip
 ```
-Log out and back in (Wayland), then enable **Fusion Desk** in Extensions. Turn off Dash to Panel and ArcMenu first: they change the same panel and claim the same Super key.
 
 ## Credits and design inspiration
 Fusion Desk is an independent project written from scratch. No code was copied from the projects below; they inspired the feature set and the look, and their work is gratefully acknowledged:
