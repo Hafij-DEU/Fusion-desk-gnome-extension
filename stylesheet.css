@@ -473,3 +473,14 @@
 #panel.fusion-panel.fusion-pills .fusion-sysmon-box { spacing: 9px; }
 /* Other buttons keep a round hover that matches the pills. */
 #panel.fusion-panel.fusion-pills .panel-button { border-radius: 12px; }
+
+/* ---- Right-click tools menu --------------------------------------------- */
+.fusion-tools-row { spacing: 10px; min-width: 260px; }
+.fusion-tools-name { font-weight: 500; }
+.fusion-tools-detail { font-size: 0.82em; color: #8e8e96; }
+.fusion-tools-disk { spacing: 4px; }
+.fusion-tools-bar { height: 5px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.25); }
+.fusion-tools-bar-fill { height: 5px; border-radius: 99px; background-color: #4f8cff; }
+.fusion-tools-bar-fill.full { background-color: #e5484d; }
+.fusion-tools-end { border-radius: 99px; padding: 5px; }
+.fusion-tools-end:hover { background-color: rgba(229, 72, 77, 0.85); color: white; }
