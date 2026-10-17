@@ -27,6 +27,7 @@
 
     <!-- Panel -->
     <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
+    <key name="panel-style" type="s"><default>'PILLS'</default><summary>Panel item style: PILLS (rounded groups for tray, clock and system monitor) or FLAT</summary></key>
     <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
     <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
     <key name="multi-monitor" type="b"><default>true</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>

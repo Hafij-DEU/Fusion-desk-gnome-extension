@@ -62,6 +62,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const layout = new Adw.PreferencesPage({title: 'Layout', icon_name: 'view-grid-symbolic'});
         layout.add(group('Panel', [
             comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
+            comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
             spinRow(s, 'panel-height', 'Height', 24, 96, 1, 'Pixels'),
             spinRow(s, 'panel-opacity', 'Background opacity', 0, 100, 5, 'Percent'),
             switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),

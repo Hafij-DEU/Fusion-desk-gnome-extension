@@ -438,3 +438,38 @@
 .fusion-secondary-left,
 .fusion-secondary-center,
 .fusion-secondary-right { spacing: 2px; }
+
+/* ---- Pills panel style: tray, clock and system monitor as rounded groups -- */
+#panel.fusion-panel.fusion-pills .panel-button.fusion-tray,
+#panel.fusion-panel.fusion-pills .panel-button.clock-display,
+#panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon {
+    margin: 7px 3px;
+    -natural-hpadding: 11px;
+    -minimum-hpadding: 7px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background-color: rgba(255, 255, 255, 0.07);
+    transition-duration: 120ms;
+}
+#panel.fusion-panel.fusion-pills .panel-button.fusion-tray:hover,
+#panel.fusion-panel.fusion-pills .panel-button.clock-display:hover,
+#panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+#panel.fusion-panel.fusion-pills .panel-button.fusion-tray:active,
+#panel.fusion-panel.fusion-pills .panel-button.fusion-tray:checked,
+#panel.fusion-panel.fusion-pills .panel-button.clock-display:active,
+#panel.fusion-panel.fusion-pills .panel-button.clock-display:checked,
+#panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon:active,
+#panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon:checked {
+    background-color: rgba(79, 140, 255, 0.28);
+    border-color: rgba(79, 140, 255, 0.45);
+}
+/* The clock is often two lines: less vertical margin so it is not clipped. */
+#panel.fusion-panel.fusion-pills .panel-button.clock-display { margin: 3px 3px; }
+/* Room between the tray icons inside the pill. */
+#panel.fusion-panel.fusion-pills .fusion-tray .panel-status-indicators-box { spacing: 11px; }
+#panel.fusion-panel.fusion-pills .fusion-sysmon-box { spacing: 9px; }
+/* Other buttons keep a round hover that matches the pills. */
+#panel.fusion-panel.fusion-pills .panel-button { border-radius: 12px; }
