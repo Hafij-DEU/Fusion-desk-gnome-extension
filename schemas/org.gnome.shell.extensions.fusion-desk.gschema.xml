@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.fusion-desk" path="/org/gnome/shell/extensions/fusion-desk/">
+    <!-- Element layout: "element:box" in display order. box = left | center | right -->
+    <key name="layout" type="as">
+      <default>['activities:left', 'menu:left', 'media:left', 'title:left', 'apps:center', 'taskbar:center', 'workspaces:right', 'sysmon:right', 'clipboard:right', 'apphub:right', 'screenshot:right', 'quick:right', 'date:right', 'desktop:right']</default>
+      <summary>Panel element order and box</summary>
+    </key>
+
+    <!-- Element visibility -->
+    <key name="activities-visible" type="b"><default>false</default><summary>Show the Activities button</summary></key>
+    <key name="menu-visible" type="b"><default>true</default><summary>Show the start menu button</summary></key>
+    <key name="title-visible" type="b"><default>false</default><summary>Show the focused window title</summary></key>
+    <key name="apps-visible" type="b"><default>true</default><summary>Show the applications grid button</summary></key>
+    <key name="taskbar-visible" type="b"><default>true</default><summary>Show the taskbar</summary></key>
+    <key name="workspaces-visible" type="b"><default>false</default><summary>Show workspace indicator</summary></key>
+    <key name="media-visible" type="b"><default>true</default><summary>Show media controls</summary></key>
+    <key name="media-audio-fallback" type="b"><default>true</default><summary>Also show apps that play audio without media controls (mute and show window)</summary></key>
+    <key name="media-title-length" type="i"><range min="0" max="60"/><default>16</default><summary>Characters of the track title shown next to the media buttons (0 = buttons only)</summary></key>
+    <key name="sysmon-visible" type="b"><default>true</default><summary>Show system monitor</summary></key>
+    <key name="clipboard-visible" type="b"><default>true</default><summary>Show the clipboard icon (history and Super+V work either way)</summary></key>
+    <key name="apphub-visible" type="b"><default>false</default><summary>Show the App Hub button (installs App Hub from GitHub when missing)</summary></key>
+    <key name="screenshot-visible" type="b"><default>false</default><summary>Show screenshot button</summary></key>
+    <key name="desktop-visible" type="b"><default>true</default><summary>Show the show-desktop button</summary></key>
+    <key name="hidden-indicators" type="as"><default>[]</default><summary>Built-in status icons to hide (network, bluetooth, volume, microphone, battery, battery-percentage, …)</summary></key>
+    <key name="caffeine-visible" type="b"><default>true</default><summary>Add Caffeine to Quick Settings</summary></key>
+
+    <!-- Panel -->
+    <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
+    <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
+    <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
+    <key name="multi-monitor" type="b"><default>false</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>
+    <key name="hide-overview-dash" type="b"><default>true</default><summary>Hide the overview dash (the taskbar replaces it)</summary></key>
+
+    <!-- Taskbar -->
+    <key name="taskbar-icon-size" type="i"><range min="16" max="64"/><default>32</default><summary>Taskbar icon size</summary></key>
+    <key name="taskbar-show-favorites" type="b"><default>true</default><summary>Show pinned apps</summary></key>
+    <key name="taskbar-isolate-workspaces" type="b"><default>false</default><summary>Only show windows from the current workspace</summary></key>
+    <key name="taskbar-previews" type="b"><default>true</default><summary>Show window previews on hover</summary></key>
+    <key name="taskbar-group-apps" type="b"><default>true</default><summary>Group windows of the same app into one button (off: one button per window with its title)</summary></key>
+    <key name="taskbar-labels" type="b"><default>false</default><summary>Show window titles next to running app icons</summary></key>
+
+    <key name="taskbar-indicator-style" type="s"><default>'DASHES'</default><summary>Running indicator style (DOTS, DASHES, SQUARES, LINE, NONE)</summary></key>
+    <key name="taskbar-indicator-position" type="s"><default>'BOTTOM'</default><summary>Indicator position (BOTTOM or TOP)</summary></key>
+    <key name="taskbar-indicator-color" type="s"><default>'#4f8cff'</default><summary>Indicator color (CSS color)</summary></key>
+    <key name="taskbar-click-action" type="s"><default>'CYCLE'</default><summary>Left click: CYCLE (raise, minimize, cycle), MINIMIZE (raise/minimize all), PREVIEW (show previews)</summary></key>
+    <key name="taskbar-middle-click" type="s"><default>'NEW_WINDOW'</default><summary>Middle click: NEW_WINDOW, MINIMIZE or QUIT</summary></key>
+    <key name="taskbar-scroll-action" type="s"><default>'CYCLE'</default><summary>Scroll on icon: CYCLE windows, WORKSPACE switch, NOTHING</summary></key>
+    <key name="taskbar-tooltips" type="b"><default>true</default><summary>Show app name tooltips</summary></key>
+    <key name="taskbar-hotkeys" type="b"><default>true</default><summary>Super+1..9 activates taskbar apps (Ctrl+Super+N opens a new window)</summary></key>
+    <key name="taskbar-preview-close-middle" type="b"><default>true</default><summary>Middle-click a preview closes the window</summary></key>
+
+    <!-- Auto-hide / dynamic opacity -->
+    <key name="intellihide" type="b"><default>false</default><summary>Hide the panel when windows overlap it</summary></key>
+    <key name="intellihide-mode" type="s"><default>'ALL'</default><summary>Which windows hide the panel: ALL, FOCUSED, MAXIMIZED</summary></key>
+    <key name="dynamic-opacity" type="b"><default>false</default><summary>Make the panel opaque when a window touches it</summary></key>
+
+    <key name="apps-icon" type="s"><default>''</default><summary>Show Applications button icon (icon name or image path)</summary></key>
+    <key name="avoid-duplicates" type="b"><default>true</default><summary>Hide Fusion widgets that another enabled extension already provides</summary></key>
+    <key name="imported-settings" type="b"><default>false</default><summary>Icons were imported from Dash to Panel / ArcMenu</summary></key>
+
+    <!-- Start menu -->
+    <key name="menu-super-key" type="b"><default>true</default><summary>Super key opens the start menu</summary></key>
+    <key name="menu-icon" type="s"><default>'view-app-grid-symbolic'</default><summary>Start button icon name</summary></key>
+    <key name="menu-label" type="s"><default>''</default><summary>Optional text next to the start button icon</summary></key>
+    <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
+    <key name="menu-hover-categories" type="b"><default>false</default><summary>Switch categories on hover</summary></key>
+    <key name="menu-web-search" type="s"><default>'https://duckduckgo.com/?q=%s'</default><summary>Web search URL (%s = query)</summary></key>
+    <key name="menu-layout" type="s"><default>'eleven'</default><summary>Start menu layout: eleven, windows, fusion, mint, grid, plasma, runner</summary></key>
+    <key name="menu-width" type="i"><range min="0" max="2400"/><default>0</default><summary>Menu width in px (0 = layout default)</summary></key>
+    <key name="menu-height" type="i"><range min="0" max="2000"/><default>0</default><summary>Menu height in px (0 = layout default)</summary></key>
+    <key name="menu-position" type="s"><default>'BUTTON'</default><summary>Where the menu opens: BUTTON or CENTER</summary></key>
+    <key name="menu-font-size" type="i"><range min="0" max="24"/><default>0</default><summary>Menu font size in pt (0 = shell default)</summary></key>
+    <key name="menu-tile-icon-size" type="i"><range min="16" max="96"/><default>40</default><summary>Icon size of app tiles</summary></key>
+    <key name="menu-list-icon-size" type="i"><range min="16" max="64"/><default>24</default><summary>Icon size of list rows</summary></key>
+    <key name="menu-pinned-columns" type="i"><range min="0" max="12"/><default>0</default><summary>Pinned grid columns (0 = layout default)</summary></key>
+    <key name="menu-default-view" type="s"><default>'PINNED'</default><summary>View shown when the menu opens: PINNED or ALL</summary></key>
+    <key name="menu-pinned-source" type="s"><default>'FAVORITES'</default><summary>Pinned apps: FAVORITES (same as taskbar) or OWN list</summary></key>
+    <key name="menu-pinned" type="as"><default>[]</default><summary>Start menu's own pinned app ids</summary></key>
+    <key name="menu-show-user" type="b"><default>true</default><summary>Show the user avatar and name</summary></key>
+    <key name="menu-show-places" type="b"><default>true</default><summary>Show places (Home, Documents, …)</summary></key>
+    <key name="menu-show-shortcuts" type="b"><default>true</default><summary>Show shortcuts (Settings, Software, Terminal, Files)</summary></key>
+    <key name="menu-show-frequent" type="b"><default>true</default><summary>Show frequently used apps</summary></key>
+    <key name="menu-show-apphub" type="b"><default>true</default><summary>Show the App Hub panel (updates, installs, disk space) when App Hub is installed</summary></key>
+    <key name="menu-show-notes" type="b"><default>true</default><summary>Show the Notes page (Fusion layout)</summary></key>
+    <key name="menu-power-options" type="as"><default>['lock', 'logout', 'suspend', 'restart', 'poweroff']</default><summary>Power actions shown: lock, switch-user, logout, suspend, restart, poweroff</summary></key>
+    <key name="menu-search-position" type="s"><default>'AUTO'</default><summary>Search entry position: AUTO (layout default), TOP or BOTTOM</summary></key>
+    <key name="menu-search-files" type="b"><default>true</default><summary>Search recent files</summary></key>
+    <key name="menu-search-calc" type="b"><default>true</default><summary>Calculator in search</summary></key>
+    <key name="menu-search-commands" type="b"><default>true</default><summary>Run commands typed as >command</summary></key>
+    <key name="menu-max-results" type="i"><range min="5" max="100"/><default>30</default><summary>Maximum app results</summary></key>
+    <key name="menu-tooltips" type="b"><default>true</default><summary>Tooltips on icon buttons</summary></key>
+    <key name="menu-super-action" type="s"><default>'MENU'</default><summary>Super key opens: MENU or RUNNER</summary></key>
+    <key name="menu-hotkey" type="s"><default>''</default><summary>Extra shortcut for the menu (e.g. &lt;Super&gt;space)</summary></key>
+    <key name="menu-runner-hotkey" type="s"><default>'&lt;Super&gt;r'</default><summary>Shortcut for the runner (Spotlight-style search)</summary></key>
+    <key name="menu-button-style" type="s"><default>'ICON'</default><summary>Start button: ICON, TEXT or ICON_TEXT</summary></key>
+    <key name="menu-button-icon-size" type="i"><range min="12" max="64"/><default>26</default><summary>Start button icon size</summary></key>
+    <key name="menu-button-fill" type="b"><default>true</default><summary>Start button fills the whole panel height so a click anywhere around the icon opens the menu</summary></key>
+    <key name="menu-button-padding" type="i"><range min="-1" max="40"/><default>-1</default><summary>Start button side padding in px (-1 = default)</summary></key>
+    <key name="menu-theme" type="s"><default>'SHELL'</default><summary>Menu colours: SHELL (follow shell theme) or CUSTOM</summary></key>
+    <key name="menu-bg-color" type="s"><default>'rgba(30,30,32,0.97)'</default><summary>Menu background</summary></key>
+    <key name="menu-fg-color" type="s"><default>'rgb(236,236,240)'</default><summary>Menu text</summary></key>
+    <key name="menu-accent-color" type="s"><default>'rgb(79,140,255)'</default><summary>Selected item colour</summary></key>
+    <key name="menu-hover-color" type="s"><default>'rgba(255,255,255,0.10)'</default><summary>Hovered item colour</summary></key>
+    <key name="menu-border-color" type="s"><default>'rgba(255,255,255,0.08)'</default><summary>Menu border colour</summary></key>
+    <key name="menu-border-width" type="i"><range min="0" max="6"/><default>1</default><summary>Menu border width</summary></key>
+    <key name="menu-radius" type="i"><range min="0" max="40"/><default>18</default><summary>Menu corner radius</summary></key>
+    <key name="menu-imported-arcmenu" type="b"><default>false</default><summary>ArcMenu settings were imported once</summary></key>
+    <key name="notes" type="s"><default>''</default><summary>Quick notes text</summary></key>
+
+    <!-- System monitor -->
+    <key name="sysmon-cpu" type="b"><default>true</default><summary>Show CPU</summary></key>
+    <key name="sysmon-ram" type="b"><default>true</default><summary>Show RAM</summary></key>
+    <key name="sysmon-net" type="b"><default>true</default><summary>Show network speed</summary></key>
+    <key name="sysmon-temp" type="b"><default>false</default><summary>Show CPU temperature</summary></key>
+    <key name="sysmon-interval" type="i"><range min="1" max="10"/><default>2</default><summary>Refresh interval in seconds</summary></key>
+
+    <!-- Clipboard -->
+    <key name="clipboard-size" type="i"><range min="5" max="200"/><default>30</default><summary>Entries to keep</summary></key>
+    <key name="clipboard-super-v" type="b"><default>true</default><summary>Super+V opens the clipboard history (the notification list keeps its other shortcuts)</summary></key>
+    <key name="clipboard-auto-paste" type="b"><default>true</default><summary>Paste the chosen entry into the focused window</summary></key>
+    <key name="clipboard-persist" type="b"><default>false</default><summary>Save history to disk</summary></key>
+
+    <!-- Clock -->
+    <key name="clock-custom" type="b"><default>true</default><summary>Use a custom clock format</summary></key>
+    <key name="clock-format" type="s"><default>'%I:%M %p\n%d/%m/%Y'</default><summary>strftime-style format; \n for a new line</summary></key>
+
+    <!-- Caffeine -->
+    <key name="caffeine-active" type="b"><default>false</default><summary>Caffeine currently on</summary></key>
+    <key name="caffeine-duration" type="i"><range min="0" max="1440"/><default>0</default><summary>Caffeine duration in minutes (0 = until turned off)</summary></key>
+    <key name="caffeine-until" type="x"><default>0</default><summary>Unix time when the current Caffeine timer ends (0 = none)</summary></key>
+
+  </schema>
+</schemalist>

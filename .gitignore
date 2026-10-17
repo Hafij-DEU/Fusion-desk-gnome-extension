@@ -1,0 +1,5 @@
+dist/
+schemas/gschemas.compiled
+# personal files, not part of the extension
+enabled-extensions.backup.txt
+tools/

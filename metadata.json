@@ -1,0 +1,9 @@
+{
+  "uuid": "fusion-desk@hafij-deu.github.io",
+  "name": "Fusion Desk",
+  "description": "All-in-one desktop panel by Md Hafijur Rahman: taskbar, start menu with 7 layouts, system monitor, clipboard history (Super+V), media controls, clock, Caffeine timer and App Hub. Licensed GPL-2.0-or-later.",
+  "shell-version": ["48", "49", "50", "51"],
+  "settings-schema": "org.gnome.shell.extensions.fusion-desk",
+  "url": "https://github.com/Hafij-DEU/Fusion-desk-gnome-extension",
+  "version": 1
+}
