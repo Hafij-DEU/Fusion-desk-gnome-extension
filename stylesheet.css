@@ -484,3 +484,10 @@
 .fusion-tools-bar-fill.full { background-color: #e5484d; }
 .fusion-tools-end { border-radius: 99px; padding: 5px; }
 .fusion-tools-end:hover { background-color: rgba(229, 72, 77, 0.85); color: white; }
+
+/* Install App Hub dialog */
+.fusion-hub-dialog-icon { margin-top: 12px; }
+.fusion-hub-dialog .message-dialog-description { max-width: 26em; }
+
+.fusion-flyout-item { spacing: 10px; }
+.fusion-flyout .popup-menu-content { min-width: 280px; }
