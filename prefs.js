@@ -163,7 +163,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         widgets.add(group('Clipboard history', [
             spinRow(s, 'clipboard-size', 'Entries to keep', 5, 200),
             switchRow(s, 'clipboard-super-v', 'Super+V opens history', 'Super+M still opens the notification list'),
-            switchRow(s, 'clipboard-auto-paste', 'Paste on select', 'Choosing an entry also pastes it (Ctrl+V) into the focused window'),
+            switchRow(s, 'clipboard-auto-paste', 'Paste on select',
+                'Off by default. Choosing an entry also pastes it by sending Ctrl+V to the focused window through a virtual keyboard'),
             switchRow(s, 'clipboard-persist', 'Remember after restart', 'Stored unencrypted in ~/.cache/fusion-desk'),
         ]));
         widgets.add(group('Quick Settings', [
@@ -176,14 +177,15 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const head = new Adw.PreferencesGroup();
         const box = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 6, halign: Gtk.Align.CENTER, margin_bottom: 12});
         box.append(new Gtk.Label({label: 'Fusion Desk', css_classes: ['title-1']}));
-        box.append(new Gtk.Label({label: `Version ${this.metadata.version ?? ''} · by Md Hafijur Rahman`, css_classes: ['dim-label']}));
+        const version = this.metadata.version ? `Version ${this.metadata.version} · ` : '';
+        box.append(new Gtk.Label({label: `${version}by Md Hafijur Rahman`, css_classes: ['dim-label']}));
         box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
         head.add(box);
         about.add(head);
         const link = (title, subtitle, uri) => {
             const row = new Adw.ActionRow({title, subtitle, activatable: true});
             row.add_suffix(new Gtk.Image({icon_name: 'external-link-symbolic'}));
-            row.connect('activated', () => Gtk.show_uri(window, uri, 0));
+            row.connect('activated', () => new Gtk.UriLauncher({uri}).launch(window, null, null));
             return row;
         };
         about.add(group('Design inspiration', [

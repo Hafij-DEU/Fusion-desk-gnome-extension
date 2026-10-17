@@ -1,6 +1,6 @@
 # Fusion Desk
 
-All-in-one GNOME Shell 48–51 extension: one panel with a taskbar, a start menu and desktop widgets.
+All-in-one GNOME Shell 50 extension: one panel with a taskbar, a start menu and desktop widgets.
 
 **Author:** Md Hafijur Rahman ([Hafij-DEU](https://github.com/Hafij-DEU)) · **Source:** https://github.com/Hafij-DEU/Fusion-desk-gnome-extension · **License:** GPL-2.0-or-later (see [LICENSE](LICENSE))
 
@@ -9,9 +9,9 @@ All-in-one GNOME Shell 48–51 extension: one panel with a taskbar, a start menu
 - **Element layout**: every item (start menu, apps button, taskbar, workspaces, media, system monitor, clipboard, App Hub, screenshot, quick settings, date, show desktop, activities, window title) can be shown or hidden, ordered, and placed left, center or right.
 - **Taskbar**: pinned + running apps, grouped or one button per window, indicator styles, window previews, app menu on right-click, configurable click / middle-click / scroll actions, tooltips, Super+1…9.
 - **Start menu**: 7 layouts (Modern, Launcher Grid, Runner, Classic, Fusion, Sidebar, Tabbed) picked from drawn previews; colour themes and presets; own pinned list or taskbar favourites; app context menu; search with calculator, `>commands`, recent files and web; places, drives and bookmarks; labelled power options; App Hub panel; Super / extra hotkey / Super+R runner; large click area; one-click import of an existing ArcMenu setup.
-- **Widgets**: CPU / RAM / temperature / network monitor, clipboard history on Super+V (works with the icon hidden), media controls (MPRIS, plus a mute/show-window fallback for apps without MPRIS), custom clock, Caffeine with a timer, workspace pills, window title, screenshot button, show-desktop strip.
-- **App Hub**: optional panel button and start-menu panel for [App Hub](https://github.com/Hafij-DEU/Application-hub) (updates, installs, disk space).
-- **Conflict guard**: pauses itself (with a notification and a one-click fix) while Dash to Panel is enabled.
+- **Widgets**: CPU / RAM / temperature / network monitor, clipboard history on Super+V (works with the icon hidden; paste-on-select is opt-in), media controls (MPRIS, plus a mute/show-window fallback for apps without MPRIS), custom clock, Caffeine with a timer, workspace pills, window title, screenshot button, show-desktop strip.
+- **App Hub**: optional panel button and start-menu panel for [App Hub](https://github.com/Hafij-DEU/Application-hub) (updates, installs, disk space) through your installed `app-hub` command. Fusion Desk never installs App Hub itself: without it, the button opens the App Hub releases page.
+- **Conflict guard**: pauses itself (with a notification) while Dash to Panel is enabled.
 
 ## Install on a fresh Ubuntu
 Needs **GNOME 50** (Ubuntu 26.04). Check yours with `gnome-shell --version`.
@@ -73,6 +73,6 @@ Icons: GNOME/Adwaita theme icons; the CPU, RAM, temperature, arrow and Caffeine 
 All product names are the property of their owners. Microsoft Windows, KDE Plasma, Linux Mint, macOS / Spotlight and other names are trademarks of their respective owners; Fusion Desk is not affiliated with or endorsed by them, and its layouts use neutral names. Do not ship a start-button icon that copies another company's logo.
 
 ## Privacy
-- Clipboard history stays in memory; **Remember after restart** (off by default) stores it unencrypted in `~/.cache/fusion-desk/clipboard.json`. Use **Private mode** before copying passwords.
+- Clipboard history is kept in memory and, with **Remember after restart** (on by default), stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600). Entries that password managers mark as secret are never recorded. Use **Private mode** before copying other passwords.
 - Web search only runs when you pick that result; the URL is configurable.
-- App Hub actions run `app-hub` / `pkexec apt-get` only when you click them.
+- App Hub actions run your installed `app-hub` command only when you click them (plus a background `app-hub list` check once an hour while the App Hub button is shown).

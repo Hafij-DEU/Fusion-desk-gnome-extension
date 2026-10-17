@@ -3,12 +3,12 @@
   <schema id="org.gnome.shell.extensions.fusion-desk" path="/org/gnome/shell/extensions/fusion-desk/">
     <!-- Element layout: "element:box" in display order. box = left | center | right -->
     <key name="layout" type="as">
-      <default>['activities:left', 'menu:left', 'media:left', 'title:left', 'apps:center', 'taskbar:center', 'workspaces:right', 'sysmon:right', 'clipboard:right', 'apphub:right', 'screenshot:right', 'quick:right', 'date:right', 'desktop:right']</default>
+      <default>['menu:left', 'activities:left', 'media:left', 'title:left', 'apps:center', 'taskbar:center', 'workspaces:right', 'sysmon:right', 'clipboard:right', 'apphub:right', 'screenshot:right', 'quick:right', 'date:right', 'desktop:right']</default>
       <summary>Panel element order and box</summary>
     </key>
 
     <!-- Element visibility -->
-    <key name="activities-visible" type="b"><default>false</default><summary>Show the Activities button</summary></key>
+    <key name="activities-visible" type="b"><default>true</default><summary>Show the Activities button</summary></key>
     <key name="menu-visible" type="b"><default>true</default><summary>Show the start menu button</summary></key>
     <key name="title-visible" type="b"><default>false</default><summary>Show the focused window title</summary></key>
     <key name="apps-visible" type="b"><default>true</default><summary>Show the applications grid button</summary></key>
@@ -16,10 +16,10 @@
     <key name="workspaces-visible" type="b"><default>false</default><summary>Show workspace indicator</summary></key>
     <key name="media-visible" type="b"><default>true</default><summary>Show media controls</summary></key>
     <key name="media-audio-fallback" type="b"><default>true</default><summary>Also show apps that play audio without media controls (mute and show window)</summary></key>
-    <key name="media-title-length" type="i"><range min="0" max="60"/><default>16</default><summary>Characters of the track title shown next to the media buttons (0 = buttons only)</summary></key>
+    <key name="media-title-length" type="i"><range min="0" max="60"/><default>7</default><summary>Characters of the track title shown next to the media buttons (0 = buttons only)</summary></key>
     <key name="sysmon-visible" type="b"><default>true</default><summary>Show system monitor</summary></key>
-    <key name="clipboard-visible" type="b"><default>true</default><summary>Show the clipboard icon (history and Super+V work either way)</summary></key>
-    <key name="apphub-visible" type="b"><default>false</default><summary>Show the App Hub button (installs App Hub from GitHub when missing)</summary></key>
+    <key name="clipboard-visible" type="b"><default>true</default><summary>Show the clipboard icon (history and the optional Super+V shortcut work either way)</summary></key>
+    <key name="apphub-visible" type="b"><default>false</default><summary>Show the App Hub button (opens the App Hub download page when App Hub is missing)</summary></key>
     <key name="screenshot-visible" type="b"><default>false</default><summary>Show screenshot button</summary></key>
     <key name="desktop-visible" type="b"><default>true</default><summary>Show the show-desktop button</summary></key>
     <key name="hidden-indicators" type="as"><default>[]</default><summary>Built-in status icons to hide (network, bluetooth, volume, microphone, battery, battery-percentage, …)</summary></key>
@@ -29,7 +29,7 @@
     <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
     <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
     <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
-    <key name="multi-monitor" type="b"><default>false</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>
+    <key name="multi-monitor" type="b"><default>true</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>
     <key name="hide-overview-dash" type="b"><default>true</default><summary>Hide the overview dash (the taskbar replaces it)</summary></key>
 
     <!-- Taskbar -->
@@ -55,35 +55,36 @@
     <key name="intellihide-mode" type="s"><default>'ALL'</default><summary>Which windows hide the panel: ALL, FOCUSED, MAXIMIZED</summary></key>
     <key name="dynamic-opacity" type="b"><default>false</default><summary>Make the panel opaque when a window touches it</summary></key>
 
-    <key name="apps-icon" type="s"><default>''</default><summary>Show Applications button icon (icon name or image path)</summary></key>
+    <key name="apps-icon" type="s"><default>'fusion:fusion-apps.png'</default><summary>Show Applications button icon (icon name or image path)</summary></key>
     <key name="avoid-duplicates" type="b"><default>true</default><summary>Hide Fusion widgets that another enabled extension already provides</summary></key>
     <key name="imported-settings" type="b"><default>false</default><summary>Icons were imported from Dash to Panel / ArcMenu</summary></key>
 
     <!-- Start menu -->
     <key name="menu-super-key" type="b"><default>true</default><summary>Super key opens the start menu</summary></key>
-    <key name="menu-icon" type="s"><default>'view-app-grid-symbolic'</default><summary>Start button icon name</summary></key>
-    <key name="menu-label" type="s"><default>''</default><summary>Optional text next to the start button icon</summary></key>
+    <key name="menu-icon" type="s"><default>'fusion:fusion-start.png'</default><summary>Start button icon name</summary></key>
+    <key name="menu-label" type="s"><default>'Apps'</default><summary>Optional text next to the start button icon</summary></key>
     <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
     <key name="menu-hover-categories" type="b"><default>false</default><summary>Switch categories on hover</summary></key>
     <key name="menu-web-search" type="s"><default>'https://duckduckgo.com/?q=%s'</default><summary>Web search URL (%s = query)</summary></key>
-    <key name="menu-layout" type="s"><default>'eleven'</default><summary>Start menu layout: eleven, windows, fusion, mint, grid, plasma, runner</summary></key>
+    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, windows, fusion, mint, grid, plasma, runner</summary></key>
     <key name="menu-width" type="i"><range min="0" max="2400"/><default>0</default><summary>Menu width in px (0 = layout default)</summary></key>
-    <key name="menu-height" type="i"><range min="0" max="2000"/><default>0</default><summary>Menu height in px (0 = layout default)</summary></key>
+    <key name="menu-height" type="i"><range min="0" max="2000"/><default>700</default><summary>Menu height in px (0 = layout default)</summary></key>
+    <key name="menu-gap" type="i"><range min="-1" max="40"/><default>0</default><summary>Space in px between the menu and the screen edge / panel (-1 = theme default, 0 = none)</summary></key>
     <key name="menu-position" type="s"><default>'BUTTON'</default><summary>Where the menu opens: BUTTON or CENTER</summary></key>
-    <key name="menu-font-size" type="i"><range min="0" max="24"/><default>0</default><summary>Menu font size in pt (0 = shell default)</summary></key>
+    <key name="menu-font-size" type="i"><range min="0" max="24"/><default>11</default><summary>Menu font size in pt (0 = shell default)</summary></key>
     <key name="menu-tile-icon-size" type="i"><range min="16" max="96"/><default>40</default><summary>Icon size of app tiles</summary></key>
     <key name="menu-list-icon-size" type="i"><range min="16" max="64"/><default>24</default><summary>Icon size of list rows</summary></key>
     <key name="menu-pinned-columns" type="i"><range min="0" max="12"/><default>0</default><summary>Pinned grid columns (0 = layout default)</summary></key>
     <key name="menu-default-view" type="s"><default>'PINNED'</default><summary>View shown when the menu opens: PINNED or ALL</summary></key>
-    <key name="menu-pinned-source" type="s"><default>'FAVORITES'</default><summary>Pinned apps: FAVORITES (same as taskbar) or OWN list</summary></key>
-    <key name="menu-pinned" type="as"><default>[]</default><summary>Start menu's own pinned app ids</summary></key>
+    <key name="menu-pinned-source" type="s"><default>'OWN'</default><summary>Pinned apps: FAVORITES (same as taskbar) or OWN list</summary></key>
+    <key name="menu-pinned" type="as"><default>['com.mattjakeman.ExtensionManager.desktop', 'org.gnome.Ptyxis.desktop', 'microsoft-edge.desktop', 'opera_opera.desktop', 'xournalpp_xournalpp.desktop', 'org.gnome.tweaks.desktop', 'io.github.kolunmi.Bazaar.desktop', 'snap-store_snap-store.desktop', 'gradia_gradia.desktop', 'de.swsnr.pictureoftheday.desktop', 'brave_brave.desktop', 'lm-studio.desktop', 'librewolf.desktop', 'com.anthropic.Claude.desktop', 'thunderbird_thunderbird.desktop', 'cursor.desktop', 'antigravity.desktop', 'toggle-internal-keyboard.desktop', 'ai.storyteller.artcraft-launcher.desktop', 'craft-suite.desktop', 'second-monitor.desktop', 'extendo.desktop', 'io.github.draco.DracoDM.desktop', 'docscan.desktop', 'io.github.hafij_bge.AppHub.desktop', 'io.github.hafij.KilnPlayer.desktop', 'io.github.hafij.AstraPlayer.desktop']</default><summary>Start menu's own pinned app ids</summary></key>
     <key name="menu-show-user" type="b"><default>true</default><summary>Show the user avatar and name</summary></key>
     <key name="menu-show-places" type="b"><default>true</default><summary>Show places (Home, Documents, …)</summary></key>
     <key name="menu-show-shortcuts" type="b"><default>true</default><summary>Show shortcuts (Settings, Software, Terminal, Files)</summary></key>
     <key name="menu-show-frequent" type="b"><default>true</default><summary>Show frequently used apps</summary></key>
     <key name="menu-show-apphub" type="b"><default>true</default><summary>Show the App Hub panel (updates, installs, disk space) when App Hub is installed</summary></key>
     <key name="menu-show-notes" type="b"><default>true</default><summary>Show the Notes page (Fusion layout)</summary></key>
-    <key name="menu-power-options" type="as"><default>['lock', 'logout', 'suspend', 'restart', 'poweroff']</default><summary>Power actions shown: lock, switch-user, logout, suspend, restart, poweroff</summary></key>
+    <key name="menu-power-options" type="as"><default>['poweroff', 'restart', 'lock', 'logout']</default><summary>Power actions shown: lock, switch-user, logout, suspend, restart, poweroff</summary></key>
     <key name="menu-search-position" type="s"><default>'AUTO'</default><summary>Search entry position: AUTO (layout default), TOP or BOTTOM</summary></key>
     <key name="menu-search-files" type="b"><default>true</default><summary>Search recent files</summary></key>
     <key name="menu-search-calc" type="b"><default>true</default><summary>Calculator in search</summary></key>
@@ -94,17 +95,17 @@
     <key name="menu-hotkey" type="s"><default>''</default><summary>Extra shortcut for the menu (e.g. &lt;Super&gt;space)</summary></key>
     <key name="menu-runner-hotkey" type="s"><default>'&lt;Super&gt;r'</default><summary>Shortcut for the runner (Spotlight-style search)</summary></key>
     <key name="menu-button-style" type="s"><default>'ICON'</default><summary>Start button: ICON, TEXT or ICON_TEXT</summary></key>
-    <key name="menu-button-icon-size" type="i"><range min="12" max="64"/><default>26</default><summary>Start button icon size</summary></key>
+    <key name="menu-button-icon-size" type="i"><range min="12" max="64"/><default>31</default><summary>Start button icon size</summary></key>
     <key name="menu-button-fill" type="b"><default>true</default><summary>Start button fills the whole panel height so a click anywhere around the icon opens the menu</summary></key>
     <key name="menu-button-padding" type="i"><range min="-1" max="40"/><default>-1</default><summary>Start button side padding in px (-1 = default)</summary></key>
-    <key name="menu-theme" type="s"><default>'SHELL'</default><summary>Menu colours: SHELL (follow shell theme) or CUSTOM</summary></key>
-    <key name="menu-bg-color" type="s"><default>'rgba(30,30,32,0.97)'</default><summary>Menu background</summary></key>
-    <key name="menu-fg-color" type="s"><default>'rgb(236,236,240)'</default><summary>Menu text</summary></key>
-    <key name="menu-accent-color" type="s"><default>'rgb(79,140,255)'</default><summary>Selected item colour</summary></key>
-    <key name="menu-hover-color" type="s"><default>'rgba(255,255,255,0.10)'</default><summary>Hovered item colour</summary></key>
-    <key name="menu-border-color" type="s"><default>'rgba(255,255,255,0.08)'</default><summary>Menu border colour</summary></key>
+    <key name="menu-theme" type="s"><default>'CUSTOM'</default><summary>Menu colours: SHELL (follow shell theme) or CUSTOM</summary></key>
+    <key name="menu-bg-color" type="s"><default>'rgba(20,22,33,0.943333)'</default><summary>Menu background</summary></key>
+    <key name="menu-fg-color" type="s"><default>'rgb(223,223,223)'</default><summary>Menu text</summary></key>
+    <key name="menu-accent-color" type="s"><default>'rgb(25,98,163)'</default><summary>Selected item colour</summary></key>
+    <key name="menu-hover-color" type="s"><default>'rgb(21,83,158)'</default><summary>Hovered item colour</summary></key>
+    <key name="menu-border-color" type="s"><default>'rgb(60,60,60)'</default><summary>Menu border colour</summary></key>
     <key name="menu-border-width" type="i"><range min="0" max="6"/><default>1</default><summary>Menu border width</summary></key>
-    <key name="menu-radius" type="i"><range min="0" max="40"/><default>18</default><summary>Menu corner radius</summary></key>
+    <key name="menu-radius" type="i"><range min="0" max="40"/><default>14</default><summary>Menu corner radius</summary></key>
     <key name="menu-imported-arcmenu" type="b"><default>false</default><summary>ArcMenu settings were imported once</summary></key>
     <key name="notes" type="s"><default>''</default><summary>Quick notes text</summary></key>
 
@@ -112,14 +113,14 @@
     <key name="sysmon-cpu" type="b"><default>true</default><summary>Show CPU</summary></key>
     <key name="sysmon-ram" type="b"><default>true</default><summary>Show RAM</summary></key>
     <key name="sysmon-net" type="b"><default>true</default><summary>Show network speed</summary></key>
-    <key name="sysmon-temp" type="b"><default>false</default><summary>Show CPU temperature</summary></key>
-    <key name="sysmon-interval" type="i"><range min="1" max="10"/><default>2</default><summary>Refresh interval in seconds</summary></key>
+    <key name="sysmon-temp" type="b"><default>true</default><summary>Show CPU temperature</summary></key>
+    <key name="sysmon-interval" type="i"><range min="1" max="10"/><default>1</default><summary>Refresh interval in seconds</summary></key>
 
     <!-- Clipboard -->
     <key name="clipboard-size" type="i"><range min="5" max="200"/><default>30</default><summary>Entries to keep</summary></key>
     <key name="clipboard-super-v" type="b"><default>true</default><summary>Super+V opens the clipboard history (the notification list keeps its other shortcuts)</summary></key>
-    <key name="clipboard-auto-paste" type="b"><default>true</default><summary>Paste the chosen entry into the focused window</summary></key>
-    <key name="clipboard-persist" type="b"><default>false</default><summary>Save history to disk</summary></key>
+    <key name="clipboard-auto-paste" type="b"><default>false</default><summary>Paste the chosen entry into the focused window by sending Ctrl+V through a virtual keyboard (opt-in)</summary></key>
+    <key name="clipboard-persist" type="b"><default>true</default><summary>Save history to disk (~/.cache/fusion-desk/clipboard.json, readable only by you)</summary></key>
 
     <!-- Clock -->
     <key name="clock-custom" type="b"><default>true</default><summary>Use a custom clock format</summary></key>

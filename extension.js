@@ -1,6 +1,7 @@
 // Fusion Desk - all-in-one panel, taskbar and start menu for GNOME Shell.
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
@@ -18,7 +19,7 @@ import {Clock} from './lib/clock.js';
 import {Caffeine} from './lib/caffeine.js';
 import {AutoHide} from './lib/autohide.js';
 import {SecondaryPanels} from './lib/multiMonitor.js';
-import {AppHubButton} from './lib/menu/appHub.js';
+import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
@@ -122,12 +123,13 @@ export default class FusionDeskExtension extends Extension {
         const n = new MessageTray.Notification({
             source,
             title: `Fusion Desk is paused: ${name} is enabled`,
-            body: `Both replace the panel. Turn ${name} off to use Fusion Desk (it already includes the taskbar), or turn Fusion Desk off.`,
+            body: `Both replace the panel. Turn ${name} off in the Extensions app to use Fusion Desk (it already includes the taskbar), or turn Fusion Desk off.`,
             urgency: MessageTray.Urgency.CRITICAL,
             iconName: 'dialog-warning-symbolic',
         });
-        n.addAction(`Turn off ${name}`, () => Main.extensionManager.disableExtension(uuid));
-        n.addAction('Turn off Fusion Desk', () => Main.extensionManager.disableExtension(this.uuid));
+        const extensionsApp = Shell.AppSystem.get_default().lookup_app('org.gnome.Extensions.desktop');
+        if (extensionsApp)
+            n.addAction('Open Extensions', () => extensionsApp.activate());
         n.connect('destroy', () => {
             if (this._conflictNotification === n)
                 this._conflictNotification = null;
@@ -158,6 +160,7 @@ export default class FusionDeskExtension extends Extension {
         }
         for (const name of Object.keys(this._modules).reverse())
             this._destroyModule(name);
+        destroyStore();
         this._layout.destroy();
         this._layout = null;
         this._modules = null;
