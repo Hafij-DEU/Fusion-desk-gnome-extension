@@ -382,6 +382,8 @@
 
 
 .fusion-clock { text-align: center; font-feature-settings: "tnum"; font-size: 0.95em; }
+/* The theme pads .clock by 11px a side; the panel button already has padding. */
+#panel.fusion-panel .fusion-clock { padding: 0 2px; }
 
 .fusion-title { spacing: 6px; padding: 0 8px; }
 .fusion-title-label { max-width: 280px; font-weight: 500; }
