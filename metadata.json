@@ -2,7 +2,10 @@
   "uuid": "fusion-desk@hafij-deu.github.io",
   "name": "Fusion Desk",
   "description": "All-in-one desktop panel: taskbar, start menu with 7 layouts, system monitor, clipboard history, media controls, clock, Caffeine timer and App Hub shortcuts.\n\nClipboard: the clipboard history reads the clipboard whenever its content changes and keeps the entries in memory and, unless you turn it off, in ~/.cache/fusion-desk/clipboard.json (entries marked secret by password managers are skipped). Super+V opens the history; it can be turned off in the settings. Paste-on-select (sends Ctrl+V to the focused window through a virtual keyboard) is opt-in. Clipboard data is never sent anywhere.\n\nApp Hub: when the App Hub app is installed, the menu shows app updates through its app-hub command; otherwise the button opens the App Hub download page.",
-  "shell-version": ["50"],
+  "shell-version": [
+    "50"
+  ],
   "settings-schema": "org.gnome.shell.extensions.fusion-desk",
-  "url": "https://github.com/Hafij-DEU/Fusion-desk-gnome-extension"
+  "url": "https://github.com/Hafij-DEU/Fusion-desk-gnome-extension",
+  "version-name": "2"
 }

@@ -177,7 +177,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const head = new Adw.PreferencesGroup();
         const box = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 6, halign: Gtk.Align.CENTER, margin_bottom: 12});
         box.append(new Gtk.Label({label: 'Fusion Desk', css_classes: ['title-1']}));
-        const version = this.metadata.version ? `Version ${this.metadata.version} · ` : '';
+        const v = this.metadata['version-name'] ?? this.metadata.version;
+        const version = v ? `Version ${v} · ` : '';
         box.append(new Gtk.Label({label: `${version}by Md Hafijur Rahman`, css_classes: ['dim-label']}));
         box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
         head.add(box);
