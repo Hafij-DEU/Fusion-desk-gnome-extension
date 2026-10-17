@@ -4,6 +4,13 @@ All-in-one GNOME Shell 50 extension: one panel with a taskbar, a start menu and 
 
 **Author:** Md Hafijur Rahman ([Hafij-DEU](https://github.com/Hafij-DEU)) · **Source:** https://github.com/Hafij-DEU/Fusion-desk-gnome-extension · **License:** GPL-2.0-or-later (see [LICENSE](LICENSE))
 
+## Screenshots
+| | |
+|---|---|
+| ![Classic start menu](screenshots/01-classic-start-menu.png) | ![Modern start menu](screenshots/02-modern-start-menu.png) |
+| ![Launcher grid](screenshots/03-launcher-grid.png) | ![Right-click menu with Disk Usage](screenshots/04-right-click-menu.png) |
+| ![System monitor](screenshots/05-system-monitor.png) | ![Settings: layouts](screenshots/07-settings-layouts.png) |
+
 ## Features
 - **Panel**: top or bottom, height, opacity, intellihide (overlap modes + edge-pressure reveal), dynamic opacity, hide the overview dash, panels on every monitor, compact spacing for every indicator, and a **Pills** style (default) that groups the tray, clock and system monitor into rounded blocks (or **Flat**).
 - **Accent colour**: highlights, system-monitor icons, taskbar indicators and pills follow the system accent colour (Settings → Appearance) and update live.
