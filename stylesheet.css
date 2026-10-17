@@ -35,7 +35,7 @@
 }
 #panel.fusion-panel .fusion-start-button .fusion-start-icon {
     icon-size: 26px;
-    color: #4f8cff;
+    color: -st-accent-color;
 }
 .fusion-start-box { spacing: 6px; }
 .fusion-start-label { font-weight: bold; }
@@ -68,7 +68,7 @@
 }
 .fusion-task-dot.focused {
     width: 14px;
-    background-color: #4f8cff;
+    background-color: -st-accent-color;
 }
 
 /* ---- Window previews ---------------------------------------------------- */
@@ -115,7 +115,7 @@
 .fusion-sm-letter {
     font-size: 0.8em;
     font-weight: bold;
-    color: #4f8cff;
+    color: -st-accent-color;
     padding: 10px 12px 2px;
 }
 .fusion-sm-pill {
@@ -144,12 +144,12 @@
 .fusion-sm-pop-item:hover, .fusion-sm-pop-item:focus,
 .fusion-sm-tab:hover { background-color: rgba(127, 127, 127, 0.18); }
 .fusion-sm-cat:checked, .fusion-sm-chip:checked, .fusion-sm-tab:checked {
-    background-color: rgba(79, 140, 255, 0.22);
-    color: #4f8cff;
+    background-color: st-transparentize(-st-accent-color, 0.22);
+    color: -st-accent-color;
 }
 .fusion-sm-item-name { font-weight: 500; }
 .fusion-sm-item-desc { font-size: 0.8em; color: #8e8e96; max-width: 300px; }
-.fusion-sm-pin { color: #4f8cff; }
+.fusion-sm-pin { color: -st-accent-color; }
 .fusion-sm-empty { padding: 24px; color: #8e8e96; }
 .fusion-sm-sep { height: 1px; margin: 6px 8px; background-color: rgba(127, 127, 127, 0.22); }
 .fusion-sm-list, .fusion-sm-content, .fusion-sm-results { spacing: 1px; padding: 2px 4px; }
@@ -221,9 +221,9 @@
     height: 104px;
     border-radius: 12px;
     margin: 2px;
-    background-color: rgba(79, 140, 255, 0.16);
+    background-color: st-transparentize(-st-accent-color, 0.16);
 }
-.fusion-sm-livetile:hover, .fusion-sm-livetile:focus { background-color: rgba(79, 140, 255, 0.30); }
+.fusion-sm-livetile:hover, .fusion-sm-livetile:focus { background-color: st-transparentize(-st-accent-color, 0.30); }
 
 /* Mint */
 .fusion-sm-mint-top { spacing: 10px; }
@@ -286,8 +286,8 @@
     background-color: rgba(127, 127, 127, 0.16);
 }
 .fusion-hub-action:hover, .fusion-hub-action:focus { background-color: rgba(127, 127, 127, 0.3); }
-.fusion-hub-primary { background-color: #4f8cff; color: white; }
-.fusion-hub-primary:hover, .fusion-hub-primary:focus { background-color: #3d7af0; }
+.fusion-hub-primary { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-hub-primary:hover, .fusion-hub-primary:focus { background-color: st-darken(-st-accent-color, 8%); }
 .fusion-hub-badge {
     font-size: 0.62em;
     font-weight: bold;
@@ -301,9 +301,9 @@
 .fusion-hub-disk { spacing: 6px; padding: 8px 6px 2px; border-top: 1px solid rgba(127, 127, 127, 0.18); }
 .fusion-hub-disk-line { spacing: 8px; }
 .fusion-hub-bar { height: 6px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.22); }
-.fusion-hub-bar-fill { height: 6px; border-radius: 99px; background-color: #4f8cff; }
+.fusion-hub-bar-fill { height: 6px; border-radius: 99px; background-color: -st-accent-color; }
 .fusion-hub-bar-fill.full { background-color: #e5484d; }
-.fusion-sm-rail-item:checked { background-color: rgba(79, 140, 255, 0.22); }
+.fusion-sm-rail-item:checked { background-color: st-transparentize(-st-accent-color, 0.22); }
 
 /* Overlays */
 .fusion-sm-popover {
@@ -332,14 +332,14 @@
 /* Readouts: icon + value, no padding wasted; tinted when busy. */
 .fusion-sysmon-box { spacing: 7px; }
 .fusion-sysmon-item { spacing: 3px; }
-.fusion-sysmon-icon { icon-size: 14px; color: #8fb8ff; }
+.fusion-sysmon-icon { icon-size: 14px; color: st-lighten(-st-accent-color, 20%); }
 .fusion-sysmon-label { font-feature-settings: "tnum"; font-size: 0.86em; font-weight: bold; min-width: 2em; }
 .fusion-sysmon-item.warn .fusion-sysmon-icon, .fusion-sysmon-item.warn .fusion-sysmon-label { color: #ffb454; }
 .fusion-sysmon-item.hot .fusion-sysmon-icon, .fusion-sysmon-item.hot .fusion-sysmon-label { color: #ff6b6b; }
 .fusion-sysmon-rate-row { spacing: 2px; }
 .fusion-sysmon-arrow { icon-size: 9px; }
-.fusion-sysmon-rate-row.up .fusion-sysmon-arrow { color: #8fb8ff; }
-.fusion-sysmon-rate-row.down .fusion-sysmon-arrow { color: #7ee0a1; }
+.fusion-sysmon-rate-row.up .fusion-sysmon-arrow { color: st-lighten(-st-accent-color, 20%); }
+.fusion-sysmon-rate-row.down .fusion-sysmon-arrow { color: st-lighten(-st-accent-color, 40%); }
 .fusion-sysmon-rate {
     font-feature-settings: "tnum";
     font-size: 0.8em;
@@ -362,7 +362,7 @@
     background-color: rgba(127, 127, 127, 0.16);
 }
 .fusion-sysmon-chip:hover { background-color: rgba(127, 127, 127, 0.28); }
-.fusion-sysmon-chip:checked { background-color: #4f8cff; color: white; }
+.fusion-sysmon-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
 
 .fusion-clip-menu .popup-menu-content { width: 380px; }
 .fusion-clip-search { border-radius: 99px; padding: 6px 12px; }
@@ -400,7 +400,7 @@
     background-color: rgba(255, 255, 255, 0.06);
 }
 .fusion-ws.occupied { color: rgba(255, 255, 255, 0.85); }
-.fusion-ws.active { background-color: #4f8cff; color: white; min-width: 32px; }
+.fusion-ws.active { background-color: -st-accent-color; color: -st-accent-fg-color; min-width: 32px; }
 .fusion-ws:hover { background-color: rgba(255, 255, 255, 0.18); }
 
 .fusion-media { spacing: 0; padding: 0 4px; }
@@ -463,8 +463,8 @@
 #panel.fusion-panel.fusion-pills .panel-button.clock-display:checked,
 #panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon:active,
 #panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon:checked {
-    background-color: rgba(79, 140, 255, 0.28);
-    border-color: rgba(79, 140, 255, 0.45);
+    background-color: st-transparentize(-st-accent-color, 0.28);
+    border-color: st-transparentize(-st-accent-color, 0.45);
 }
 /* The clock is often two lines: less vertical margin so it is not clipped. */
 #panel.fusion-panel.fusion-pills .panel-button.clock-display { margin: 3px 3px; }
@@ -480,7 +480,7 @@
 .fusion-tools-detail { font-size: 0.82em; color: #8e8e96; }
 .fusion-tools-disk { spacing: 4px; }
 .fusion-tools-bar { height: 5px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.25); }
-.fusion-tools-bar-fill { height: 5px; border-radius: 99px; background-color: #4f8cff; }
+.fusion-tools-bar-fill { height: 5px; border-radius: 99px; background-color: -st-accent-color; }
 .fusion-tools-bar-fill.full { background-color: #e5484d; }
 .fusion-tools-end { border-radius: 99px; padding: 5px; }
 .fusion-tools-end:hover { background-color: rgba(229, 72, 77, 0.85); color: white; }

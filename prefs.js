@@ -122,7 +122,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'taskbar-indicator-style', 'Style', ['DASHES', 'DOTS', 'SQUARES', 'LINE', 'NONE'],
                 ['Dashes', 'Dots', 'Squares', 'Line', 'None']),
             comboRow(s, 'taskbar-indicator-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
-            entryRow(s, 'taskbar-indicator-color', 'Color (CSS, e.g. #4f8cff)'),
+            entryRow(s, 'taskbar-indicator-color', 'Color (CSS, e.g. #4f8cff; empty = system accent)'),
         ]));
         taskbar.add(group('Mouse', [
             comboRow(s, 'taskbar-click-action', 'Click', ['CYCLE', 'MINIMIZE', 'PREVIEW'],

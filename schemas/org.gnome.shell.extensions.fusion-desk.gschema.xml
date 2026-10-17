@@ -43,7 +43,7 @@
 
     <key name="taskbar-indicator-style" type="s"><default>'DASHES'</default><summary>Running indicator style (DOTS, DASHES, SQUARES, LINE, NONE)</summary></key>
     <key name="taskbar-indicator-position" type="s"><default>'BOTTOM'</default><summary>Indicator position (BOTTOM or TOP)</summary></key>
-    <key name="taskbar-indicator-color" type="s"><default>'#4f8cff'</default><summary>Indicator color (CSS color)</summary></key>
+    <key name="taskbar-indicator-color" type="s"><default>''</default><summary>Indicator color (CSS color; empty = system accent color)</summary></key>
     <key name="taskbar-click-action" type="s"><default>'CYCLE'</default><summary>Left click: CYCLE (raise, minimize, cycle), MINIMIZE (raise/minimize all), PREVIEW (show previews)</summary></key>
     <key name="taskbar-middle-click" type="s"><default>'NEW_WINDOW'</default><summary>Middle click: NEW_WINDOW, MINIMIZE or QUIT</summary></key>
     <key name="taskbar-scroll-action" type="s"><default>'CYCLE'</default><summary>Scroll on icon: CYCLE windows, WORKSPACE switch, NOTHING</summary></key>
