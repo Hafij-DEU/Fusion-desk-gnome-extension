@@ -11,7 +11,7 @@ All-in-one GNOME Shell 50 extension: one panel with a taskbar, a start menu and 
 - **Element layout**: every item (start menu, apps button, taskbar, workspaces, media, system monitor, clipboard, App Hub, screenshot, quick settings, date, show desktop, activities, window title) can be shown or hidden, ordered, and placed left, center or right.
 - **Taskbar**: pinned + running apps, grouped or one button per window, indicator styles, window previews, app menu on right-click, configurable click / middle-click / scroll actions, tooltips, Super+1…9.
 - **Start menu**: 7 layouts (Modern, Launcher Grid, Runner, Classic, Fusion, Sidebar, Tabbed) picked from drawn previews; colour themes and presets; own pinned list or taskbar favourites; app context menu; search with calculator, `>commands`, recent files and web; places, drives and bookmarks; labelled power options; ArcMenu-style Expand page (shortcuts, places, drives with eject, bookmarks); App Hub panel; Super / extra hotkey / Super+R runner; large click area; adjustable space around the menu (0 = flush with the screen corner); one-click import of an existing ArcMenu setup.
-- **Widgets**: CPU / RAM / temperature / network monitor, clipboard history on Super+V (works with the icon hidden; paste-on-select is opt-in), media controls (MPRIS, plus a mute/show-window fallback for apps without MPRIS), custom clock, Caffeine with a timer, workspace pills, window title, screenshot button, show-desktop strip.
+- **Widgets**: CPU / RAM / temperature / network monitor, clipboard history (optional Super+V shortcut that works with the icon hidden; paste-on-select is opt-in), media controls (MPRIS, plus a mute/show-window fallback for apps without MPRIS), custom clock, Caffeine with a timer, workspace pills, window title, screenshot button, show-desktop strip.
 - **App Hub**: optional panel button and start-menu panel for [App Hub](https://github.com/Hafij-DEU/Application-hub) (updates, installs, disk space) through your installed `app-hub` command. Without App Hub, clicking an App Hub entry asks **Install App Hub?** with *Skip* or *Install*: *Install* downloads the latest release into Downloads (SHA-256 checked) and opens it in your software installer (App Center), where you confirm with your password. Fusion Desk itself never runs the installation.
 - **Right-click menu** (panel and start button): Background Apps (every running app, also window-less ones, found from their systemd app units like Resources does; top 10 by memory, quit buttons, *Open Resources*) and Disk Usage (every mounted disk, *Open Disk Usage Analyzer*) as side panels, Panel toggles, Power, quick launchers for Resources, Terminal, System Monitor, Extensions, Tweaks and Settings (each only while installed), and **App Update** (opens App Hub on its Updates page, or offers to install it).
 - **Conflict guard**: pauses itself while Dash to Panel is enabled and shows a notification with an *Open Extensions* button.
@@ -40,7 +40,7 @@ Needs **GNOME 50** (Ubuntu 26.04). Check yours with `gnome-shell --version`.
    gnome-extensions prefs fusion-desk@hafij-deu.github.io
    ```
 
-If you also use **Dash to Panel** or **ArcMenu**, turn them off (`gnome-extensions disable dash-to-panel@jderose9.github.com`, `gnome-extensions disable arcmenu@arcmenu.com`): they change the same panel and the Super key. Fusion Desk pauses itself while Dash to Panel is on. An existing ArcMenu setup is imported once at first start and replaces the defaults below.
+If you also use **Dash to Panel** or **ArcMenu**, turn them off (`gnome-extensions disable dash-to-panel@jderose9.github.com`, `gnome-extensions disable arcmenu@arcmenu.com`): they change the same panel and the Super key. Fusion Desk pauses itself while Dash to Panel is on. To bring over an existing ArcMenu setup, use **Settings → Start Menu → Import from ArcMenu**.
 
 Nothing happens after enabling? Make sure user extensions are allowed: `gsettings set org.gnome.shell disable-user-extensions false`, then log out and in again. The graphical way is the **Extension Manager** app (`sudo apt install gnome-shell-extension-manager`).
 
@@ -49,7 +49,7 @@ A fresh install starts with the author's setup:
 
 - Bottom panel, 48 px; start menu, Activities and media controls on the left, taskbar in the centre, system monitor, clipboard, quick settings and clock on the right; panels on every monitor.
 - **Classic** start menu (side rail, A–Z list, pinned tiles), dark-blue theme, 700 px tall, 11 pt font, flush against the bottom-left corner, own start-button image, a pinned list (apps that are not installed are skipped).
-- System monitor with temperature, refreshed every second; clipboard history on **Super+V**, remembered after restart (paste-on-select off).
+- System monitor with temperature, refreshed every second; clipboard history remembered after restart (the **Super+V** shortcut and paste-on-select are opt-in: Settings → Widgets → Clipboard history).
 
 Change anything in the settings. To go back to these defaults:
 ```bash

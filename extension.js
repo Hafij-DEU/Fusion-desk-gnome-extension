@@ -20,6 +20,7 @@ import {Caffeine} from './lib/caffeine.js';
 import {AutoHide} from './lib/autohide.js';
 import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
+import {closeInstallDialog} from './lib/appHubInstall.js';
 import {Indicators} from './lib/indicators.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
@@ -75,7 +76,6 @@ const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-da
 export default class FusionDeskExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
-        this._importOldSettings();
         // State that survives module rebuilds (e.g. clipboard history, timers).
         this.state = {};
         this._running = false;
@@ -130,10 +130,10 @@ export default class FusionDeskExtension extends Extension {
         const extensionsApp = Shell.AppSystem.get_default().lookup_app('org.gnome.Extensions.desktop');
         if (extensionsApp)
             n.addAction('Open Extensions', () => extensionsApp.activate());
-        n.connect('destroy', () => {
+        n.connectObject('destroy', () => {
             if (this._conflictNotification === n)
                 this._conflictNotification = null;
-        });
+        }, this);
         this._conflictNotification = n;
         source.addNotification(n);
     }
@@ -161,6 +161,7 @@ export default class FusionDeskExtension extends Extension {
         for (const name of Object.keys(this._modules).reverse())
             this._destroyModule(name);
         destroyStore();
+        closeInstallDialog();
         this._layout.destroy();
         this._layout = null;
         this._modules = null;
@@ -175,37 +176,6 @@ export default class FusionDeskExtension extends Extension {
         const disabled = global.settings.get_strv('disabled-extensions');
         return DUPLICATES[name].find(uuid =>
             enabled.includes(uuid) && !disabled.includes(uuid) && Main.extensionManager.lookup(uuid)) ?? null;
-    }
-
-    /** One-time import of the icons used by Dash to Panel and ArcMenu. */
-    _importOldSettings() {
-        if (this._settings.get_boolean('imported-settings'))
-            return;
-        this._settings.set_boolean('imported-settings', true);
-
-        const open = (uuid, schemaId) => {
-            const dir = Main.extensionManager.lookup(uuid)?.dir?.get_child('schemas');
-            if (!dir?.query_exists(null))
-                return null;
-            try {
-                const source = Gio.SettingsSchemaSource.new_from_directory(dir.get_path(),
-                    Gio.SettingsSchemaSource.get_default(), false);
-                const schema = source.lookup(schemaId, false);
-                return schema ? new Gio.Settings({settings_schema: schema}) : null;
-            } catch {
-                return null;
-            }
-        };
-        const importIcon = (settings, from, to) => {
-            if (!settings?.settings_schema.has_key(from))
-                return;
-            const value = settings.get_string(from);
-            if (value?.startsWith('/') && GLib.file_test(value, GLib.FileTest.EXISTS))
-                this._settings.set_string(to, value);
-        };
-        importIcon(open('arcmenu@arcmenu.com', 'org.gnome.shell.extensions.arcmenu'), 'menu-button-icon', 'menu-icon');
-        importIcon(open('dash-to-panel@jderose9.github.com', 'org.gnome.shell.extensions.dash-to-panel'),
-            'show-apps-icon-file', 'apps-icon');
     }
 
     disable() {
