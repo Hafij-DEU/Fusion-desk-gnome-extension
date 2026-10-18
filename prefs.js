@@ -293,6 +293,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 [_('Start menu + Deepin launcher button'), _('One button: Deepin launcher'), _('One button: Fusion start menu')]),
             entryRow(s, 'deepin-launcher-icon', _('Launcher button icon (name or image path, empty = built-in)')),
             switchRow(s, 'deepin-control-button', _('Control centre button'), _('Quick toggles, notifications and Settings shortcuts in a side panel')),
+            comboRow(s, 'deepin-control-position', _('Control centre position'), ['START', 'TRAY', 'CLOCK'],
+                [_('After the start button (opens on the left)'), _('In the tray (opens on the right)'), _('On the clock (opens on the right)')]),
             switchRow(s, 'deepin-super-key', _('Super key opens the launcher'), _('Off: Super keeps opening the start menu')),
         ], _('Used when Desktop mode is Deepin (Layout page). Your taskbar layout is not changed.')));
 

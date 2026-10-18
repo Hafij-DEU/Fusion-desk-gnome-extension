@@ -186,6 +186,10 @@
       <default>'BOTH'</default><summary>Start button: Fusion start menu plus a Deepin launcher button (BOTH), the start button opens the Deepin launcher (DEEPIN), or only the Fusion start menu (FUSION)</summary>
     </key>
     <key name="deepin-control-button" type="b"><default>true</default><summary>Deepin mode: control centre button in the tray</summary></key>
+    <key name="deepin-control-position" type="s">
+      <choices><choice value="START"/><choice value="TRAY"/><choice value="CLOCK"/></choices>
+      <default>'START'</default><summary>Control centre button: after the start button (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
+    </key>
     <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Deepin launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
     <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Deepin surface opacity in percent</summary></key>
 

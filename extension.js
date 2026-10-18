@@ -46,7 +46,7 @@ const MODULES = {
     winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: ['windows-search']},
     taskview: {cls: TaskView, visible: 'windows-task-view', mode: 'windows', keys: []},
     dlauncher: {cls: DeepinLauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
-    dcontrol: {cls: DeepinControlButton, visible: null, feature: 'control', keys: ['deepin-control-button']},
+    dcontrol: {cls: DeepinControlButton, visible: null, feature: 'control', keys: ['deepin-control-button', 'deepin-control-position']},
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
@@ -294,8 +294,15 @@ export default class FusionDeskExtension extends Extension {
             afterMenu.push('winsearch', 'taskview');
         if (this.deepinFeature('launcher') && !this.deepinStartButton)
             afterMenu.push('dlauncher');
-        if (this.deepinFeature('control'))
-            beforeQuick.push('dcontrol');
+        // The control centre button follows the start button unless set to the tray
+        // (on the clock it has no button of its own).
+        if (this.deepinFeature('control')) {
+            const where = this._settings.get_string('deepin-control-position');
+            if (where === 'START')
+                afterMenu.push('dcontrol');
+            else if (where === 'TRAY')
+                beforeQuick.push('dcontrol');
+        }
         return {afterMenu, beforeQuick};
     }
 
