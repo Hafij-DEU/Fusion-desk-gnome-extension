@@ -78,7 +78,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {
@@ -243,6 +243,11 @@ export default class FusionDeskExtension extends Extension {
         return this._settings;
     }
 
+    /** Taskbar background (PanelLayout knows whether it floats). */
+    setPanelBackground(alpha, extra = '') {
+        this._layout?.setBackground(alpha, extra);
+    }
+
     /** 'fusion', 'deepin' or 'windows'. */
     get desktopMode() {
         return this._mode;
@@ -309,6 +314,9 @@ export default class FusionDeskExtension extends Extension {
     }
 
     _onChanged(key) {
+        // Deepin mode writes its saved-theme keys while starting, before the modules exist.
+        if (!this._pending)
+            return;
         const matches = prefix => key === prefix || (prefix.endsWith('-') && key.startsWith(prefix));
 
         for (const [name, def] of Object.entries(MODULES)) {

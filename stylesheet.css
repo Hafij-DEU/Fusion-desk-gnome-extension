@@ -697,3 +697,10 @@
 .fusion-deepin-desktop-file:focus { background-color: st-transparentize(-st-accent-color, 0.7); }
 .fusion-deepin-desktop-file-label { font-size: 9pt; padding-top: 4px; }
 .fusion-deepin-collection-grip { margin: 0 3px 3px 0; border-radius: 0 0 8px 0; border-right: 2px solid rgba(127, 127, 127, 0.5); border-bottom: 2px solid rgba(127, 127, 127, 0.5); }
+
+/* Floating taskbar (Deepin mode option): soft shadow and a light rim. */
+#panel.fusion-panel.fusion-floating {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.30);
+}
+#panel.fusion-panel.fusion-floating.fusion-deepin-gloss { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22); }

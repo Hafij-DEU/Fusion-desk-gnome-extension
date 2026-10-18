@@ -168,6 +168,12 @@
     <key name="deepin-gloss" type="b"><default>true</default><summary>Glossy glass look (light top edge and soft gradient) on Deepin surfaces</summary></key>
     <key name="deepin-icon-theme" type="s"><default>''</default><summary>Icon theme used while Deepin mode is on (e.g. bloom from the deepin-icon-theme package; empty = keep the system theme)</summary></key>
     <key name="deepin-cursor-theme" type="s"><default>''</default><summary>Cursor theme used while Deepin mode is on (empty = keep the system theme)</summary></key>
+    <key name="deepin-floating-taskbar" type="b"><default>false</default><summary>Deepin mode: floating taskbar (rounded, with a gap from the screen edges, like Deepin's Fashion dock); layout and widgets stay the same</summary></key>
+    <key name="deepin-accent" type="s">
+      <choices><choice value=""/><choice value="blue"/><choice value="teal"/><choice value="green"/><choice value="yellow"/><choice value="orange"/><choice value="pink"/><choice value="purple"/><choice value="slate"/></choices>
+      <default>''</default><summary>Deepin mode: system accent colour from Deepin's palette (empty = keep yours; restored when the mode ends)</summary>
+    </key>
+    <key name="deepin-saved-accent" type="s"><default>''</default><summary>Internal: accent colour to restore when Deepin mode ends</summary></key>
     <key name="deepin-saved-icon-theme" type="s"><default>''</default><summary>Internal: icon theme to restore when Deepin mode ends</summary></key>
     <key name="deepin-saved-cursor-theme" type="s"><default>''</default><summary>Internal: cursor theme to restore when Deepin mode ends</summary></key>
     <key name="deepin-launcher-button" type="b"><default>true</default><summary>Deepin mode: launcher button next to the start menu</summary></key>

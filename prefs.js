@@ -304,6 +304,10 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'deepin-blur', _('Blur'), _('Behind the taskbar, launcher, control centre and collections')),
             spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent')),
             switchRow(s, 'deepin-gloss', _('Glossy glass'), _('Light top edge and soft gradient on the taskbar and Deepin panels')),
+            switchRow(s, 'deepin-floating-taskbar', _('Floating taskbar'),
+                _('Rounded, with a gap from the screen edges, like Deepin\'s Fashion dock. Your layout and widgets stay the same')),
+            comboRow(s, 'deepin-accent', _('Accent colour'), ['', 'blue', 'teal', 'green', 'yellow', 'orange', 'pink', 'purple', 'slate'],
+                [_('Keep system accent'), _('Blue'), _('Teal'), _('Green'), _('Yellow'), _('Orange'), _('Pink'), _('Purple'), _('Grey')]),
         ]));
         const icons = listThemes('icons');
         const cursors = listThemes('cursors');

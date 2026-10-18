@@ -148,7 +148,9 @@ plugins) is documented above but **not built**; its useful parts arrive as taskb
      list with Clear All, links to GNOME Settings panels.
    - **Organize Desktop** – desktop files in movable, resizable collections by type; Alt+O; desktop right-click items.
    - **Look** – glossy glass taskbar (gradient + light top edge), blur, light/dark/auto colours for the Deepin panels,
-     optional icon / cursor theme (e.g. bloom from deepin-icon-theme) while the mode runs.
+     optional icon / cursor theme (e.g. bloom from deepin-icon-theme) and accent colour from Deepin's palette while
+     the mode runs, and an optional **floating taskbar** (Fashion-dock look: rounded, gap from the edges) that keeps
+     the user's layout.
 2. **Windows-like** – not a DDE feature, added at the user's request: search box (or icon) and Task View button after
    the start button, Windows-style rounded hover tiles, blur.
 
