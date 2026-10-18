@@ -902,3 +902,23 @@
 }
 .fusion-battery-device-part { font-weight: normal; opacity: 0.75; }
 .fusion-battery-device-low { background-color: rgba(230, 72, 77, 0.28); }
+
+/* Secondary text on glass: the theme's text colour, slightly faded (a fixed
+   mid grey disappears on a blurred, colourful background). */
+.fusion-deepin-light .fusion-deepin-list-header, .fusion-deepin-light .fusion-deepin-empty-hint,
+.fusion-deepin-light .fusion-deepin-cc-date, .fusion-deepin-light .fusion-deepin-cc-note-body,
+.fusion-deepin-light .fusion-deepin-cc-cal-dayname, .fusion-deepin-light .fusion-deepin-cc-media-artist,
+.fusion-deepin-light .fusion-deepin-cc-meter-head { color: rgba(31, 31, 35, 0.72); }
+.fusion-deepin-dark .fusion-deepin-list-header, .fusion-deepin-dark .fusion-deepin-empty-hint,
+.fusion-deepin-dark .fusion-deepin-cc-date, .fusion-deepin-dark .fusion-deepin-cc-note-body,
+.fusion-deepin-dark .fusion-deepin-cc-cal-dayname, .fusion-deepin-dark .fusion-deepin-cc-media-artist,
+.fusion-deepin-dark .fusion-deepin-cc-meter-head { color: rgba(242, 242, 244, 0.72); }
+.fusion-deepin-light .fusion-deepin-cc-cal-day.other-month { color: rgba(31, 31, 35, 0.4); }
+.fusion-deepin-dark .fusion-deepin-cc-cal-day.other-month { color: rgba(242, 242, 244, 0.4); }
+/* A soft halo keeps text readable over busy wallpapers. */
+.fusion-deepin-cc.fusion-deepin-light, .fusion-deepin-launcher-window.fusion-deepin-light,
+.fusion-deepin-collection.fusion-deepin-light { text-shadow: 0 0 6px rgba(255, 255, 255, 0.6); }
+.fusion-deepin-cc.fusion-deepin-dark, .fusion-deepin-launcher-window.fusion-deepin-dark,
+.fusion-deepin-collection.fusion-deepin-dark { text-shadow: 0 0 6px rgba(0, 0, 0, 0.5); }
+.fusion-deepin-cc-cal-day.today, .fusion-deepin-cc-tile:checked, .fusion-deepin-cc-switch:checked,
+.fusion-deepin-cc-media-play, .fusion-deepin-cc-media-chip:checked { text-shadow: none; }
