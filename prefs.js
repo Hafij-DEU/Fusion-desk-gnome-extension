@@ -107,6 +107,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
             comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
             spinRow(s, 'panel-height', 'Height', 24, 96, 1, 'Pixels'),
+            comboRow(s, 'panel-theme', 'Colours', ['AUTO', 'DARK', 'LIGHT'], ['Follow system style', 'Dark', 'Light']),
             spinRow(s, 'panel-opacity', 'Background opacity', 0, 100, 5, 'Percent'),
             switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),
             switchRow(s, 'hide-overview-dash', 'Hide overview dash', 'The taskbar replaces the dash in Activities'),
@@ -153,6 +154,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         taskbar.add(group('Taskbar', [
             spinRow(s, 'taskbar-icon-size', 'Icon size', 16, 64),
             entryRow(s, 'apps-icon', 'Show Applications icon (name or image path)'),
+            switchRow(s, 'icons-follow-accent', 'Accent-coloured icons', 'Start button and Show Applications icons take the system accent colour'),
             switchRow(s, 'taskbar-show-favorites', 'Show pinned apps'),
             switchRow(s, 'taskbar-isolate-workspaces', 'Isolate workspaces', 'Only show windows on the current workspace'),
             switchRow(s, 'taskbar-previews', 'Window previews on hover'),

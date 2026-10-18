@@ -731,3 +731,61 @@
 .fusion-deepin-cc-cal-day { text-align: center; font-size: 9.5pt; padding: 5px 0; border-radius: 99px; }
 .fusion-deepin-cc-cal-day.other-month { color: rgba(127, 127, 127, 0.75); }
 .fusion-deepin-cc-cal-day.today { background-color: -st-accent-color; color: -st-accent-fg-color; font-weight: bold; }
+
+/* ==== Light taskbar (follows the system style, or panel-theme LIGHT) ======== */
+#panel.fusion-panel.fusion-panel-light,
+#panel.fusion-panel.fusion-panel-light .panel-button,
+#panel.fusion-panel.fusion-panel-light .panel-button:hover,
+#panel.fusion-panel.fusion-panel-light .panel-button:active,
+#panel.fusion-panel.fusion-panel-light .panel-button:checked,
+#panel.fusion-panel-light .fusion-apps-button,
+#panel.fusion-panel-light .fusion-win-taskview { color: #1f1f23; }
+#panel.fusion-panel.fusion-panel-light .panel-button:hover,
+#panel.fusion-panel-light .fusion-task-button:hover,
+#panel.fusion-panel-light .fusion-win-taskview:hover,
+#panel.fusion-panel-light .fusion-media-button:hover { background-color: rgba(0, 0, 0, 0.07); }
+#panel.fusion-panel.fusion-panel-light .panel-button:active,
+#panel.fusion-panel.fusion-panel-light .panel-button:checked,
+#panel.fusion-panel-light .fusion-task-button:focus { background-color: rgba(0, 0, 0, 0.10); }
+#panel.fusion-panel-light .fusion-task-button:active { background-color: rgba(0, 0, 0, 0.05); }
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.fusion-tray,
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.clock-display,
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.fusion-sysmon {
+    border-color: rgba(0, 0, 0, 0.07);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.fusion-tray:hover,
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.clock-display:hover,
+#panel.fusion-panel.fusion-panel-light.fusion-pills .panel-button.fusion-sysmon:hover {
+    background-color: rgba(0, 0, 0, 0.10);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+#panel.fusion-panel-light .fusion-ws { color: rgba(0, 0, 0, 0.5); background-color: rgba(0, 0, 0, 0.06); }
+#panel.fusion-panel-light .fusion-ws.occupied { color: rgba(0, 0, 0, 0.85); }
+#panel.fusion-panel-light .fusion-ws.active { background-color: -st-accent-color; color: -st-accent-fg-color; }
+#panel.fusion-panel-light .fusion-ws:hover { background-color: rgba(0, 0, 0, 0.12); }
+#panel.fusion-panel-light .fusion-show-desktop { border-left-color: rgba(0, 0, 0, 0.18); }
+#panel.fusion-panel-light .fusion-show-desktop:hover { background-color: rgba(0, 0, 0, 0.10); }
+#panel.fusion-panel-light .fusion-sysmon-icon,
+#panel.fusion-panel-light .fusion-sysmon-rate-row.up .fusion-sysmon-arrow { color: -st-accent-color; }
+#panel.fusion-panel-light .fusion-sysmon-rate-row.down .fusion-sysmon-arrow { color: st-darken(-st-accent-color, 15%); }
+#panel.fusion-panel-light .fusion-sysmon-item.warn .fusion-sysmon-icon,
+#panel.fusion-panel-light .fusion-sysmon-item.warn .fusion-sysmon-label { color: #b86e00; }
+#panel.fusion-panel-light .fusion-sysmon-item.hot .fusion-sysmon-icon,
+#panel.fusion-panel-light .fusion-sysmon-item.hot .fusion-sysmon-label { color: #d12f2f; }
+#panel.fusion-panel-light .fusion-win-search {
+    color: rgba(0, 0, 0, 0.62);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+#panel.fusion-panel-light .fusion-win-search:hover { background-color: rgba(0, 0, 0, 0.09); }
+#panel.fusion-panel.fusion-panel-light.fusion-deepin-gloss {
+    background-gradient-start: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+#panel.fusion-panel.fusion-panel-light.fusion-floating { border-color: rgba(0, 0, 0, 0.10); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16); }
+/* Icons painted in the accent colour read it from here (lib/style.js). */
+.fusion-accent-fg, #panel.fusion-panel .fusion-accent-fg { color: -st-accent-color; }
+#panel.fusion-panel.fusion-panel-light .panel-button#panelActivities .workspace-dot { background-color: #222226; }
+#panel.fusion-panel.fusion-panel-light:overview .panel-button#panelActivities .workspace-dot { background-color: #222226; }
+#panel.fusion-panel .panel-button#panelActivities .workspace-dot { background-color: #f2f2f4; }

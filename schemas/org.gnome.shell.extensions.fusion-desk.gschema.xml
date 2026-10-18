@@ -29,6 +29,12 @@
     <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
     <key name="panel-style" type="s"><default>'PILLS'</default><summary>Panel item style: PILLS (rounded groups for tray, clock and system monitor) or FLAT</summary></key>
     <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
+    <key name="panel-theme" type="s">
+      <choices><choice value="AUTO"/><choice value="DARK"/><choice value="LIGHT"/></choices>
+      <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>
+    </key>
+    <key name="icons-follow-accent" type="b"><default>true</default><summary>Paint the start button and Show Applications icons in the system accent colour</summary></key>
+    <key name="menu-theme-follow-system" type="b"><default>true</default><summary>With a custom menu theme, use light colours while the system style is light</summary></key>
     <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
     <key name="multi-monitor" type="b"><default>true</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>
     <key name="hide-overview-dash" type="b"><default>true</default><summary>Hide the overview dash (the taskbar replaces it)</summary></key>

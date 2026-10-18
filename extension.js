@@ -22,6 +22,7 @@ import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
 import {DeepinMode} from './lib/deepin/index.js';
+import {watchSystemStyle} from './lib/style.js';
 import {TaskView, WindowsSearch} from './lib/windowsMode.js';
 import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButtons.js';
 
@@ -29,8 +30,8 @@ import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButto
 const MODULES = {
     // Menu content settings apply live inside MenuHost; these rebuild the button/shortcuts.
     menu: {cls: StartMenu, visible: 'menu-visible',
-        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key', 'deepin-start']},
-    apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon']},
+        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key', 'deepin-start', 'icons-follow-accent']},
+    apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon', 'icons-follow-accent']},
     taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor']},
     title: {cls: WindowTitle, visible: 'title-visible', keys: []},
     workspaces: {cls: Workspaces, visible: 'workspaces-visible', keys: []},
@@ -56,7 +57,7 @@ const MODULES = {
         keys: ['intellihide', 'intellihide-mode', 'dynamic-opacity', 'panel-position', 'panel-height', 'panel-opacity']},
     // Start button + per-monitor taskbar on every non-primary monitor.
     multimon: {cls: SecondaryPanels, visible: 'multi-monitor',
-        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-']},
+        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent']},
 };
 
 // Fusion hides its own widget when one of these extensions is enabled, so the
@@ -172,6 +173,8 @@ export default class FusionDeskExtension extends Extension {
         for (const name of Object.keys(MODULES))
             this._build(name);
         this._layout.arrange(this._actors());
+        // Light / dark taskbar follows the system style: same as changing panel-theme.
+        this._unwatchStyle = watchSystemStyle(() => this._onChanged('panel-theme'));
     }
 
     _stop() {
@@ -182,6 +185,8 @@ export default class FusionDeskExtension extends Extension {
                 GLib.source_remove(this[id]);
             this[id] = 0;
         }
+        this._unwatchStyle?.();
+        this._unwatchStyle = null;
         if (this._modules) {
             for (const name of Object.keys(this._modules).reverse())
                 this._destroyModule(name);
