@@ -132,5 +132,56 @@
     <key name="caffeine-duration" type="i"><range min="0" max="1440"/><default>0</default><summary>Caffeine duration in minutes (0 = until turned off)</summary></key>
     <key name="caffeine-until" type="x"><default>0</default><summary>Unix time when the current Caffeine timer ends (0 = none)</summary></key>
 
+    <!-- Desktop mode: Fusion panel or Deepin-style environment -->
+    <key name="desktop-mode" type="s">
+      <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/></choices>
+      <default>'fusion'</default><summary>Desktop mode: Fusion panel, Deepin-style dock/launcher/control centre, or the Fusion taskbar styled like Windows</summary>
+    </key>
+    <key name="deepin-dock-mode" type="s">
+      <choices><choice value="FASHION"/><choice value="EFFICIENT"/></choices>
+      <default>'FASHION'</default><summary>Deepin dock: floating centred dock (Fashion) or full-width bar (Efficient)</summary>
+    </key>
+    <key name="deepin-dock-position" type="s">
+      <choices><choice value="BOTTOM"/><choice value="TOP"/></choices>
+      <default>'BOTTOM'</default><summary>Deepin dock position</summary>
+    </key>
+    <key name="deepin-dock-hide" type="s">
+      <choices><choice value="KEEP_SHOWN"/><choice value="KEEP_HIDDEN"/><choice value="SMART_HIDE"/></choices>
+      <default>'KEEP_SHOWN'</default><summary>Deepin dock status: keep shown, keep hidden or smart hide</summary>
+    </key>
+    <key name="deepin-dock-size" type="i"><range min="37" max="100"/><default>56</default><summary>Deepin dock size in pixels</summary></key>
+    <key name="deepin-dock-plugins" type="as">
+      <default>['multitask', 'tray', 'datetime', 'trash', 'control', 'power', 'show-desktop']</default>
+      <summary>Deepin dock buttons and plugins that are shown</summary>
+    </key>
+    <!-- Windows-like mode: the Fusion taskbar styled like Windows -->
+    <key name="windows-align" type="s">
+      <choices><choice value="CENTER"/><choice value="LEFT"/></choices>
+      <default>'CENTER'</default><summary>Windows-like taskbar: start button and apps centred (Windows 11) or on the left (Windows 10)</summary>
+    </key>
+    <key name="windows-search" type="s">
+      <choices><choice value="BOX"/><choice value="ICON"/><choice value="HIDDEN"/></choices>
+      <default>'BOX'</default><summary>Windows-like taskbar search: box, icon only or hidden</summary>
+    </key>
+    <key name="windows-task-view" type="b"><default>true</default><summary>Windows-like taskbar: show the Task View button (opens the overview)</summary></key>
+    <key name="windows-combine" type="b"><default>true</default><summary>Windows-like taskbar: combine windows of an app into one icon (off = one labelled button per window)</summary></key>
+    <key name="windows-menu-style" type="s">
+      <choices><choice value="AUTO"/><choice value="KEEP"/></choices>
+      <default>'AUTO'</default><summary>Windows-like start menu: matching layout (Modern when centred, Classic on the left) or keep your own layout</summary>
+    </key>
+    <key name="windows-widgets" type="b"><default>false</default><summary>Windows-like taskbar: keep Fusion widgets (system monitor, media, clipboard, workspaces, App Hub, screenshot)</summary></key>
+    <key name="windows-blur" type="b"><default>true</default><summary>Windows-like taskbar: blur behind the taskbar</summary></key>
+    <key name="deepin-launcher-mode" type="s">
+      <choices><choice value="FULLSCREEN"/><choice value="WINDOWED"/></choices>
+      <default>'FULLSCREEN'</default><summary>Deepin launcher: fullscreen grid or small window</summary>
+    </key>
+    <key name="deepin-super-key" type="b"><default>true</default><summary>Super opens the Deepin launcher</summary></key>
+    <key name="deepin-theme" type="s">
+      <choices><choice value="AUTO"/><choice value="LIGHT"/><choice value="DARK"/></choices>
+      <default>'AUTO'</default><summary>Deepin mode colours: follow the system style, light or dark</summary>
+    </key>
+    <key name="deepin-blur" type="b"><default>true</default><summary>Blur behind Deepin dock, launcher and control centre</summary></key>
+    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Deepin surface opacity in percent</summary></key>
+
   </schema>
 </schemalist>

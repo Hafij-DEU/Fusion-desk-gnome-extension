@@ -1,7 +1,7 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
-import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import {ELEMENT_NAMES, parseLayout} from './lib/layoutModel.js';
 import {addMenuPages} from './lib/prefsMenu.js';
@@ -57,6 +57,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const s = this.getSettings();
         window.set_default_size(720, 820);
         window.search_enabled = true;
+
+        this._addDeepinPage(window, s);
 
         // ---- Layout page ---------------------------------------------------
         const layout = new Adw.PreferencesPage({title: 'Layout', icon_name: 'view-grid-symbolic'});
@@ -205,6 +207,67 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 subtitle: 'Product names belong to their owners. Fusion Desk is not affiliated with Microsoft, KDE, Linux Mint, Apple or the authors above.'}),
         ]));
         window.add(about);
+    }
+
+    /** Desktop mode (Fusion / Deepin / Windows-like) and the options of each. */
+    _addDeepinPage(window, s) {
+        const page = new Adw.PreferencesPage({title: _('Desktop'), icon_name: 'preferences-desktop-appearance-symbolic'});
+        page.add(group(_('Desktop mode'), [
+            comboRow(s, 'desktop-mode', _('Mode'), ['fusion', 'deepin', 'windows'],
+                [_('Fusion: your panel'), _('Deepin: dock, launcher, control centre'), _('Windows-like: Fusion taskbar in Windows style')]),
+        ], _('Switches live, no logout. Your Fusion settings stay as they are and come back with Fusion mode.')));
+
+        page.add(group(_('Windows-like taskbar'), [
+            comboRow(s, 'windows-align', _('Alignment'), ['CENTER', 'LEFT'], [_('Centre (Windows 11)'), _('Left (Windows 10)')]),
+            comboRow(s, 'windows-search', _('Search'), ['BOX', 'ICON', 'HIDDEN'], [_('Search box'), _('Icon only'), _('Hidden')]),
+            switchRow(s, 'windows-task-view', _('Task View button'), _('Opens all windows and workspaces')),
+            switchRow(s, 'windows-combine', _('Combine taskbar buttons'), _('Off: one labelled button per window')),
+            comboRow(s, 'windows-menu-style', _('Start menu'), ['AUTO', 'KEEP'], [_('Match the alignment'), _('Keep my layout')]),
+            switchRow(s, 'windows-widgets', _('Keep Fusion widgets'), _('System monitor, media, clipboard, workspaces, App Hub, screenshot')),
+            switchRow(s, 'windows-blur', _('Blur'), _('Blur behind the taskbar')),
+        ], _('Used in Windows-like mode.')));
+
+        page.add(group(_('Deepin dock'), [
+            comboRow(s, 'deepin-dock-mode', _('Mode'), ['FASHION', 'EFFICIENT'],
+                [_('Fashion: floating dock'), _('Efficient: full-width bar')]),
+            comboRow(s, 'deepin-dock-position', _('Location'), ['BOTTOM', 'TOP'], [_('Bottom'), _('Top')]),
+            comboRow(s, 'deepin-dock-hide', _('Status'), ['KEEP_SHOWN', 'KEEP_HIDDEN', 'SMART_HIDE'],
+                [_('Keep shown'), _('Keep hidden'), _('Smart hide')]),
+            spinRow(s, 'deepin-dock-size', _('Size'), 37, 100, 1, _('Pixels')),
+        ]));
+
+        const plugins = [
+            ['multitask', _('Multitask view'), _('Opens the Activities overview')],
+            ['tray', _('Status icons'), _('Network, sound, battery and other extensions\' icons; opens Quick Settings')],
+            ['datetime', _('Date and time'), _('Opens the calendar and notifications')],
+            ['trash', _('Trash'), ''],
+            ['control', _('Control centre'), _('Side panel with toggles, notifications and Settings links')],
+            ['power', _('Power'), ''],
+            ['show-desktop', _('Show desktop'), _('Strip at the right edge, Efficient mode only')],
+        ];
+        const rows = plugins.map(([id, title, subtitle]) => {
+            const row = new Adw.SwitchRow({title, subtitle});
+            row.active = s.get_strv('deepin-dock-plugins').includes(id);
+            row.connect('notify::active', () => {
+                const list = s.get_strv('deepin-dock-plugins').filter(p => p !== id);
+                if (row.active)
+                    list.push(id);
+                s.set_strv('deepin-dock-plugins', list);
+            });
+            return row;
+        });
+        page.add(group(_('Deepin dock plugins'), rows));
+
+        page.add(group(_('Deepin launcher'), [
+            comboRow(s, 'deepin-launcher-mode', _('Mode'), ['FULLSCREEN', 'WINDOWED'], [_('Fullscreen'), _('Windowed')]),
+            switchRow(s, 'deepin-super-key', _('Super key opens the launcher')),
+        ]));
+        page.add(group(_('Deepin look'), [
+            comboRow(s, 'deepin-theme', _('Colours'), ['AUTO', 'LIGHT', 'DARK'], [_('Follow system style'), _('Light'), _('Dark')]),
+            switchRow(s, 'deepin-blur', _('Blur'), _('Blur behind the dock, launcher and control centre')),
+            spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent')),
+        ]));
+        window.add(page);
     }
 
     _fillElements(groupWidget, s) {

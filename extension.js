@@ -21,6 +21,8 @@ import {AutoHide} from './lib/autohide.js';
 import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
+import {DeepinMode} from './lib/deepin/index.js';
+import {TaskView, WindowsSearch, windowsLayout, windowsSettings} from './lib/windowsMode.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
 const MODULES = {
@@ -39,6 +41,9 @@ const MODULES = {
     apphub: {cls: AppHubButton, visible: 'apphub-visible', keys: []},
     screenshot: {cls: ScreenshotButton, visible: 'screenshot-visible', keys: []},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
+    // Windows-like mode only (windows-* keys restart the whole mode).
+    winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: []},
+    taskview: {cls: TaskView, visible: 'windows-task-view', mode: 'windows', keys: []},
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
@@ -80,7 +85,7 @@ export default class FusionDeskExtension extends Extension {
         this._running = false;
 
         const extensionsChanged = () => {
-            if (this._syncConflict() && this._running) {
+            if (this._syncConflict() && this._running && this._modules) {
                 Object.keys(DUPLICATES).forEach(n => this._pending.add(n));
                 this._onChanged('@duplicates');
             }
@@ -139,6 +144,27 @@ export default class FusionDeskExtension extends Extension {
 
     _start() {
         this._running = true;
+        this._mode = this._settings.get_string('desktop-mode');
+        this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
+        if (this._mode === 'deepin') {
+            try {
+                this._deepin = new DeepinMode(this);
+                return;
+            } catch (e) {
+                console.error('Fusion Desk: Deepin mode failed, using the Fusion panel', e);
+                this._deepin?.destroy();
+                this._deepin = null;
+                this._mode = 'fusion';
+            }
+        }
+        // Windows-like mode is the same Fusion taskbar seen through
+        // Windows-style settings (see lib/windowsMode.js).
+        if (this._mode === 'windows')
+            this._viewSettings = windowsSettings(this._settings);
+        this._startFusion();
+    }
+
+    _startFusion() {
         this._modules = {};
         this._pending = new Set();
         this._layout = new PanelLayout(this);
@@ -146,17 +172,22 @@ export default class FusionDeskExtension extends Extension {
         for (const name of Object.keys(MODULES))
             this._build(name);
         this._layout.arrange(this._actors());
-
-        this._settings.connectObject('changed', (_s, key) => this._onChanged(key), this);
     }
 
     _stop() {
         this._running = false;
         this._settings.disconnectObject(this);
-        if (this._idleId) {
-            GLib.source_remove(this._idleId);
-            this._idleId = 0;
+        for (const id of ['_idleId', '_modeId']) {
+            if (this[id])
+                GLib.source_remove(this[id]);
+            this[id] = 0;
         }
+        if (this._deepin) {
+            this._deepin.destroy();
+            this._deepin = null;
+        }
+        if (!this._modules)
+            return;
         for (const name of Object.keys(this._modules).reverse())
             this._destroyModule(name);
         destroyStore();
@@ -164,6 +195,32 @@ export default class FusionDeskExtension extends Extension {
         this._layout = null;
         this._modules = null;
         this._pending = null;
+        this._viewSettings = null;
+    }
+
+    _onSettingChanged(key) {
+        if (key === 'desktop-mode' || (this._mode === 'windows' && key.startsWith('windows-'))) {
+            // Swap the whole desktop once the current event is done.
+            if (!this._modeId) {
+                this._modeId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                    this._modeId = 0;
+                    if (this._running) {
+                        this._stop();
+                        this._start();
+                    }
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
+            return;
+        }
+        this._deepin?.onSettingChanged(key);
+        if (this._modules)
+            this._onChanged(key);
+    }
+
+    /** True while the Deepin-style desktop replaces the Fusion panel. */
+    get deepinMode() {
+        return !!this._deepin;
     }
 
     /** Name of an enabled extension that already provides this module, if any. */
@@ -186,13 +243,33 @@ export default class FusionDeskExtension extends Extension {
         this._settings = null;
     }
 
+    /** Settings the modules read (Windows-like values win in that mode). */
     get settings() {
+        return this._viewSettings ?? this._settings;
+    }
+
+    /** The real settings, without Windows-like overrides. */
+    get rawSettings() {
         return this._settings;
+    }
+
+    /** 'fusion', 'deepin' or 'windows'. */
+    get desktopMode() {
+        return this._mode;
+    }
+
+    /** Element placement in Windows-like mode, or null for the user's layout. */
+    windowsLayout() {
+        return this._mode === 'windows' ? windowsLayout(this._settings) : null;
+    }
+
+    toggleStartMenu() {
+        this._modules?.menu?._button?.toggle();
     }
 
     /** The actor that currently draws the main panel (our row while enabled). */
     get panelActor() {
-        return this._layout?.row ?? null;
+        return this._layout?.row ?? this._deepin?.dock?.actor ?? null;
     }
 
     get panelAtBottom() {
@@ -210,7 +287,9 @@ export default class FusionDeskExtension extends Extension {
 
     _build(name) {
         const def = MODULES[name];
-        if (def.visible && !this._settings.get_boolean(def.visible))
+        if (def.mode && def.mode !== this._mode)
+            return;
+        if (def.visible && !this.settings.get_boolean(def.visible))
             return;
         if (this.duplicateOf(name))
             return;

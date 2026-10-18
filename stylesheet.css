@@ -488,3 +488,260 @@
 
 .fusion-flyout-item { spacing: 10px; }
 .fusion-flyout .popup-menu-content { min-width: 280px; }
+
+/* ==== Deepin mode ========================================================= */
+/* Clean-room Deepin-style look: rounded, translucent, blurred surfaces.
+   Backgrounds come from code (opacity setting); these set text and accents. */
+.fusion-deepin-dark { color: #f2f2f4; }
+.fusion-deepin-light { color: #1f1f23; }
+
+/* ---- Dock ---------------------------------------------------------------- */
+.fusion-deepin-dock {
+    padding: 0 8px;
+    spacing: 4px;
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+.fusion-deepin-efficient { border-width: 1px 0 0 0; box-shadow: none; padding: 0 0 0 8px; }
+.fusion-deepin-dock-section { spacing: 4px; }
+.fusion-deepin-dock-item {
+    margin: 0 2px;
+    border-radius: 12px;
+    transition-duration: 120ms;
+}
+.fusion-deepin-launcher-button {
+    border-radius: 30%;
+    color: #ffffff;
+    background-gradient-direction: vertical;
+    background-gradient-start: st-lighten(-st-accent-color, 14%);
+    background-gradient-end: -st-accent-color;
+}
+.fusion-deepin-launcher-button:hover { background-gradient-start: st-lighten(-st-accent-color, 24%); }
+.fusion-deepin-multitask-button {
+    border-radius: 30%;
+    background-color: rgba(127, 127, 127, 0.22);
+}
+.fusion-deepin-multitask-button:hover { background-color: rgba(127, 127, 127, 0.34); }
+.fusion-deepin-dock-sep { width: 1px; margin: 0 6px; background-color: rgba(127, 127, 127, 0.35); }
+
+.fusion-deepin-tasks { spacing: 2px; }
+.fusion-deepin-tasks .fusion-task-button { padding: 3px 5px 0 5px; margin: 0; border-radius: 12px; }
+.fusion-deepin-light .fusion-deepin-tasks .fusion-task-button:hover { background-color: rgba(0, 0, 0, 0.07); }
+.fusion-deepin-light .fusion-deepin-tasks .fusion-task-button:focus { background-color: rgba(0, 0, 0, 0.10); }
+.fusion-deepin-tasks .fusion-task-dot { background-color: rgba(127, 127, 127, 0.8); }
+.fusion-deepin-tasks .fusion-task-dot.focused { background-color: -st-accent-color; }
+
+.fusion-deepin-plugins { spacing: 2px; padding-right: 4px; }
+.fusion-deepin-plugin {
+    padding: 7px;
+    border-radius: 10px;
+    transition-duration: 120ms;
+}
+.fusion-deepin-tray .panel-button,
+.fusion-deepin-datetime {
+    color: inherit;
+    font-weight: normal;
+    padding: 4px 6px;
+    margin: 0;
+    border-radius: 10px;
+    -natural-hpadding: 6px;
+    -minimum-hpadding: 4px;
+    transition-duration: 120ms;
+}
+.fusion-deepin-tray .panel-button .system-status-icon { icon-size: 16px; padding: 0; }
+.fusion-deepin-tray .panel-status-indicators-box { spacing: 6px; }
+.fusion-deepin-datetime .clock { font-feature-settings: "tnum"; }
+.fusion-deepin-dark .fusion-deepin-dock-item:hover,
+.fusion-deepin-dark .fusion-deepin-plugin:hover,
+.fusion-deepin-dark .fusion-deepin-tray .panel-button:hover,
+.fusion-deepin-dark .fusion-deepin-datetime:hover,
+.fusion-deepin-dark .fusion-deepin-tray .panel-button:checked,
+.fusion-deepin-dark .fusion-deepin-datetime:checked { background-color: rgba(255, 255, 255, 0.12); }
+.fusion-deepin-light .fusion-deepin-plugin:hover,
+.fusion-deepin-light .fusion-deepin-tray .panel-button:hover,
+.fusion-deepin-light .fusion-deepin-datetime:hover,
+.fusion-deepin-light .fusion-deepin-tray .panel-button:checked,
+.fusion-deepin-light .fusion-deepin-datetime:checked { background-color: rgba(0, 0, 0, 0.08); }
+.fusion-deepin-show-desktop { width: 10px; border-left: 1px solid rgba(127, 127, 127, 0.3); }
+.fusion-deepin-show-desktop:hover { background-color: rgba(127, 127, 127, 0.25); }
+
+/* ---- Launcher: fullscreen -------------------------------------------------- */
+.fusion-deepin-launcher-full-bg { background-color: rgba(0, 15, 39, 0.45); }
+.fusion-deepin-full-header { padding: 36px 40px 24px 40px; }
+.fusion-deepin-search {
+    border: none;
+    border-radius: 10px;
+    padding: 7px 12px;
+    background-color: rgba(127, 127, 127, 0.16);
+    color: inherit;
+    selection-background-color: -st-accent-color;
+    selected-color: -st-accent-fg-color;
+}
+.fusion-deepin-search:focus { box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.4); }
+.fusion-deepin-search-full { width: 320px; background-color: rgba(255, 255, 255, 0.15); color: #ffffff; caret-color: #ffffff; }
+.fusion-deepin-search-full StLabel.hint-text { color: rgba(255, 255, 255, 0.6); }
+.fusion-deepin-search-icon { icon-size: 16px; padding-right: 6px; }
+.fusion-deepin-mode-button {
+    width: 36px; height: 36px;
+    border-radius: 18px;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+.fusion-deepin-mode-button:hover { background-color: rgba(255, 255, 255, 0.22); }
+.fusion-deepin-rail { width: 200px; padding-left: 40px; spacing: 4px; }
+.fusion-deepin-rail-item {
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.75);
+    text-align: left;
+}
+.fusion-deepin-rail-box { spacing: 10px; }
+.fusion-deepin-rail-item:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-deepin-rail-item:checked { background-color: rgba(255, 255, 255, 0.20); color: #ffffff; }
+.fusion-deepin-full-scroll { padding-right: 200px; }
+.fusion-deepin-app {
+    border-radius: 18px;
+    transition-duration: 100ms;
+}
+.fusion-deepin-app-box { spacing: 8px; }
+.fusion-deepin-app-label { text-align: center; }
+.fusion-deepin-launcher-full .fusion-deepin-app { color: #ffffff; }
+.fusion-deepin-launcher-full .fusion-deepin-app-label { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.fusion-deepin-launcher-full .fusion-deepin-app:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-deepin-launcher-full .fusion-deepin-app:focus { background-color: rgba(255, 255, 255, 0.20); }
+.fusion-deepin-empty { color: rgba(255, 255, 255, 0.7); font-size: 14pt; padding-top: 80px; }
+
+/* ---- Launcher: windowed ---------------------------------------------------- */
+.fusion-deepin-launcher-window {
+    border-radius: 18px;
+    padding: 20px 10px 10px 16px;
+    spacing: 12px;
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+.fusion-deepin-win-left, .fusion-deepin-win-right { spacing: 8px; }
+.fusion-deepin-win-head, .fusion-deepin-win-top, .fusion-deepin-win-bar { spacing: 8px; }
+.fusion-deepin-win-title { font-weight: bold; padding: 4px 6px; }
+.fusion-deepin-switch { background-color: rgba(127, 127, 127, 0.18); border-radius: 8px; padding: 2px; spacing: 2px; }
+.fusion-deepin-switch-item { padding: 4px 10px; border-radius: 6px; }
+.fusion-deepin-switch-item:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-deepin-list-header { spacing: 8px; padding: 10px 6px 4px 6px; font-weight: bold; font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-deepin-list-app { padding: 5px 8px; border-radius: 8px; text-align: left; }
+.fusion-deepin-list-box { spacing: 10px; }
+.fusion-deepin-round-button {
+    width: 36px; height: 36px;
+    border-radius: 18px;
+    background-color: rgba(127, 127, 127, 0.16);
+}
+.fusion-deepin-round-button:hover { background-color: rgba(127, 127, 127, 0.28); }
+.fusion-deepin-win-section { spacing: 6px; padding-bottom: 10px; }
+.fusion-deepin-launcher-window .fusion-deepin-app { font-size: 9pt; }
+.fusion-deepin-light .fusion-deepin-app:hover, .fusion-deepin-light .fusion-deepin-list-app:hover { background-color: rgba(0, 0, 0, 0.06); }
+.fusion-deepin-light .fusion-deepin-app:focus, .fusion-deepin-light .fusion-deepin-list-app:focus { background-color: rgba(0, 0, 0, 0.10); }
+.fusion-deepin-dark .fusion-deepin-app:hover, .fusion-deepin-dark .fusion-deepin-list-app:hover { background-color: rgba(255, 255, 255, 0.08); }
+.fusion-deepin-dark .fusion-deepin-app:focus, .fusion-deepin-dark .fusion-deepin-list-app:focus { background-color: rgba(255, 255, 255, 0.14); }
+.fusion-deepin-empty-hint { color: rgba(127, 127, 127, 1); padding: 12px; }
+
+/* ---- Control centre -------------------------------------------------------- */
+.fusion-deepin-cc {
+    border-radius: 18px;
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+}
+.fusion-deepin-cc-box { padding: 16px; spacing: 16px; }
+.fusion-deepin-cc-header { spacing: 8px; }
+.fusion-deepin-cc-time { font-size: 26pt; font-weight: 300; }
+.fusion-deepin-cc-date { color: rgba(127, 127, 127, 1); }
+.fusion-deepin-cc-toggles, .fusion-deepin-cc-links { spacing: 8px; }
+.fusion-deepin-cc-row { spacing: 8px; }
+.fusion-deepin-cc-tile {
+    padding: 12px 6px 10px 6px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.15);
+    transition-duration: 120ms;
+}
+.fusion-deepin-cc-tile:hover { background-color: rgba(127, 127, 127, 0.25); }
+.fusion-deepin-cc-tile:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-deepin-cc-tile:checked:hover { background-color: st-lighten(-st-accent-color, 8%); }
+.fusion-deepin-cc-tile-icon { padding-bottom: 6px; }
+.fusion-deepin-cc-tile-label { font-size: 9pt; }
+.fusion-deepin-cc-sliders {
+    padding: 10px 14px;
+    spacing: 10px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.12);
+}
+.fusion-deepin-cc-slider-row { spacing: 12px; }
+.fusion-deepin-cc-notifications { spacing: 8px; }
+.fusion-deepin-cc-title { font-weight: bold; }
+.fusion-deepin-link-button { color: -st-accent-color; padding: 2px 8px; border-radius: 6px; }
+.fusion-deepin-link-button:hover { background-color: st-transparentize(-st-accent-color, 0.85); }
+.fusion-deepin-cc-note-list { spacing: 8px; }
+.fusion-deepin-cc-note {
+    padding: 10px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.12);
+    text-align: left;
+}
+.fusion-deepin-cc-note:hover { background-color: rgba(127, 127, 127, 0.20); }
+.fusion-deepin-cc-note-icon { margin-right: 10px; }
+.fusion-deepin-cc-note-title { font-weight: bold; font-size: 10pt; }
+.fusion-deepin-cc-note-body { font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-deepin-note-close { padding: 4px; border-radius: 99px; }
+.fusion-deepin-note-close:hover { background-color: rgba(127, 127, 127, 0.25); }
+.fusion-deepin-cc-link { padding: 10px 2px; border-radius: 10px; }
+.fusion-deepin-cc-link:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-deepin-cc-link-label { font-size: 8.5pt; padding-top: 4px; }
+
+
+/* ==== Windows-like mode ===================================================== */
+/* The Fusion taskbar, restyled: flat translucent bar, rounded hover tiles,
+   search box, Task View, short running pills. */
+#panel.fusion-panel.fusion-windows { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+#panel.fusion-windows .fusion-start-button,
+#panel.fusion-windows .fusion-win-taskview {
+    margin: 4px 1px;
+    padding: 0 10px;
+    border-radius: 6px;
+    color: #f2f2f4;
+    transition-duration: 120ms;
+}
+#panel.fusion-windows .fusion-start-button:hover,
+#panel.fusion-windows .fusion-win-taskview:hover,
+#panel.fusion-windows .fusion-start-button:checked { background-color: rgba(255, 255, 255, 0.09); }
+#panel.fusion-windows .fusion-task-button {
+    margin: 4px 1px;
+    padding: 3px 9px 0 9px;
+    border-radius: 6px;
+}
+#panel.fusion-windows .fusion-task-button:hover { background-color: rgba(255, 255, 255, 0.09); }
+#panel.fusion-windows .fusion-task-button:focus { background-color: rgba(255, 255, 255, 0.06); }
+#panel.fusion-windows .fusion-task-dot {
+    width: 6px;
+    height: 3px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.55);
+}
+#panel.fusion-windows .fusion-task-dot.focused { width: 16px; background-color: -st-accent-color; }
+#panel.fusion-windows-left .fusion-task-button { border-radius: 0; margin: 0; padding: 3px 11px 0 11px; }
+#panel.fusion-windows-left .fusion-task-dot { width: 0; height: 0; }
+#panel.fusion-windows-left .fusion-task-dot.focused { width: 36px; height: 2px; border-radius: 0; }
+#panel.fusion-windows-left .fusion-start-button,
+#panel.fusion-windows-left .fusion-win-taskview { border-radius: 0; margin: 0; padding: 0 14px; }
+.fusion-win-search {
+    margin: 0 4px;
+    border-radius: 99px;
+    color: rgba(255, 255, 255, 0.72);
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition-duration: 120ms;
+}
+.fusion-win-search:hover { background-color: rgba(255, 255, 255, 0.12); }
+.fusion-win-search-wide { padding: 7px 16px; min-width: 200px; }
+.fusion-win-search-icon { padding: 9px; }
+.fusion-win-search-box { spacing: 10px; }
+#panel.fusion-windows-left .fusion-win-search-wide { border-radius: 0; min-width: 260px; margin: 0; padding: 0 12px; height: 48px; }
+#panel.fusion-windows .fusion-tray,
+#panel.fusion-windows .fusion-clock { border-radius: 6px; }
+#panel.fusion-windows .fusion-clock { font-size: 9pt; }
+#panel.fusion-windows .fusion-show-desktop { width: 8px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
