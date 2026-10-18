@@ -293,7 +293,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 [_('Clear'), _('Frosted'), _('Gel'), _('Tinted'), _('Smoke'), _('Halo')]),
             switchRow(s, 'accent-gradient', _('Accent gradient'), _('Taskbar, start menu, launcher and control centre fade from the system accent colour')),
             switchRow(s, 'icons-follow-accent', _('Accent-coloured icons'), _('Start button, Show Applications and status icons take the system accent colour')),
-            comboRow(s, 'tray-app-icons', _('App tray icons'), ['MATCH', 'ORIGINAL'], [_('Same colour as status icons'), _('Original colours')]),
+            comboRow(s, 'tray-app-icons', _('App tray icons'), ['MATCH', 'ORIGINAL'], [_('Plain icons like status icons'), _('Original colours')]),
             switchRow(s, 'deepin-floating-taskbar', _('Floating taskbar'), _('Rounded, with a gap from the screen edges; layout and widgets stay the same')),
         ], _('Glass: blur, a lighter top and a bright top edge on the taskbar, menus and popups.')));
 

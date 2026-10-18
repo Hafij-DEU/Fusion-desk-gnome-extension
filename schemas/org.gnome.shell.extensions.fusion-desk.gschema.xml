@@ -36,7 +36,7 @@
     <key name="battery-standalone" type="b"><default>false</default><summary>Battery as its own panel button (menu with time left, power draw, health, power mode and charging mode) instead of inside the system menu</summary></key>
     <key name="tray-app-icons" type="s">
       <choices><choice value="ORIGINAL"/><choice value="MATCH"/></choices>
-      <default>'MATCH'</default><summary>Other apps' tray icons: original colours, or the same colour as the system status icons (taskbar text colour, or the accent with accent-coloured icons)</summary>
+      <default>'MATCH'</default><summary>Other apps' tray icons: plain white / black / grey ones in the same colour as the system status icons (colourful ones keep theirs), or all in original colours</summary>
     </key>
     <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, camera, Fn lock, USB charging) when the hardware has them</summary></key>
     <key name="panel-theme" type="s">
