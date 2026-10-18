@@ -39,7 +39,7 @@
       <default>'MATCH'</default><summary>Other apps' tray icons: plain white / black / grey ones in the same colour as the system status icons (colourful ones keep theirs), or all in original colours</summary>
     </key>
     <key name="laptop-unsupported" type="as"><default>[]</default><summary>Laptop switches the firmware lists but ignores (hidden from the control centre)</summary></key>
-    <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, camera, Fn lock, USB charging) when the hardware has them</summary></key>
+    <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, Fn lock) when the hardware has them</summary></key>
     <key name="panel-theme" type="s">
       <choices><choice value="AUTO"/><choice value="DARK"/><choice value="LIGHT"/></choices>
       <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>
