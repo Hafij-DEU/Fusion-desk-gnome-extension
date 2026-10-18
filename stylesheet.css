@@ -915,10 +915,14 @@
 .fusion-deepin-dark .fusion-deepin-cc-meter-head { color: rgba(242, 242, 244, 0.72); }
 .fusion-deepin-light .fusion-deepin-cc-cal-day.other-month { color: rgba(31, 31, 35, 0.4); }
 .fusion-deepin-dark .fusion-deepin-cc-cal-day.other-month { color: rgba(242, 242, 244, 0.4); }
-/* A soft halo keeps text readable over busy wallpapers. */
-.fusion-deepin-cc.fusion-deepin-light, .fusion-deepin-launcher-window.fusion-deepin-light,
-.fusion-deepin-collection.fusion-deepin-light { text-shadow: 0 0 6px rgba(255, 255, 255, 0.6); }
-.fusion-deepin-cc.fusion-deepin-dark, .fusion-deepin-launcher-window.fusion-deepin-dark,
-.fusion-deepin-collection.fusion-deepin-dark { text-shadow: 0 0 6px rgba(0, 0, 0, 0.5); }
-.fusion-deepin-cc-cal-day.today, .fusion-deepin-cc-tile:checked, .fusion-deepin-cc-switch:checked,
-.fusion-deepin-cc-media-play, .fusion-deepin-cc-media-chip:checked { text-shadow: none; }
+/* Cards carry most of the text: a more solid backing keeps it readable
+   over busy wallpapers without dimming the glass around them. */
+.fusion-deepin-light .fusion-deepin-cc-note, .fusion-deepin-light .fusion-deepin-cc-calendar,
+.fusion-deepin-light .fusion-deepin-cc-media, .fusion-deepin-light .fusion-deepin-cc-meter,
+.fusion-deepin-light .fusion-deepin-cc-switch { background-color: rgba(255, 255, 255, 0.55); }
+.fusion-deepin-light .fusion-deepin-cc-note:hover, .fusion-deepin-light .fusion-deepin-cc-switch:hover { background-color: rgba(255, 255, 255, 0.75); }
+.fusion-deepin-dark .fusion-deepin-cc-note, .fusion-deepin-dark .fusion-deepin-cc-calendar,
+.fusion-deepin-dark .fusion-deepin-cc-media, .fusion-deepin-dark .fusion-deepin-cc-meter,
+.fusion-deepin-dark .fusion-deepin-cc-switch { background-color: rgba(0, 0, 0, 0.28); }
+.fusion-deepin-dark .fusion-deepin-cc-note:hover, .fusion-deepin-dark .fusion-deepin-cc-switch:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-deepin-light .fusion-deepin-cc-switch:checked, .fusion-deepin-dark .fusion-deepin-cc-switch:checked { background-color: -st-accent-color; }
