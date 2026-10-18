@@ -151,7 +151,7 @@
     </key>
     <key name="deepin-organizer" type="b"><default>true</default><summary>Deepin mode: Organize Desktop (desktop files sorted into collections; Alt+O shows or hides them)</summary></key>
     <key name="deepin-organizer-collections" type="as">
-      <default>['folders', 'documents', 'pictures', 'videos', 'music', 'apps', 'others']</default>
+      <default>['places', 'folders', 'documents', 'pictures', 'videos', 'music', 'apps', 'others']</default>
       <summary>Collections used to organize the desktop</summary>
     </key>
     <key name="deepin-organizer-size" type="s">
@@ -181,7 +181,10 @@
     <key name="deepin-saved-accent" type="s"><default>''</default><summary>Internal: accent colour to restore when Deepin mode ends</summary></key>
     <key name="deepin-saved-icon-theme" type="s"><default>''</default><summary>Internal: icon theme to restore when Deepin mode ends</summary></key>
     <key name="deepin-saved-cursor-theme" type="s"><default>''</default><summary>Internal: cursor theme to restore when Deepin mode ends</summary></key>
-    <key name="deepin-launcher-button" type="b"><default>true</default><summary>Deepin mode: launcher button next to the start menu</summary></key>
+    <key name="deepin-start" type="s">
+      <choices><choice value="BOTH"/><choice value="DEEPIN"/><choice value="FUSION"/></choices>
+      <default>'BOTH'</default><summary>Start button: Fusion start menu plus a Deepin launcher button (BOTH), the start button opens the Deepin launcher (DEEPIN), or only the Fusion start menu (FUSION)</summary>
+    </key>
     <key name="deepin-control-button" type="b"><default>true</default><summary>Deepin mode: control centre button in the tray</summary></key>
     <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Deepin launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
     <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Deepin surface opacity in percent</summary></key>

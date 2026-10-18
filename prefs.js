@@ -289,13 +289,14 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         }
         page.add(group(_('Without Deepin mode'), [features]));
         page.add(group(_('Taskbar additions'), [
-            switchRow(s, 'deepin-launcher-button', _('Launcher button'), _('Next to the start button')),
+            comboRow(s, 'deepin-start', _('Start button'), ['BOTH', 'DEEPIN', 'FUSION'],
+                [_('Start menu + Deepin launcher button'), _('One button: Deepin launcher'), _('One button: Fusion start menu')]),
             entryRow(s, 'deepin-launcher-icon', _('Launcher button icon (name or image path, empty = built-in)')),
             switchRow(s, 'deepin-control-button', _('Control centre button'), _('Quick toggles, notifications and Settings shortcuts in a side panel')),
             switchRow(s, 'deepin-super-key', _('Super key opens the launcher'), _('Off: Super keeps opening the start menu')),
         ], _('Used when Desktop mode is Deepin (Layout page). Your taskbar layout is not changed.')));
 
-        const cols = [['folders', _('Folders')], ['documents', _('Documents')], ['pictures', _('Pictures')],
+        const cols = [['places', _('Computer (Home, Trash, drives)')], ['folders', _('Folders')], ['documents', _('Documents')], ['pictures', _('Pictures')],
             ['videos', _('Videos')], ['music', _('Music')], ['apps', _('Apps')], ['others', _('Others')]];
         const colRows = cols.map(([id, title]) => {
             const row = new Adw.SwitchRow({title});
@@ -323,7 +324,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'deepin-organizer-size', _('Collection size'), ['SMALL', 'MEDIUM', 'LARGE'], [_('Small'), _('Medium'), _('Large')]),
             organize,
             reset,
-        ], _('Needs the Desktop Icons extension (Ubuntu\'s desktop icons) to be off; otherwise its icons cover the collections.')));
+        ], _('Works with Ubuntu\'s Desktop Icons: while the collections are shown its icons are hidden, and Alt+O switches back to them.')));
 
         page.add(group(_('Launcher'), [
             comboRow(s, 'deepin-launcher-mode', _('Mode'), ['FULLSCREEN', 'WINDOWED'], [_('Fullscreen'), _('Windowed')]),

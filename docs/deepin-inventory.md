@@ -114,7 +114,7 @@ Method:
 |---|---|---|---|---|
 | Desktop icon grid | Per-screen grid, free placement or auto-arrange, 5 icon sizes 32/48/64/96/128 | DING extension (Ubuntu) | — | P2 (DING already does this on Ubuntu) |
 | Desktop right-click menu | New folder/document, paste, refresh, auto arrange, sort by, icon size, open in terminal, display settings, wallpaper | DING / Background menu | — | P1 for Organize desktop / show-hide / view options (added to GNOME's background menu); rest P2 |
-| Desktop organizer collections ("Organize Desktop", deepin 23) | Right-click → Organize desktop; collections by type (documents, pictures, videos, music, folders, apps, others); drag the title bar; small / medium / large or drag the border; Alt+O hides/shows all; View options choose the collection types | — | — | **P1** (built; needs Ubuntu's Desktop Icons extension off) |
+| Desktop organizer collections ("Organize Desktop", deepin 23) | Right-click → Organize desktop; collections by type (documents, pictures, videos, music, folders, apps, others); drag the title bar; small / medium / large or drag the border; Alt+O hides/shows all; View options choose the collection types | — | — | **P1** (built; Ubuntu's Desktop Icons windows are hidden on screen while collections show, Alt+O switches back) |
 | Wallpaper & screensaver strip | Bottom blurred strip, 172 × 100 thumbnails | Background panel | — | P2 |
 | Licence watermark | "Not authorized" text | — | — | P3 (distro-specific) |
 | Rounded, translucent, blurred surfaces | Everywhere | Some | Themes | **P1** (Deepin-mode stylesheet + Shell.BlurEffect) |
