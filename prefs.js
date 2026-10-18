@@ -93,6 +93,49 @@ function group(title, rows, description = '') {
 }
 
 export default class FusionDeskPrefs extends ExtensionPreferences {
+    /** Charge limit: switch, level and the one-time helper setup (asks for the password once). */
+    _chargeLimitGroup(s) {
+        const HELPER = '/usr/local/libexec/fusion-desk-charge';
+        const POLICY = '/usr/share/polkit-1/actions/io.github.hafij-deu.fusion-desk.charge.policy';
+        const installed = () => GLib.file_test(HELPER, GLib.FileTest.EXISTS) && GLib.file_test(POLICY, GLib.FileTest.EXISTS);
+        const setupRow = new Adw.ActionRow({title: 'One-time setup'});
+        const button = new Gtk.Button({valign: Gtk.Align.CENTER});
+        setupRow.add_suffix(button);
+        const sync = () => {
+            const ok = installed();
+            setupRow.subtitle = ok
+                ? 'Done: Fusion Desk can change the charging mode without asking for your password'
+                : 'Installs a small helper so Fusion Desk can change the charging mode without a password (asks for it once)';
+            button.label = ok ? 'Remove' : 'Set up';
+            if (ok)
+                button.remove_css_class('suggested-action');
+            else
+                button.add_css_class('suggested-action');
+        };
+        button.connect('clicked', () => {
+            const dir = GLib.build_filenamev([this.path, 'lib', 'charge']);
+            const args = installed() ? ['remove'] : ['install', dir];
+            button.sensitive = false;
+            try {
+                const proc = Gio.Subprocess.new(['pkexec', '/bin/sh', GLib.build_filenamev([dir, 'setup.sh']), ...args], Gio.SubprocessFlags.NONE);
+                proc.wait_async(null, () => {
+                    button.sensitive = true;
+                    sync();
+                    // Tells the running extension to start (or stop) using the helper.
+                    s.set_boolean('charge-helper-ready', installed());
+                });
+            } catch (e) {
+                button.sensitive = true;
+            }
+        });
+        sync();
+        return group('Charge limit', [
+            switchRow(s, 'charge-limit', 'Stop charging at a level', 'Keeps the battery healthier when the laptop is mostly plugged in'),
+            spinRow(s, 'charge-limit-percent', 'Level', 60, 100, 5, 'Percent'),
+            setupRow,
+        ], 'Laptops with an adjustable limit get it set directly. Others charge normally up to the level, then switch to battery protection, so it cannot go below the laptop\'s own protection level (often 60 or 80%).');
+    }
+
     fillPreferencesWindow(window) {
         const s = this.getSettings();
         window.set_default_size(720, 820);
@@ -125,6 +168,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
             switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
         ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
+        layout.add(this._chargeLimitGroup(s));
         // Status icons (top-right system menu), one switch each.
         const status = new Adw.PreferencesGroup({title: 'Status icons',
             description: 'Show or hide each icon of the system menu. The Quick Settings menu itself is unchanged.'});
@@ -323,6 +367,10 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(group(_('Colours'), [
             comboRow(s, 'panel-theme', _('Taskbar colours'), ['AUTO', 'DARK', 'LIGHT'], [_('Follow system style'), _('Dark'), _('Light')]),
             switchRow(s, 'accent-gradient', _('Accent gradient'), _('Taskbar, start menu, launcher and control centre fade from the system accent colour')),
+            comboRow(s, 'accent-gradient-style', _('Gradient'), ['CORNER', 'TOP', 'SIDE', 'CENTER', 'AURORA', 'SUNSET', 'OCEAN', 'BERRY'],
+                [_('From the corner'), _('From the top'), _('From the side'), _('Glow in the middle'),
+                    _('Aurora (accent + shifted hue)'), _('Sunset (accent + warm orange)'), _('Ocean (accent + teal)'), _('Berry (accent + pink)')]),
+            spinRow(s, 'accent-gradient-strength', _('Gradient strength'), 10, 100, 5, _('Percent')),
             switchRow(s, 'icons-follow-accent', _('Accent-coloured icons'), _('Start button, Show Applications and status icons take the system accent colour')),
             comboRow(s, 'tray-app-icons', _('App tray icons'), ['MATCH', 'ORIGINAL'], [_('Plain icons like status icons'), _('Original colours')]),
             switchRow(s, 'deepin-floating-taskbar', _('Floating taskbar'), _('Rounded, with a gap from the screen edges; layout and widgets stay the same')),

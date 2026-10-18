@@ -38,6 +38,12 @@
       <choices><choice value="ORIGINAL"/><choice value="MATCH"/></choices>
       <default>'MATCH'</default><summary>Other apps' tray icons: plain white / black / grey ones in the same colour as the system status icons (colourful ones keep theirs), or all in original colours</summary>
     </key>
+    <key name="charge-limit" type="b"><default>false</default><summary>Stop charging the battery at the chosen level (Fusion Desk switches the charging mode; needs the one-time setup)</summary></key>
+    <key name="charge-limit-percent" type="i">
+      <range min="60" max="100"/>
+      <default>90</default><summary>Charge limit in percent</summary>
+    </key>
+    <key name="charge-helper-ready" type="b"><default>false</default><summary>Set by the settings window after the one-time charge helper setup, so the limit starts at once</summary></key>
     <key name="laptop-unsupported" type="as"><default>[]</default><summary>Laptop switches the firmware lists but ignores (hidden from the control centre)</summary></key>
     <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, Fn lock) when the hardware has them</summary></key>
     <key name="panel-theme" type="s">
@@ -70,6 +76,14 @@
     <key name="wallpaper-blur-strength" type="i">
       <range min="5" max="100"/>
       <default>50</default><summary>How strongly the wallpaper blurs (percent)</summary>
+    </key>
+    <key name="accent-gradient-style" type="s">
+      <choices><choice value="CORNER"/><choice value="TOP"/><choice value="SIDE"/><choice value="CENTER"/><choice value="AURORA"/><choice value="SUNSET"/><choice value="OCEAN"/><choice value="BERRY"/></choices>
+      <default>'CORNER'</default><summary>Accent gradient shape: from the top-left corner, the top, the left side or the centre, or a blend with a second colour (aurora, sunset, ocean, berry)</summary>
+    </key>
+    <key name="accent-gradient-strength" type="i">
+      <range min="10" max="100"/>
+      <default>50</default><summary>How strong the accent gradient is (percent)</summary>
     </key>
     <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu, launcher and control centre with a gradient of the system accent colour</summary></key>
     <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the search and Task View buttons after the start button</summary></key>

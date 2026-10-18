@@ -1,0 +1,33 @@
+#!/bin/sh
+# Fusion Desk charge helper, installed to /usr/local/libexec/fusion-desk-charge.
+# Run through pkexec (a polkit rule lets the logged-in user do so without a
+# password). It only ever writes one of a few fixed values to the battery's
+# charging files:
+#   fusion-desk-charge mode Fast|Standard|Long_Life|Adaptive|Trickle
+#   fusion-desk-charge limit 50..100
+set -eu
+
+case "${1:-}" in
+mode)
+    case "${2:-}" in
+    Fast|Standard|Long_Life|Adaptive|Trickle) ;;
+    *) exit 2 ;;
+    esac
+    for f in /sys/class/power_supply/BAT*/charge_types; do
+        [ -e "$f" ] && printf '%s\n' "$2" > "$f"
+    done
+    ;;
+limit)
+    case "${2:-}" in
+    ''|*[!0-9]*) exit 2 ;;
+    esac
+    [ "$2" -ge 50 ] && [ "$2" -le 100 ] || exit 2
+    for f in /sys/class/power_supply/BAT*/charge_control_end_threshold; do
+        [ -e "$f" ] && printf '%s\n' "$2" > "$f"
+    done
+    ;;
+*)
+    exit 2
+    ;;
+esac
+exit 0
