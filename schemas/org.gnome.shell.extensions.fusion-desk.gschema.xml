@@ -29,17 +29,22 @@
     <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
     <key name="panel-style" type="s"><default>'PILLS'</default><summary>Panel item style: PILLS (rounded groups for tray, clock and system monitor) or FLAT</summary></key>
     <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
+    <key name="battery-style" type="s">
+      <choices><choice value="COLOR"/><choice value="GNOME"/></choices>
+      <default>'COLOR'</default><summary>Battery: coloured fill (full, normal, low, charging) with the percentage inside, or GNOME's icon</summary>
+    </key>
     <key name="panel-theme" type="s">
       <choices><choice value="AUTO"/><choice value="DARK"/><choice value="LIGHT"/></choices>
       <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>
     </key>
     <key name="icons-follow-accent" type="b"><default>true</default><summary>Paint the start button and Show Applications icons in the system accent colour</summary></key>
+    <key name="features-migrated" type="b"><default>false</default><summary>Internal: settings moved from the old desktop modes</summary></key>
     <key name="glass-effect" type="s">
       <choices><choice value="OFF"/><choice value="SOFT"/><choice value="STRONG"/></choices>
-      <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, Deepin panels): blur, lighter top, bright top edge</summary>
+      <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, launcher and control centre): blur, lighter top, bright top edge</summary>
     </key>
-    <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu and Deepin panels with a gradient of the system accent colour</summary></key>
-    <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the Windows-like search and Task View buttons in Fusion and Deepin mode too</summary></key>
+    <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu, launcher and control centre with a gradient of the system accent colour</summary></key>
+    <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the search and Task View buttons after the start button</summary></key>
     <key name="menu-theme-follow-system" type="b"><default>true</default><summary>With a custom menu theme, use light colours while the system style is light</summary></key>
     <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
     <key name="multi-monitor" type="b"><default>true</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>
@@ -147,21 +152,21 @@
     <!-- Desktop mode: Fusion panel or Deepin-style environment -->
     <key name="desktop-mode" type="s">
       <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/></choices>
-      <default>'fusion'</default><summary>Desktop mode: Fusion taskbar alone, with Deepin features and looks, or with Windows-like extras</summary>
+      <default>'fusion'</default><summary>Last applied style preset (fusion = Classic, deepin = Studio, windows = Workbench)</summary>
     </key>
     <!-- Windows-like mode: extra buttons and theming for the Fusion taskbar -->
     <key name="windows-search" type="s">
       <choices><choice value="BOX"/><choice value="ICON"/><choice value="HIDDEN"/></choices>
-      <default>'BOX'</default><summary>Windows-like taskbar search: box, icon only or hidden</summary>
+      <default>'BOX'</default><summary>Search button after the start button: box, icon only or hidden</summary>
     </key>
-    <key name="windows-task-view" type="b"><default>true</default><summary>Windows-like taskbar: show the Task View button (opens the overview)</summary></key>
-    <key name="windows-blur" type="b"><default>true</default><summary>Windows-like taskbar: blur behind the taskbar</summary></key>
-    <key name="deepin-features-enabled" type="b"><default>false</default><summary>Use chosen Deepin features in Fusion and Windows-like modes, without switching to Deepin mode</summary></key>
+    <key name="windows-task-view" type="b"><default>true</default><summary>Task View button after the start button (opens the overview)</summary></key>
+    <key name="windows-blur" type="b"><default>true</default><summary>Blur behind the taskbar while the search and Task View buttons are shown</summary></key>
+    <key name="deepin-features-enabled" type="b"><default>false</default><summary>Old setting (before version 12): features used outside the old desktop modes</summary></key>
     <key name="deepin-features" type="as">
       <default>['launcher', 'control', 'organizer']</default>
-      <summary>Deepin features used outside Deepin mode: launcher, control, organizer, look, floating, accent, icons</summary>
+      <summary>Old setting (before version 12): which features were used outside the old desktop modes</summary>
     </key>
-    <key name="deepin-organizer" type="b"><default>true</default><summary>Deepin mode: Organize Desktop (desktop files sorted into collections; Alt+O shows or hides them)</summary></key>
+    <key name="deepin-organizer" type="b"><default>false</default><summary>Organize desktop: desktop files sorted into collections; Alt+O shows or hides them</summary></key>
     <key name="deepin-organizer-collections" type="as">
       <default>['places', 'folders', 'documents', 'pictures', 'videos', 'music', 'apps', 'others']</default>
       <summary>Collections used to organize the desktop</summary>
@@ -174,36 +179,36 @@
     <key name="deepin-organizer-hidden" type="b"><default>false</default><summary>Internal: collections hidden with Alt+O</summary></key>
     <key name="deepin-launcher-mode" type="s">
       <choices><choice value="FULLSCREEN"/><choice value="WINDOWED"/></choices>
-      <default>'FULLSCREEN'</default><summary>Deepin launcher: fullscreen grid or small window</summary>
+      <default>'FULLSCREEN'</default><summary>App launcher: fullscreen grid or small window</summary>
     </key>
-    <key name="deepin-super-key" type="b"><default>true</default><summary>Super opens the Deepin launcher</summary></key>
+    <key name="deepin-super-key" type="b"><default>true</default><summary>Super opens the app launcher (when the launcher is on)</summary></key>
     <key name="deepin-theme" type="s">
       <choices><choice value="AUTO"/><choice value="LIGHT"/><choice value="DARK"/></choices>
-      <default>'AUTO'</default><summary>Deepin mode colours: follow the system style, light or dark</summary>
+      <default>'AUTO'</default><summary>Launcher, control centre and collections colours: follow the system style, light or dark</summary>
     </key>
-    <key name="deepin-blur" type="b"><default>true</default><summary>Blur behind the taskbar, Deepin launcher, control centre and collections</summary></key>
-    <key name="deepin-gloss" type="b"><default>true</default><summary>Glossy glass look (light top edge and soft gradient) on Deepin surfaces</summary></key>
-    <key name="deepin-icon-theme" type="s"><default>''</default><summary>Icon theme used while Deepin mode is on (e.g. bloom from the deepin-icon-theme package; empty = keep the system theme)</summary></key>
-    <key name="deepin-cursor-theme" type="s"><default>''</default><summary>Cursor theme used while Deepin mode is on (empty = keep the system theme)</summary></key>
-    <key name="deepin-floating-taskbar" type="b"><default>false</default><summary>Deepin mode: floating taskbar (rounded, with a gap from the screen edges, like Deepin's Fashion dock); layout and widgets stay the same</summary></key>
+    <key name="deepin-blur" type="b"><default>true</default><summary>Blur behind the launcher, control centre and collections</summary></key>
+    <key name="deepin-gloss" type="b"><default>true</default><summary>Glossy look on the launcher, control centre and collections (also with Glass effect off)</summary></key>
+    <key name="deepin-icon-theme" type="s"><default>''</default><summary>Icon theme Fusion Desk switches to (empty = keep the system theme; yours comes back when cleared or when the extension is off)</summary></key>
+    <key name="deepin-cursor-theme" type="s"><default>''</default><summary>Cursor theme Fusion Desk switches to (empty = keep the system theme)</summary></key>
+    <key name="deepin-floating-taskbar" type="b"><default>false</default><summary>Floating taskbar: rounded, with a gap from the screen edges; layout and widgets stay the same</summary></key>
     <key name="deepin-accent" type="s">
       <choices><choice value=""/><choice value="blue"/><choice value="teal"/><choice value="green"/><choice value="yellow"/><choice value="orange"/><choice value="pink"/><choice value="purple"/><choice value="slate"/></choices>
-      <default>''</default><summary>Deepin mode: system accent colour from Deepin's palette (empty = keep yours; restored when the mode ends)</summary>
+      <default>''</default><summary>System accent colour Fusion Desk switches to (empty = keep yours; yours comes back when cleared or when the extension is off)</summary>
     </key>
-    <key name="deepin-saved-accent" type="s"><default>''</default><summary>Internal: accent colour to restore when Deepin mode ends</summary></key>
-    <key name="deepin-saved-icon-theme" type="s"><default>''</default><summary>Internal: icon theme to restore when Deepin mode ends</summary></key>
-    <key name="deepin-saved-cursor-theme" type="s"><default>''</default><summary>Internal: cursor theme to restore when Deepin mode ends</summary></key>
+    <key name="deepin-saved-accent" type="s"><default>''</default><summary>Internal: accent colour to restore when cleared or when the extension is off</summary></key>
+    <key name="deepin-saved-icon-theme" type="s"><default>''</default><summary>Internal: icon theme to restore when cleared or when the extension is off</summary></key>
+    <key name="deepin-saved-cursor-theme" type="s"><default>''</default><summary>Internal: cursor theme to restore when cleared or when the extension is off</summary></key>
     <key name="deepin-start" type="s">
       <choices><choice value="BOTH"/><choice value="DEEPIN"/><choice value="FUSION"/></choices>
-      <default>'BOTH'</default><summary>Start button: Fusion start menu plus a Deepin launcher button (BOTH), the start button opens the Deepin launcher (DEEPIN), or only the Fusion start menu (FUSION)</summary>
+      <default>'FUSION'</default><summary>App launcher: start menu plus a launcher button (BOTH), the start button opens the launcher (DEEPIN), or start menu only, launcher off (FUSION)</summary>
     </key>
-    <key name="deepin-control-button" type="b"><default>true</default><summary>Deepin mode: control centre button in the tray</summary></key>
+    <key name="deepin-control-button" type="b"><default>false</default><summary>Control centre (side panel with toggles, notifications, calendar) and its button</summary></key>
     <key name="deepin-control-position" type="s">
       <choices><choice value="START"/><choice value="TRAY"/><choice value="CLOCK"/></choices>
       <default>'START'</default><summary>Control centre button: after the start button (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
     </key>
-    <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Deepin launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
-    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Deepin surface opacity in percent</summary></key>
+    <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
+    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Launcher, control centre and collections opacity in percent</summary></key>
 
   </schema>
 </schemalist>

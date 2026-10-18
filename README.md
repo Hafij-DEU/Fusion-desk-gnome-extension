@@ -10,23 +10,21 @@ All-in-one GNOME Shell 50 extension: one panel with a taskbar, a start menu and 
 | ![Classic start menu](screenshots/01-classic-start-menu.png) | ![Modern start menu](screenshots/02-modern-start-menu.png) |
 | ![Launcher grid](screenshots/03-launcher-grid.png) | ![Right-click menu with Disk Usage](screenshots/04-right-click-menu.png) |
 | ![System monitor](screenshots/05-system-monitor.png) | ![Settings: layouts](screenshots/07-settings-layouts.png) |
-| ![Deepin mode: taskbar additions and Organize Desktop](screenshots/08-deepin-mode-organize-desktop.png) | ![Deepin mode: fullscreen launcher](screenshots/09-deepin-launcher.png) |
-| ![Deepin mode: windowed launcher](screenshots/10-deepin-launcher-windowed.png) | ![Deepin mode: control centre](screenshots/11-deepin-control-centre.png) |
-| ![Windows-like mode](screenshots/12-windows-like-mode.png) | ![Settings: Deepin](screenshots/13-settings-deepin.png) |
-| ![Deepin mode: floating taskbar](screenshots/14-deepin-floating-taskbar.png) | |
+| ![Studio preset: launcher button, control centre button and Organize desktop](screenshots/08-deepin-mode-organize-desktop.png) | ![App launcher, fullscreen](screenshots/09-deepin-launcher.png) |
+| ![App launcher, small window](screenshots/10-deepin-launcher-windowed.png) | ![Control centre](screenshots/11-deepin-control-centre.png) |
+| ![Workbench preset: search box and Task View](screenshots/12-windows-like-mode.png) | ![Settings](screenshots/13-settings-deepin.png) |
+| ![Floating taskbar](screenshots/14-deepin-floating-taskbar.png) | |
 
 ## Features
-- **Desktop modes**: Settings → Layout → *Desktop mode*, or right-click the panel → *Desktop mode*. Switches live, no logout. Your taskbar (layout, widgets, size, style) stays exactly as you set it up; a mode only adds features, icons and theming.
-  - **Fusion**: the taskbar described below, nothing added.
-  - **Windows-like** (options on the *Taskbar* page): a search box (or icon) and a Task View button right after the start button, rounded Windows-style hover tiles, blur.
-  - **Deepin** (options on the *Deepin* page):
-    - **Launcher**: fullscreen blurred app grid with a category rail and search, or a small windowed launcher (category or A–Z list, favourites, all apps). *Start button*: start menu + a Deepin launcher button, one button that opens the Deepin launcher, or one button with the Fusion start menu. Super can open the launcher.
-    - **Control centre**: GNOME's own quick toggles, volume and brightness, Settings shortcuts, notifications (own scrolling area, *Clear all*) and a month calendar at the bottom. Its button sits after the start button (panel opens on the left), in the tray, or on the clock (clicking the clock opens it).
-    - **Organize Desktop**: files in your Desktop folder sorted into collections (Computer = Home, Trash and drives, folders, documents, pictures, videos, music, apps, others). Move them by the title bar, resize them (small / medium / large or drag the corner), hide or show them with Alt+O, right-click the desktop for *Organize desktop*. Works with Ubuntu's *Desktop Icons*: its icons are hidden on screen while the collections show, and come back with Alt+O.
-    - **Look**: glossy glass taskbar and start menu, blur, optional **floating taskbar** (rounded, with a gap from the screen edges, like Deepin's Fashion dock), light / dark / follow-system colours, optional Deepin accent colour and icon / cursor theme while the mode is on (Deepin's own "bloom" icons: `sudo apt install deepin-icon-theme`). Your own accent and themes come back when you leave the mode.
-  - **Deepin features without Deepin mode**: Settings → Deepin → *Use Deepin features in Fusion mode* turns on only the parts you pick (launcher, control centre, Organize Desktop, glossy look, floating taskbar, accent colour, icon / cursor theme) in Fusion or Windows-like mode.
+- **Style presets** (Settings → Appearance, or right-click the panel → *Style*): **Classic** (taskbar only), **Studio** (app launcher, control centre, desktop organizer, floating taskbar) and **Workbench** (search box and Task View). A preset only switches the settings below; your taskbar layout, widgets and size stay as you set them.
+- **App launcher** (Settings → Desktop): fullscreen blurred app grid with a category rail and search, or a small window (category or A–Z list, favourites, all apps). Its own button next to the start button, or the start button opens it; Super can open it.
+- **Control centre** (Settings → Desktop): side panel with GNOME's quick toggles, volume and brightness, Settings shortcuts, notifications (own scrolling area, *Clear all*) and a month calendar. Its button sits after the start button (opens on the left), in the tray, or on the clock.
+- **Organize desktop** (Settings → Desktop): Desktop-folder files in movable, resizable collections (Computer = Home, Trash and drives, folders, documents, pictures, videos, music, apps, others); Alt+O hides or shows them; right-click the desktop for *Organize desktop*. Works with the Desktop Icons extension (its icons are hidden while the collections show).
+- **Search and Task View** (Settings → Taskbar): a search box (or icon) and a Task View button right after the start button.
+- **Appearance**: taskbar colours follow the system light / dark style; **Glass effect** (off / soft / strong: blur, lighter top and a bright edge on the taskbar, start menu, Quick Settings, calendar and popups); **accent gradient**; accent-coloured start, Show Applications and status icons; **floating taskbar**; optional system accent colour, icon and cursor theme while Fusion Desk runs (a glossy icon set: `sudo apt install deepin-icon-theme`, then pick "bloom").
+- **Battery**: coloured fill (green when full or charging, with a bolt; accent when normal; orange when low; red when almost empty) with the percentage inside the battery.
 - **Panel**: top or bottom, height, opacity, intellihide (overlap modes + edge-pressure reveal), dynamic opacity, hide the overview dash, panels on every monitor, compact spacing for every indicator, and a **Pills** style (default) that groups the tray, clock and system monitor into rounded blocks (or **Flat**).
-- **Light / dark and accent**: the taskbar and the custom start-menu theme follow the system light / dark style (or stay dark / light); highlights, system-monitor icons, taskbar indicators, pills and the start button and Show Applications icons (also your own images) follow the system accent colour (Settings → Appearance) and update live.
+- **Accent colour**: highlights, system-monitor icons, taskbar indicators and pills follow the system accent colour and update live; the custom start-menu theme switches to light colours in light style.
 - **Status icons**: show or hide each system icon one by one (network, Bluetooth, volume, microphone, camera, battery, battery percentage, Night Light, …).
 - **Element layout**: every item (start menu, apps button, taskbar, workspaces, media, system monitor, clipboard, App Hub, screenshot, quick settings, date, show desktop, activities, window title) can be shown or hidden, ordered, and placed left, center or right.
 - **Taskbar**: pinned + running apps, grouped or one button per window, indicator styles, window previews, app menu on right-click, configurable click / middle-click / scroll actions, tooltips, Super+1…9.
@@ -99,7 +97,7 @@ Fusion Desk is an independent project written from scratch. No code was copied f
 - [Clipboard History](https://github.com/SUPERCILEX/gnome-clipboard-history) and [Clipboard Indicator](https://github.com/Tudmotu/gnome-shell-extension-clipboard-indicator) — clipboard menu.
 - [Caffeine](https://github.com/eonpatapon/gnome-shell-extension-caffeine) — keep-awake toggle and timer.
 - [Date Menu Formatter](https://github.com/marcinjakubowski/date-menu-formatter) — custom clock format.
-- [Deepin Desktop Environment](https://github.com/linuxdeepin) (GPL-3.0) — launcher, control centre, Organize Desktop and glossy look for Deepin mode. Reimplemented from scratch from the observed behaviour (see [docs/deepin-inventory.md](docs/deepin-inventory.md)); no Deepin code, icons, wallpapers or translations are included.
+- [Deepin Desktop Environment](https://github.com/linuxdeepin) (GPL-3.0) — ideas for the app launcher, control centre, desktop organizer and glossy look. Reimplemented from scratch from the observed behaviour (see [docs/deepin-inventory.md](docs/deepin-inventory.md)); no Deepin code, icons, wallpapers or translations are included.
 - [GNOME Shell](https://gitlab.gnome.org/GNOME/gnome-shell) (GPL-2.0-or-later) — the platform and its public extension APIs.
 - General desktop conventions (start menus with pinned grids and side rails, tabbed launchers, search launchers) seen in other operating systems and desktops.
 
@@ -111,5 +109,5 @@ All product names are the property of their owners. Microsoft Windows, deepin, K
 ## Privacy
 - Clipboard history is kept in memory and, with **Remember after restart** (on by default), stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600). Entries that password managers mark as secret are never recorded. Use **Private mode** before copying other passwords.
 - Web search only runs when you pick that result; the URL is configurable.
-- Deepin mode's Organize Desktop only lists the files in your Desktop folder; it opens, shows or trashes a file only when you ask. With a Deepin icon or cursor theme chosen, Fusion Desk switches GNOME's theme while the mode is on and puts yours back when you leave it.
+- Organize desktop only lists the files in your Desktop folder; it opens, shows or trashes a file only when you ask. With an accent colour, icon or cursor theme chosen on the Appearance page, Fusion Desk switches GNOME's setting while it runs and puts yours back when you pick "Keep mine" or turn it off.
 - App Hub actions run your installed `app-hub` command only when you click them (plus a background `app-hub list` check once an hour while the App Hub button is shown).

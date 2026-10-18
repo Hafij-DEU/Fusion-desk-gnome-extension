@@ -21,8 +21,10 @@ import {AutoHide} from './lib/autohide.js';
 import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
+import {Battery} from './lib/battery.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
+import {migrateDesktopModes} from './lib/presets.js';
 import {TaskView, WindowsSearch} from './lib/windowsMode.js';
 import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButtons.js';
 
@@ -51,6 +53,8 @@ const MODULES = {
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
+    // Coloured battery with the percentage inside (in GNOME's status area).
+    battery: {cls: Battery, visible: null, keys: ['battery-style', 'hidden-indicators']},
     // Hides chosen built-in status icons (after caffeine so its icon exists).
     indicators: {cls: Indicators, visible: null, keys: ['hidden-indicators']},
     autohide: {cls: AutoHide, visible: null,
@@ -148,19 +152,17 @@ export default class FusionDeskExtension extends Extension {
 
     _start() {
         this._running = true;
-        this._mode = this._settings.get_string('desktop-mode');
+        // Older versions only had these features inside "desktop modes".
+        migrateDesktopModes(this._settings);
         this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
-        // Deepin and Windows-like modes add buttons and theming to the same
-        // Fusion taskbar. Deepin's parts (launcher, control centre, Organize
-        // Desktop, looks) also run outside Deepin mode when picked one by one.
-        if (this._mode === 'deepin' || this._deepinFeatureList().length) {
-            try {
-                this._deepin = new DeepinMode(this);
-            } catch (e) {
-                console.error('Fusion Desk: Deepin mode failed', e);
-                this._deepin?.destroy();
-                this._deepin = null;
-            }
+        // App launcher, control centre, desktop organizer and the theme
+        // switches (lib/deepin/); each part follows its own setting.
+        try {
+            this._deepin = new DeepinMode(this);
+        } catch (e) {
+            console.error('Fusion Desk: launcher / control centre failed', e);
+            this._deepin?.destroy();
+            this._deepin = null;
         }
         this._startFusion();
     }
@@ -180,7 +182,7 @@ export default class FusionDeskExtension extends Extension {
     _stop() {
         this._running = false;
         this._settings.disconnectObject(this);
-        for (const id of ['_idleId', '_modeId']) {
+        for (const id of ['_idleId']) {
             if (this[id])
                 GLib.source_remove(this[id]);
             this[id] = 0;
@@ -201,27 +203,8 @@ export default class FusionDeskExtension extends Extension {
     }
 
     _onSettingChanged(key) {
-        if (key === 'desktop-mode' || (this._mode !== 'deepin' && (key === 'deepin-features-enabled' || key === 'deepin-features'))) {
-            // Swap the whole desktop once the current event is done.
-            if (!this._modeId) {
-                this._modeId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-                    this._modeId = 0;
-                    if (this._running) {
-                        this._stop();
-                        this._start();
-                    }
-                    return GLib.SOURCE_REMOVE;
-                });
-            }
-            return;
-        }
         this._deepin?.onSettingChanged(key);
         this._onChanged(key);
-    }
-
-    /** True while the Deepin-style desktop replaces the Fusion panel. */
-    get deepinMode() {
-        return !!this._deepin;
     }
 
     /** Name of an enabled extension that already provides this module, if any. */
@@ -253,45 +236,38 @@ export default class FusionDeskExtension extends Extension {
         this._layout?.setBackground(alpha, extra);
     }
 
-    /** 'fusion', 'deepin' or 'windows'. */
-    get desktopMode() {
-        return this._mode;
-    }
-
-    /** Deepin mode's launcher, control centre and collections (null otherwise). */
+    /** App launcher, control centre and desktop organizer (lib/deepin/). */
     get deepin() {
         return this._deepin ?? null;
     }
 
-    /** Search and Task View buttons: Windows-like mode, or any mode when switched on for it. */
+    /** Search and Task View buttons after the start button. */
     get windowsExtras() {
-        return this._mode === 'windows' || this._settings.get_boolean('windows-extras-in-fusion');
-    }
-
-    /** Deepin features picked for use outside Deepin mode (empty when the switch is off). */
-    _deepinFeatureList() {
-        if (this._mode === 'deepin' || !this._settings.get_boolean('deepin-features-enabled'))
-            return [];
-        return this._settings.get_strv('deepin-features');
+        return this._settings.get_boolean('windows-extras-in-fusion');
     }
 
     /**
-     * Whether a Deepin feature is on: in Deepin mode by its own setting, in
-     * the other modes when it is picked in "Deepin features".
+     * Whether an optional feature is on. Each has its own setting (presets in
+     * lib/presets.js only write these settings).
      */
     deepinFeature(id) {
-        // "Fusion start menu only" turns the Deepin launcher off everywhere.
-        if (id === 'launcher' && this._settings.get_string('deepin-start') === 'FUSION')
-            return false;
-        if (this._mode !== 'deepin')
-            return this._deepinFeatureList().includes(id);
-        const own = {
-            control: 'deepin-control-button', organizer: 'deepin-organizer', floating: 'deepin-floating-taskbar',
-        }[id];
-        return own ? this._settings.get_boolean(own) : true;
+        const s = this._settings;
+        switch (id) {
+        case 'launcher':
+            return s.get_string('deepin-start') !== 'FUSION';
+        case 'control':
+            return s.get_boolean('deepin-control-button');
+        case 'organizer':
+            return s.get_boolean('deepin-organizer');
+        case 'floating':
+            return s.get_boolean('deepin-floating-taskbar');
+        default:
+            // Accent colour and icon themes act when a value is chosen.
+            return true;
+        }
     }
 
-    /** The start button itself opens the Deepin launcher (one start button). */
+    /** The start button itself opens the app launcher (one start button). */
     get deepinStartButton() {
         return this.deepinFeature('launcher') && this._settings.get_string('deepin-start') === 'DEEPIN';
     }
@@ -340,8 +316,6 @@ export default class FusionDeskExtension extends Extension {
 
     _build(name) {
         const def = MODULES[name];
-        if (def.mode && def.mode !== this._mode)
-            return;
         if (def.feature && !this.deepinFeature(def.feature))
             return;
         if (def.windowsExtra && !this.windowsExtras)
