@@ -22,13 +22,14 @@ import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
 import {DeepinMode} from './lib/deepin/index.js';
-import {TaskView, WindowsSearch, windowsLayout, windowsSettings} from './lib/windowsMode.js';
+import {TaskView, WindowsSearch} from './lib/windowsMode.js';
+import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButtons.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
 const MODULES = {
     // Menu content settings apply live inside MenuHost; these rebuild the button/shortcuts.
     menu: {cls: StartMenu, visible: 'menu-visible',
-        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey']},
+        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key']},
     apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon']},
     taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor']},
     title: {cls: WindowTitle, visible: 'title-visible', keys: []},
@@ -41,9 +42,11 @@ const MODULES = {
     apphub: {cls: AppHubButton, visible: 'apphub-visible', keys: []},
     screenshot: {cls: ScreenshotButton, visible: 'screenshot-visible', keys: []},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
-    // Windows-like mode only (windows-* keys restart the whole mode).
-    winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: []},
+    // Extra buttons of the Windows-like and Deepin modes (see extraElements()).
+    winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: ['windows-search']},
     taskview: {cls: TaskView, visible: 'windows-task-view', mode: 'windows', keys: []},
+    dlauncher: {cls: DeepinLauncherButton, visible: 'deepin-launcher-button', mode: 'deepin', keys: ['deepin-launcher-icon', 'panel-height']},
+    dcontrol: {cls: DeepinControlButton, visible: 'deepin-control-button', mode: 'deepin', keys: []},
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
@@ -75,7 +78,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {
@@ -85,7 +88,7 @@ export default class FusionDeskExtension extends Extension {
         this._running = false;
 
         const extensionsChanged = () => {
-            if (this._syncConflict() && this._running && this._modules) {
+            if (this._syncConflict() && this._running) {
                 Object.keys(DUPLICATES).forEach(n => this._pending.add(n));
                 this._onChanged('@duplicates');
             }
@@ -146,21 +149,18 @@ export default class FusionDeskExtension extends Extension {
         this._running = true;
         this._mode = this._settings.get_string('desktop-mode');
         this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
+        // Deepin and Windows-like modes add buttons and theming to the same
+        // Fusion taskbar; Deepin mode also brings its launcher, control centre
+        // and Organize Desktop.
         if (this._mode === 'deepin') {
             try {
                 this._deepin = new DeepinMode(this);
-                return;
             } catch (e) {
-                console.error('Fusion Desk: Deepin mode failed, using the Fusion panel', e);
+                console.error('Fusion Desk: Deepin mode failed', e);
                 this._deepin?.destroy();
                 this._deepin = null;
-                this._mode = 'fusion';
             }
         }
-        // Windows-like mode is the same Fusion taskbar seen through
-        // Windows-style settings (see lib/windowsMode.js).
-        if (this._mode === 'windows')
-            this._viewSettings = windowsSettings(this._settings);
         this._startFusion();
     }
 
@@ -182,24 +182,21 @@ export default class FusionDeskExtension extends Extension {
                 GLib.source_remove(this[id]);
             this[id] = 0;
         }
-        if (this._deepin) {
-            this._deepin.destroy();
-            this._deepin = null;
+        if (this._modules) {
+            for (const name of Object.keys(this._modules).reverse())
+                this._destroyModule(name);
+            destroyStore();
+            this._layout.destroy();
         }
-        if (!this._modules)
-            return;
-        for (const name of Object.keys(this._modules).reverse())
-            this._destroyModule(name);
-        destroyStore();
-        this._layout.destroy();
         this._layout = null;
         this._modules = null;
         this._pending = null;
-        this._viewSettings = null;
+        this._deepin?.destroy();
+        this._deepin = null;
     }
 
     _onSettingChanged(key) {
-        if (key === 'desktop-mode' || (this._mode === 'windows' && key.startsWith('windows-'))) {
+        if (key === 'desktop-mode') {
             // Swap the whole desktop once the current event is done.
             if (!this._modeId) {
                 this._modeId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
@@ -214,8 +211,7 @@ export default class FusionDeskExtension extends Extension {
             return;
         }
         this._deepin?.onSettingChanged(key);
-        if (this._modules)
-            this._onChanged(key);
+        this._onChanged(key);
     }
 
     /** True while the Deepin-style desktop replaces the Fusion panel. */
@@ -243,13 +239,7 @@ export default class FusionDeskExtension extends Extension {
         this._settings = null;
     }
 
-    /** Settings the modules read (Windows-like values win in that mode). */
     get settings() {
-        return this._viewSettings ?? this._settings;
-    }
-
-    /** The real settings, without Windows-like overrides. */
-    get rawSettings() {
         return this._settings;
     }
 
@@ -258,9 +248,18 @@ export default class FusionDeskExtension extends Extension {
         return this._mode;
     }
 
-    /** Element placement in Windows-like mode, or null for the user's layout. */
-    windowsLayout() {
-        return this._mode === 'windows' ? windowsLayout(this._settings) : null;
+    /** Deepin mode's launcher, control centre and collections (null otherwise). */
+    get deepin() {
+        return this._deepin ?? null;
+    }
+
+    /** Mode buttons placed around the user's layout: right after the start menu and before the system menu. */
+    extraElements() {
+        if (this._mode === 'windows')
+            return {afterMenu: ['winsearch', 'taskview'], beforeQuick: []};
+        if (this._mode === 'deepin')
+            return {afterMenu: ['dlauncher'], beforeQuick: ['dcontrol']};
+        return {afterMenu: [], beforeQuick: []};
     }
 
     toggleStartMenu() {
@@ -269,7 +268,7 @@ export default class FusionDeskExtension extends Extension {
 
     /** The actor that currently draws the main panel (our row while enabled). */
     get panelActor() {
-        return this._layout?.row ?? this._deepin?.dock?.actor ?? null;
+        return this._layout?.row ?? null;
     }
 
     get panelAtBottom() {

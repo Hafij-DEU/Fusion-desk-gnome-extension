@@ -1,5 +1,6 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk';
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
@@ -46,6 +47,44 @@ function comboRow(settings, key, title, values, labels) {
     return row;
 }
 
+/** Installed icon themes ('icons') or cursor themes ('cursors'), sorted by name. */
+function listThemes(kind) {
+    const dirs = [
+        GLib.build_filenamev([GLib.get_home_dir(), '.icons']),
+        GLib.build_filenamev([GLib.get_user_data_dir(), 'icons']),
+        ...GLib.get_system_data_dirs().map(d => GLib.build_filenamev([d, 'icons'])),
+    ];
+    const found = new Set();
+    for (const dir of dirs) {
+        let en;
+        try {
+            en = Gio.File.new_for_path(dir).enumerate_children('standard::name,standard::type', Gio.FileQueryInfoFlags.NONE, null);
+        } catch (e) {
+            continue;
+        }
+        for (let info; (info = en.next_file(null));) {
+            const name = info.get_name();
+            const path = GLib.build_filenamev([dir, name]);
+            if (kind === 'cursors') {
+                if (GLib.file_test(GLib.build_filenamev([path, 'cursors']), GLib.FileTest.IS_DIR))
+                    found.add(name);
+                continue;
+            }
+            const index = GLib.build_filenamev([path, 'index.theme']);
+            if (name === 'default' || !GLib.file_test(index, GLib.FileTest.EXISTS))
+                continue;
+            try {
+                const [, bytes] = GLib.file_get_contents(index);
+                if (/^Directories\s*=/m.test(new TextDecoder().decode(bytes)))
+                    found.add(name);
+            } catch (e) {
+                // Unreadable theme: skip it.
+            }
+        }
+    }
+    return [...found].sort((a, b) => a.localeCompare(b));
+}
+
 function group(title, rows, description = '') {
     const g = new Adw.PreferencesGroup({title, description});
     rows.forEach(r => g.add(r));
@@ -58,10 +97,12 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         window.set_default_size(720, 820);
         window.search_enabled = true;
 
-        this._addDeepinPage(window, s);
-
         // ---- Layout page ---------------------------------------------------
         const layout = new Adw.PreferencesPage({title: 'Layout', icon_name: 'view-grid-symbolic'});
+        layout.add(group(_('Desktop mode'), [
+            comboRow(s, 'desktop-mode', _('Mode'), ['fusion', 'deepin', 'windows'],
+                [_('Fusion'), _('Deepin'), _('Windows-like')]),
+        ], _('Your taskbar stays as it is. Deepin adds its launcher, control centre, Organize Desktop and glossy look (Deepin page); Windows-like adds a search box, Task View and Windows-style theming (Taskbar page). Switches live, no logout.')));
         layout.add(group('Panel', [
             comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
             comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
@@ -135,7 +176,13 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 ['Cycle windows', 'Switch workspace', 'Nothing']),
             switchRow(s, 'taskbar-preview-close-middle', 'Middle-click a preview closes the window'),
         ], 'Right-click an icon for the app menu (pin / unpin, windows, quit).'));
+        taskbar.add(group(_('Windows-like extras'), [
+            comboRow(s, 'windows-search', _('Search'), ['BOX', 'ICON', 'HIDDEN'], [_('Search box'), _('Icon only'), _('Hidden')]),
+            switchRow(s, 'windows-task-view', _('Task View button'), _('Opens all windows and workspaces')),
+            switchRow(s, 'windows-blur', _('Blur'), _('Blur behind the taskbar')),
+        ], _('Used when Desktop mode is Windows-like (Layout page). They go right after the start button; rounded hover tiles and short running pills give the Windows look.')));
         window.add(taskbar);
+        this._addDeepinPage(window, s);
 
         // ---- Start Menu + Menu Button pages (lib/prefsMenu.js) ------------
         addMenuPages(window, s, this);
@@ -209,64 +256,66 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         window.add(about);
     }
 
-    /** Desktop mode (Fusion / Deepin / Windows-like) and the options of each. */
+    /** Deepin mode: what it adds to the taskbar and desktop, and its looks. */
     _addDeepinPage(window, s) {
-        const page = new Adw.PreferencesPage({title: _('Desktop'), icon_name: 'preferences-desktop-appearance-symbolic'});
-        page.add(group(_('Desktop mode'), [
-            comboRow(s, 'desktop-mode', _('Mode'), ['fusion', 'deepin', 'windows'],
-                [_('Fusion: your panel'), _('Deepin: dock, launcher, control centre'), _('Windows-like: Fusion taskbar in Windows style')]),
-        ], _('Switches live, no logout. Your Fusion settings stay as they are and come back with Fusion mode.')));
+        const page = new Adw.PreferencesPage({title: _('Deepin'), icon_name: 'preferences-desktop-appearance-symbolic'});
+        page.add(group(_('Taskbar additions'), [
+            switchRow(s, 'deepin-launcher-button', _('Launcher button'), _('Next to the start button')),
+            entryRow(s, 'deepin-launcher-icon', _('Launcher button icon (name or image path, empty = built-in)')),
+            switchRow(s, 'deepin-control-button', _('Control centre button'), _('Quick toggles, notifications and Settings shortcuts in a side panel')),
+            switchRow(s, 'deepin-super-key', _('Super key opens the launcher'), _('Off: Super keeps opening the start menu')),
+        ], _('Used when Desktop mode is Deepin (Layout page). Your taskbar layout is not changed.')));
 
-        page.add(group(_('Windows-like taskbar'), [
-            comboRow(s, 'windows-align', _('Alignment'), ['CENTER', 'LEFT'], [_('Centre (Windows 11)'), _('Left (Windows 10)')]),
-            comboRow(s, 'windows-search', _('Search'), ['BOX', 'ICON', 'HIDDEN'], [_('Search box'), _('Icon only'), _('Hidden')]),
-            switchRow(s, 'windows-task-view', _('Task View button'), _('Opens all windows and workspaces')),
-            switchRow(s, 'windows-combine', _('Combine taskbar buttons'), _('Off: one labelled button per window')),
-            comboRow(s, 'windows-menu-style', _('Start menu'), ['AUTO', 'KEEP'], [_('Match the alignment'), _('Keep my layout')]),
-            switchRow(s, 'windows-widgets', _('Keep Fusion widgets'), _('System monitor, media, clipboard, workspaces, App Hub, screenshot')),
-            switchRow(s, 'windows-blur', _('Blur'), _('Blur behind the taskbar')),
-        ], _('Used in Windows-like mode.')));
-
-        page.add(group(_('Deepin dock'), [
-            comboRow(s, 'deepin-dock-mode', _('Mode'), ['FASHION', 'EFFICIENT'],
-                [_('Fashion: floating dock'), _('Efficient: full-width bar')]),
-            comboRow(s, 'deepin-dock-position', _('Location'), ['BOTTOM', 'TOP'], [_('Bottom'), _('Top')]),
-            comboRow(s, 'deepin-dock-hide', _('Status'), ['KEEP_SHOWN', 'KEEP_HIDDEN', 'SMART_HIDE'],
-                [_('Keep shown'), _('Keep hidden'), _('Smart hide')]),
-            spinRow(s, 'deepin-dock-size', _('Size'), 37, 100, 1, _('Pixels')),
-        ]));
-
-        const plugins = [
-            ['multitask', _('Multitask view'), _('Opens the Activities overview')],
-            ['tray', _('Status icons'), _('Network, sound, battery and other extensions\' icons; opens Quick Settings')],
-            ['datetime', _('Date and time'), _('Opens the calendar and notifications')],
-            ['trash', _('Trash'), ''],
-            ['control', _('Control centre'), _('Side panel with toggles, notifications and Settings links')],
-            ['power', _('Power'), ''],
-            ['show-desktop', _('Show desktop'), _('Strip at the right edge, Efficient mode only')],
-        ];
-        const rows = plugins.map(([id, title, subtitle]) => {
-            const row = new Adw.SwitchRow({title, subtitle});
-            row.active = s.get_strv('deepin-dock-plugins').includes(id);
+        const cols = [['folders', _('Folders')], ['documents', _('Documents')], ['pictures', _('Pictures')],
+            ['videos', _('Videos')], ['music', _('Music')], ['apps', _('Apps')], ['others', _('Others')]];
+        const colRows = cols.map(([id, title]) => {
+            const row = new Adw.SwitchRow({title});
+            row.active = s.get_strv('deepin-organizer-collections').includes(id);
             row.connect('notify::active', () => {
-                const list = s.get_strv('deepin-dock-plugins').filter(p => p !== id);
+                const list = s.get_strv('deepin-organizer-collections').filter(c => c !== id);
                 if (row.active)
                     list.push(id);
-                s.set_strv('deepin-dock-plugins', list);
+                s.set_strv('deepin-organizer-collections', list);
             });
             return row;
         });
-        page.add(group(_('Deepin dock plugins'), rows));
+        const organize = new Adw.ExpanderRow({
+            title: _('Collections'),
+            subtitle: _('Which file types get their own collection'),
+        });
+        colRows.forEach(r => organize.add_row(r));
+        const reset = new Adw.ActionRow({title: _('Organize again'), subtitle: _('Put every collection back into the default columns')});
+        const resetButton = new Gtk.Button({label: _('Organize'), valign: Gtk.Align.CENTER});
+        resetButton.connect('clicked', () => s.set_string('deepin-organizer-geometry', '{}'));
+        reset.add_suffix(resetButton);
+        page.add(group(_('Organize desktop'), [
+            switchRow(s, 'deepin-organizer', _('Organize desktop'),
+                _('Files in your Desktop folder are sorted into collections. Alt+O hides or shows them; right-click the desktop for more.')),
+            comboRow(s, 'deepin-organizer-size', _('Collection size'), ['SMALL', 'MEDIUM', 'LARGE'], [_('Small'), _('Medium'), _('Large')]),
+            organize,
+            reset,
+        ], _('Needs the Desktop Icons extension (Ubuntu\'s desktop icons) to be off; otherwise its icons cover the collections.')));
 
-        page.add(group(_('Deepin launcher'), [
+        page.add(group(_('Launcher'), [
             comboRow(s, 'deepin-launcher-mode', _('Mode'), ['FULLSCREEN', 'WINDOWED'], [_('Fullscreen'), _('Windowed')]),
-            switchRow(s, 'deepin-super-key', _('Super key opens the launcher')),
         ]));
-        page.add(group(_('Deepin look'), [
+        page.add(group(_('Look'), [
             comboRow(s, 'deepin-theme', _('Colours'), ['AUTO', 'LIGHT', 'DARK'], [_('Follow system style'), _('Light'), _('Dark')]),
-            switchRow(s, 'deepin-blur', _('Blur'), _('Blur behind the dock, launcher and control centre')),
+            switchRow(s, 'deepin-blur', _('Blur'), _('Behind the taskbar, launcher, control centre and collections')),
             spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent')),
+            switchRow(s, 'deepin-gloss', _('Glossy glass'), _('Light top edge and soft gradient on the taskbar and Deepin panels')),
         ]));
+        const icons = listThemes('icons');
+        const cursors = listThemes('cursors');
+        const iconRow = comboRow(s, 'deepin-icon-theme', _('Icon theme'), ['', ...icons], [_('Keep system theme'), ...icons]);
+        const hasBloom = icons.some(t => /^bloom/i.test(t));
+        iconRow.subtitle = hasBloom
+            ? _('Deepin\'s own icons: pick a "bloom" theme')
+            : _('Deepin\'s own icons come with the deepin-icon-theme package: sudo apt install deepin-icon-theme');
+        page.add(group(_('Icons'), [
+            iconRow,
+            comboRow(s, 'deepin-cursor-theme', _('Cursor theme'), ['', ...cursors], [_('Keep system theme'), ...cursors]),
+        ], _('Used only while Deepin mode is on; your own themes come back when you leave it.')));
         window.add(page);
     }
 

@@ -495,75 +495,29 @@
 .fusion-deepin-dark { color: #f2f2f4; }
 .fusion-deepin-light { color: #1f1f23; }
 
-/* ---- Dock ---------------------------------------------------------------- */
-.fusion-deepin-dock {
-    padding: 0 8px;
-    spacing: 4px;
-    border: 1px solid rgba(127, 127, 127, 0.22);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+/* ---- Taskbar theming in Deepin mode (layout stays the user's) ------------- */
+#panel.fusion-deepin-look .fusion-task-button,
+#panel.fusion-deepin-look .panel-button { border-radius: 10px; }
+#panel.fusion-deepin-look .fusion-task-dot.focused { background-color: -st-accent-color; }
+#panel.fusion-panel.fusion-deepin-gloss {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.13);
+    background-gradient-end: rgba(255, 255, 255, 0.0);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
 }
-.fusion-deepin-efficient { border-width: 1px 0 0 0; box-shadow: none; padding: 0 0 0 8px; }
-.fusion-deepin-dock-section { spacing: 4px; }
-.fusion-deepin-dock-item {
-    margin: 0 2px;
+.fusion-deepin-panel-launcher {
+    margin: 0 4px;
     border-radius: 12px;
-    transition-duration: 120ms;
-}
-.fusion-deepin-launcher-button {
-    border-radius: 30%;
     color: #ffffff;
     background-gradient-direction: vertical;
     background-gradient-start: st-lighten(-st-accent-color, 14%);
     background-gradient-end: -st-accent-color;
-}
-.fusion-deepin-launcher-button:hover { background-gradient-start: st-lighten(-st-accent-color, 24%); }
-.fusion-deepin-multitask-button {
-    border-radius: 30%;
-    background-color: rgba(127, 127, 127, 0.22);
-}
-.fusion-deepin-multitask-button:hover { background-color: rgba(127, 127, 127, 0.34); }
-.fusion-deepin-dock-sep { width: 1px; margin: 0 6px; background-color: rgba(127, 127, 127, 0.35); }
-
-.fusion-deepin-tasks { spacing: 2px; }
-.fusion-deepin-tasks .fusion-task-button { padding: 3px 5px 0 5px; margin: 0; border-radius: 12px; }
-.fusion-deepin-light .fusion-deepin-tasks .fusion-task-button:hover { background-color: rgba(0, 0, 0, 0.07); }
-.fusion-deepin-light .fusion-deepin-tasks .fusion-task-button:focus { background-color: rgba(0, 0, 0, 0.10); }
-.fusion-deepin-tasks .fusion-task-dot { background-color: rgba(127, 127, 127, 0.8); }
-.fusion-deepin-tasks .fusion-task-dot.focused { background-color: -st-accent-color; }
-
-.fusion-deepin-plugins { spacing: 2px; padding-right: 4px; }
-.fusion-deepin-plugin {
-    padding: 7px;
-    border-radius: 10px;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
     transition-duration: 120ms;
 }
-.fusion-deepin-tray .panel-button,
-.fusion-deepin-datetime {
-    color: inherit;
-    font-weight: normal;
-    padding: 4px 6px;
-    margin: 0;
-    border-radius: 10px;
-    -natural-hpadding: 6px;
-    -minimum-hpadding: 4px;
-    transition-duration: 120ms;
-}
-.fusion-deepin-tray .panel-button .system-status-icon { icon-size: 16px; padding: 0; }
-.fusion-deepin-tray .panel-status-indicators-box { spacing: 6px; }
-.fusion-deepin-datetime .clock { font-feature-settings: "tnum"; }
-.fusion-deepin-dark .fusion-deepin-dock-item:hover,
-.fusion-deepin-dark .fusion-deepin-plugin:hover,
-.fusion-deepin-dark .fusion-deepin-tray .panel-button:hover,
-.fusion-deepin-dark .fusion-deepin-datetime:hover,
-.fusion-deepin-dark .fusion-deepin-tray .panel-button:checked,
-.fusion-deepin-dark .fusion-deepin-datetime:checked { background-color: rgba(255, 255, 255, 0.12); }
-.fusion-deepin-light .fusion-deepin-plugin:hover,
-.fusion-deepin-light .fusion-deepin-tray .panel-button:hover,
-.fusion-deepin-light .fusion-deepin-datetime:hover,
-.fusion-deepin-light .fusion-deepin-tray .panel-button:checked,
-.fusion-deepin-light .fusion-deepin-datetime:checked { background-color: rgba(0, 0, 0, 0.08); }
-.fusion-deepin-show-desktop { width: 10px; border-left: 1px solid rgba(127, 127, 127, 0.3); }
-.fusion-deepin-show-desktop:hover { background-color: rgba(127, 127, 127, 0.25); }
+.fusion-deepin-panel-launcher:hover { background-gradient-start: st-lighten(-st-accent-color, 24%); }
+.fusion-deepin-panel-launcher-custom,
+.fusion-deepin-panel-launcher-custom:hover { background-gradient-direction: none; background-color: transparent; box-shadow: none; }
 
 /* ---- Launcher: fullscreen -------------------------------------------------- */
 .fusion-deepin-launcher-full-bg { background-color: rgba(0, 15, 39, 0.45); }
@@ -695,39 +649,19 @@
 
 
 /* ==== Windows-like mode ===================================================== */
-/* The Fusion taskbar, restyled: flat translucent bar, rounded hover tiles,
-   search box, Task View, short running pills. */
-#panel.fusion-panel.fusion-windows { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+/* Extra buttons and theming only; the user's layout, size and widgets stay. */
+#panel.fusion-windows .fusion-task-button,
 #panel.fusion-windows .fusion-start-button,
-#panel.fusion-windows .fusion-win-taskview {
+#panel.fusion-windows .panel-button { border-radius: 6px; }
+#panel.fusion-windows .fusion-task-button:hover,
+#panel.fusion-windows .fusion-win-taskview:hover { background-color: rgba(255, 255, 255, 0.09); }
+.fusion-win-taskview {
     margin: 4px 1px;
     padding: 0 10px;
     border-radius: 6px;
     color: #f2f2f4;
     transition-duration: 120ms;
 }
-#panel.fusion-windows .fusion-start-button:hover,
-#panel.fusion-windows .fusion-win-taskview:hover,
-#panel.fusion-windows .fusion-start-button:checked { background-color: rgba(255, 255, 255, 0.09); }
-#panel.fusion-windows .fusion-task-button {
-    margin: 4px 1px;
-    padding: 3px 9px 0 9px;
-    border-radius: 6px;
-}
-#panel.fusion-windows .fusion-task-button:hover { background-color: rgba(255, 255, 255, 0.09); }
-#panel.fusion-windows .fusion-task-button:focus { background-color: rgba(255, 255, 255, 0.06); }
-#panel.fusion-windows .fusion-task-dot {
-    width: 6px;
-    height: 3px;
-    border-radius: 2px;
-    background-color: rgba(255, 255, 255, 0.55);
-}
-#panel.fusion-windows .fusion-task-dot.focused { width: 16px; background-color: -st-accent-color; }
-#panel.fusion-windows-left .fusion-task-button { border-radius: 0; margin: 0; padding: 3px 11px 0 11px; }
-#panel.fusion-windows-left .fusion-task-dot { width: 0; height: 0; }
-#panel.fusion-windows-left .fusion-task-dot.focused { width: 36px; height: 2px; border-radius: 0; }
-#panel.fusion-windows-left .fusion-start-button,
-#panel.fusion-windows-left .fusion-win-taskview { border-radius: 0; margin: 0; padding: 0 14px; }
 .fusion-win-search {
     margin: 0 4px;
     border-radius: 99px;
@@ -740,8 +674,26 @@
 .fusion-win-search-wide { padding: 7px 16px; min-width: 200px; }
 .fusion-win-search-icon { padding: 9px; }
 .fusion-win-search-box { spacing: 10px; }
-#panel.fusion-windows-left .fusion-win-search-wide { border-radius: 0; min-width: 260px; margin: 0; padding: 0 12px; height: 48px; }
-#panel.fusion-windows .fusion-tray,
-#panel.fusion-windows .fusion-clock { border-radius: 6px; }
-#panel.fusion-windows .fusion-clock { font-size: 9pt; }
-#panel.fusion-windows .fusion-show-desktop { width: 8px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
+
+/* ---- Organize desktop (Deepin mode) ---------------------------------------- */
+.fusion-deepin-collection {
+    border-radius: 10px;
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+}
+.fusion-deepin-collection-title {
+    spacing: 8px;
+    padding: 0 6px 0 12px;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+    font-size: 10pt;
+}
+.fusion-deepin-collection-title:hover { background-color: rgba(127, 127, 127, 0.14); }
+.fusion-deepin-collection-more { padding: 4px; border-radius: 6px; }
+.fusion-deepin-collection-more:hover { background-color: rgba(127, 127, 127, 0.22); }
+.fusion-deepin-collection-scroll { padding: 4px 6px; }
+.fusion-deepin-desktop-file { padding: 6px 2px; border-radius: 8px; }
+.fusion-deepin-desktop-file:hover { background-color: rgba(127, 127, 127, 0.16); }
+.fusion-deepin-desktop-file:focus { background-color: st-transparentize(-st-accent-color, 0.7); }
+.fusion-deepin-desktop-file-label { font-size: 9pt; padding-top: 4px; }
+.fusion-deepin-collection-grip { margin: 0 3px 3px 0; border-radius: 0 0 8px 0; border-right: 2px solid rgba(127, 127, 127, 0.5); border-bottom: 2px solid rgba(127, 127, 127, 0.5); }

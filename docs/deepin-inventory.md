@@ -29,7 +29,7 @@ Method:
 
 ## Legend
 
-- **[P1]** high value and doable inside a GNOME Shell extension. Built in Deepin mode v1.
+- **[P1]** high value and doable inside a GNOME Shell extension (see "What Deepin mode v1 builds" for what was built).
 - **[P2]** nice to have, doable later.
 - **[P3]** not possible, or not sensible, from a shell extension (window-manager, display-server,
   system-service or distro internals).
@@ -99,7 +99,8 @@ Method:
 | Eye comfort | Colour temperature | Night Light | — | **P1** (toggle) |
 | Light / Auto / Dark appearance | Theme cards | Style switch | — | **P1** (dock/launcher theme follows or overrides) |
 | Accent colours | Pink #DF4187, Orange #EA691F, Yellow #F3B517, Green #49B125, Teal #00A48A, Blue #1F6EE7, Indigo #402FDB, Purple #7724B1, Grey #757575 (dark variants differ) | Accent colours | Follows system accent | **P1** (Deepin mode follows the GNOME accent; default look uses a Deepin-like blue) |
-| Window effects: blur/transparency presets, opacity 25–100 | Affects DDE surfaces | — | Panel opacity | **P1** for Deepin-mode surfaces (blur + opacity setting) |
+| Window effects: blur/transparency presets, opacity 25–100 | Affects DDE surfaces | — | Panel opacity | **P1** for Deepin-mode surfaces (blur, opacity, glossy glass setting) |
+| Icon and cursor themes ("bloom") | Theme grids | Tweaks | — | **P1** as a theme switch while Deepin mode is on (themes come from the deepin-icon-theme package; not bundled) |
 | Window rounded corners (0/6/12/18) | KWin effect | — | — | P3 (needs per-window shaders; separate extensions do this) |
 | Minimize effect (Scale / Magic Lamp) | KWin effect | Scale | — | P3 |
 | Title bar height | KWin decoration | — | — | P3 |
@@ -112,8 +113,8 @@ Method:
 | Feature | DDE behaviour / numbers | GNOME | Fusion | Prio |
 |---|---|---|---|---|
 | Desktop icon grid | Per-screen grid, free placement or auto-arrange, 5 icon sizes 32/48/64/96/128 | DING extension (Ubuntu) | — | P2 (DING already does this on Ubuntu) |
-| Desktop right-click menu | New folder/document, paste, refresh, auto arrange, sort by, icon size, open in terminal, display settings, wallpaper | DING / Background menu | — | P2 |
-| Desktop organizer collections | Blurred collections, radius 8, by type | — | — | P2 |
+| Desktop right-click menu | New folder/document, paste, refresh, auto arrange, sort by, icon size, open in terminal, display settings, wallpaper | DING / Background menu | — | P1 for Organize desktop / show-hide / view options (added to GNOME's background menu); rest P2 |
+| Desktop organizer collections ("Organize Desktop", deepin 23) | Right-click → Organize desktop; collections by type (documents, pictures, videos, music, folders, apps, others); drag the title bar; small / medium / large or drag the border; Alt+O hides/shows all; View options choose the collection types | — | — | **P1** (built; needs Ubuntu's Desktop Icons extension off) |
 | Wallpaper & screensaver strip | Bottom blurred strip, 172 × 100 thumbnails | Background panel | — | P2 |
 | Licence watermark | "Not authorized" text | — | — | P3 (distro-specific) |
 | Rounded, translucent, blurred surfaces | Everywhere | Some | Themes | **P1** (Deepin-mode stylesheet + Shell.BlurEffect) |
@@ -133,17 +134,23 @@ Method:
 
 ## What Deepin mode v1 builds
 
-1. **Dock** – Fashion (floating, centred, rounded) and Efficient (full-width) modes; keep shown / keep hidden /
-   smart hide; launcher, multitask view, pinned + running apps (Fusion taskbar engine), tray (GNOME status area
-   and date menu moved into the dock), trash, control-centre and power plugins, show-desktop strip; right-click
-   menu for mode, position (bottom/top), status, plugins and "Back to Fusion mode".
-2. **Launcher** – fullscreen blurred grid with category rail and search; windowed 780 × 600 mode with category
-   list, favourites, Settings and Power; toggle between them; opened by Super and the dock button.
-3. **Control centre panel** – right-edge sliding panel: quick toggles (Wi-Fi, Bluetooth, airplane, Night Light,
-   dark style, Do Not Disturb), volume slider, notification list with Clear All, links to GNOME Settings panels.
-4. **Visual style** – rounded, translucent, blurred surfaces, light/dark/auto theme, system accent colour.
+The user chose (2026-10-18) to keep their own Fusion taskbar in every mode: a desktop mode only *adds* features,
+icons and theming, and only one bar ever runs. So the DDE dock itself (Fashion / Efficient, smart hide, dock
+plugins) is documented above but **not built**; its useful parts arrive as taskbar additions instead.
 
-The `desktop-mode` setting (`fusion` / `deepin`) swaps Fusion's panel modules for these live, without logging out.
+`desktop-mode` = `fusion` | `deepin` | `windows`:
+
+1. **Deepin** – taskbar additions: launcher button after the start button, control-centre button before the system
+   menu, Super opens the Deepin launcher (optional). Plus:
+   - **Launcher** – fullscreen blurred grid with category rail and search; windowed 780 × 600 mode with category /
+     A–Z list, favourites, Settings and Power; toggle between them.
+   - **Control centre** – right-edge sliding panel: GNOME's own quick toggles and sliders mirrored, notification
+     list with Clear All, links to GNOME Settings panels.
+   - **Organize Desktop** – desktop files in movable, resizable collections by type; Alt+O; desktop right-click items.
+   - **Look** – glossy glass taskbar (gradient + light top edge), blur, light/dark/auto colours for the Deepin panels,
+     optional icon / cursor theme (e.g. bloom from deepin-icon-theme) while the mode runs.
+2. **Windows-like** – not a DDE feature, added at the user's request: search box (or icon) and Task View button after
+   the start button, Windows-style rounded hover tiles, blur.
 
 ## i18n
 
