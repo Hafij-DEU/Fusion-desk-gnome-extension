@@ -713,3 +713,21 @@
 #panel .fusion-deepin-panel-control { padding: 0 14px; }
 .fusion-deepin-cc-datebutton { text-align: left; border-radius: 10px; padding: 2px 4px; }
 .fusion-deepin-cc-datebutton:hover { background-color: rgba(127, 127, 127, 0.14); }
+
+/* Control centre: notifications portion and month calendar at the bottom. */
+.fusion-deepin-cc-note-scroll { min-height: 60px; }
+.fusion-deepin-cc-calendar {
+    padding: 10px 12px 12px 12px;
+    spacing: 6px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.12);
+}
+.fusion-deepin-cc-cal-head { spacing: 4px; }
+.fusion-deepin-cc-cal-title { font-weight: bold; text-align: left; padding: 4px 6px; border-radius: 8px; }
+.fusion-deepin-cc-cal-title:hover, .fusion-deepin-cc-cal-arrow:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-deepin-cc-cal-arrow { padding: 6px; border-radius: 99px; }
+.fusion-deepin-cc-cal-grid { spacing: 2px; }
+.fusion-deepin-cc-cal-dayname { text-align: center; font-size: 8.5pt; font-weight: bold; color: rgba(127, 127, 127, 1); padding: 2px 0; }
+.fusion-deepin-cc-cal-day { text-align: center; font-size: 9.5pt; padding: 5px 0; border-radius: 99px; }
+.fusion-deepin-cc-cal-day.other-month { color: rgba(127, 127, 127, 0.75); }
+.fusion-deepin-cc-cal-day.today { background-color: -st-accent-color; color: -st-accent-fg-color; font-weight: bold; }
