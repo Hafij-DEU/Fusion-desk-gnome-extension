@@ -885,9 +885,9 @@
 
 /* Standalone battery button and its menu. */
 .fusion-battery-head { padding: 10px 16px 8px 16px; }
-.fusion-battery-big { font-size: 22pt; font-weight: 300; }
+.fusion-battery-big { font-size: 22pt; font-weight: bold; }
 .fusion-battery-status { font-weight: bold; }
-.fusion-battery-details { font-size: 9pt; color: rgba(127, 127, 127, 1); padding-top: 2px; }
+.fusion-battery-details { font-size: 9pt; padding-top: 2px; }
 
 /* Connected gadgets in the battery menu (earbuds show each side). */
 .fusion-battery-device { spacing: 10px; }
