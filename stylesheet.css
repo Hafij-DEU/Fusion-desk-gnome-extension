@@ -351,7 +351,7 @@
 .fusion-sysmon-pick { padding: 4px 14px; }
 .fusion-sysmon-rows { spacing: 5px; }
 .fusion-sysmon-row { spacing: 16px; }
-.fusion-sysmon-key { font-size: 0.88em; color: #8e8e96; }
+.fusion-sysmon-key { font-size: 0.88em; }
 .fusion-sysmon-value { font-feature-settings: "tnum"; font-size: 0.92em; }
 .fusion-sysmon-pick-box { spacing: 6px; }
 .fusion-sysmon-chips { spacing: 4px; }
@@ -363,6 +363,10 @@
 }
 .fusion-sysmon-chip:hover { background-color: rgba(127, 127, 127, 0.28); }
 .fusion-sysmon-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-sysmon-light .fusion-sysmon-key,
+.fusion-sysmon-light .fusion-sysmon-value,
+.fusion-sysmon-light .fusion-sysmon-chip { color: #000000; }
+.fusion-sysmon-light .fusion-sysmon-chip:checked { color: -st-accent-fg-color; }
 
 .fusion-clip-menu .popup-menu-content { width: 380px; }
 .fusion-clip-search { border-radius: 99px; padding: 6px 12px; }
@@ -926,3 +930,18 @@
 .fusion-deepin-dark .fusion-deepin-cc-switch { background-color: rgba(0, 0, 0, 0.28); }
 .fusion-deepin-dark .fusion-deepin-cc-note:hover, .fusion-deepin-dark .fusion-deepin-cc-switch:hover { background-color: rgba(255, 255, 255, 0.10); }
 .fusion-deepin-light .fusion-deepin-cc-switch:checked, .fusion-deepin-dark .fusion-deepin-cc-switch:checked { background-color: -st-accent-color; }
+
+/* Glass menus: full white text when dark, full black when light (GNOME
+   dims section headings and non-clickable rows, which vanish on glass). */
+.fusion-menu-dark .popup-menu-item.popup-separator-menu-item,
+.fusion-menu-dark .popup-menu-item.popup-inactive-menu-item,
+.fusion-menu-dark .fusion-sysmon-key, .fusion-menu-dark .fusion-sysmon-value,
+.fusion-menu-dark .fusion-battery-details, .fusion-menu-dark .fusion-battery-status,
+.fusion-menu-dark .fusion-battery-big { color: #ffffff; }
+.fusion-menu-light .popup-menu-item.popup-separator-menu-item,
+.fusion-menu-light .popup-menu-item.popup-inactive-menu-item { color: #1f1f23; }
+/* Dark control centre, launcher and collections: secondary text in white. */
+.fusion-deepin-dark .fusion-deepin-list-header, .fusion-deepin-dark .fusion-deepin-empty-hint,
+.fusion-deepin-dark .fusion-deepin-cc-date, .fusion-deepin-dark .fusion-deepin-cc-note-body,
+.fusion-deepin-dark .fusion-deepin-cc-cal-dayname, .fusion-deepin-dark .fusion-deepin-cc-media-artist,
+.fusion-deepin-dark .fusion-deepin-cc-meter-head { color: #ffffff; }
