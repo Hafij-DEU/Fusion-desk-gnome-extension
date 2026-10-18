@@ -286,16 +286,36 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         presetRow.add_suffix(presetBox);
         page.add(group(_('Style presets'), [presetRow], _('Pick one as a starting point, then change anything below or on the Desktop page.')));
 
-        page.add(group(_('Colours and glass'), [
-            comboRow(s, 'panel-theme', _('Taskbar colours'), ['AUTO', 'DARK', 'LIGHT'], [_('Follow system style'), _('Dark'), _('Light')]),
-            comboRow(s, 'glass-effect', _('Glass effect'), ['OFF', 'SOFT', 'STRONG'], [_('Off'), _('Soft'), _('Strong')]),
+        const glassRows = [
+            comboRow(s, 'glass-material', _('Material'), ['GLASS', 'GLOSS'], [_('Clear glass (see-through, blur)'), _('Solid gloss (opaque, shiny)')]),
             comboRow(s, 'glass-style', _('Glass style'), ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO'],
                 [_('Clear'), _('Frosted'), _('Gel'), _('Tinted'), _('Smoke'), _('Halo')]),
+            spinRow(s, 'glass-opacity', _('Opacity'), 10, 100, 5, _('Menus, start menu, control centre and launcher; the taskbar keeps its own')),
+            switchRow(s, 'glass-rim', _('Rim highlight'), _('Thin light edge; a sharp bevel with solid gloss')),
+            switchRow(s, 'glass-glare', _('Corner glare'), _('Light reflections in the corners')),
+            switchRow(s, 'glass-shadow', _('Soft shadow'), _('Diffused shadow for depth')),
+            switchRow(s, 'glass-light-follows', _('Light follows pointer'), _('A soft light spot moves with the pointer')),
+        ];
+        const syncGlass = () => {
+            const on = s.get_string('glass-effect') !== 'OFF';
+            glassRows.forEach(r => r.set_sensitive(on));
+            glassRows[2].set_sensitive(on && s.get_string('glass-material') === 'GLASS');
+        };
+        s.connect('changed::glass-effect', syncGlass);
+        s.connect('changed::glass-material', syncGlass);
+        syncGlass();
+        page.add(group(_('Glass'), [
+            comboRow(s, 'glass-effect', _('Glass effect'), ['OFF', 'SOFT', 'STRONG'], [_('Off'), _('Soft'), _('Strong')]),
+            ...glassRows,
+        ], _('Taskbar, menus, start menu, control centre and launcher. Clear glass is see-through with blur; solid gloss is opaque with a strong shine.')));
+
+        page.add(group(_('Colours'), [
+            comboRow(s, 'panel-theme', _('Taskbar colours'), ['AUTO', 'DARK', 'LIGHT'], [_('Follow system style'), _('Dark'), _('Light')]),
             switchRow(s, 'accent-gradient', _('Accent gradient'), _('Taskbar, start menu, launcher and control centre fade from the system accent colour')),
             switchRow(s, 'icons-follow-accent', _('Accent-coloured icons'), _('Start button, Show Applications and status icons take the system accent colour')),
             comboRow(s, 'tray-app-icons', _('App tray icons'), ['MATCH', 'ORIGINAL'], [_('Plain icons like status icons'), _('Original colours')]),
             switchRow(s, 'deepin-floating-taskbar', _('Floating taskbar'), _('Rounded, with a gap from the screen edges; layout and widgets stay the same')),
-        ], _('Glass: blur, a lighter top and a bright top edge on the taskbar, menus and popups.')));
+        ]));
 
         const icons = listThemes('icons');
         const cursors = listThemes('cursors');
@@ -354,7 +374,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(group(_('Launcher, control centre and collections look'), [
             comboRow(s, 'deepin-theme', _('Colours'), ['AUTO', 'LIGHT', 'DARK'], [_('Follow system style'), _('Light'), _('Dark')]),
             switchRow(s, 'deepin-blur', _('Blur'), _('Blur behind them')),
-            spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent')),
+            spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent, while the Glass effect is off')),
             switchRow(s, 'deepin-gloss', _('Glossy'), _('Lighter top and bright edge, also with Glass effect off')),
         ]));
         window.add(page);

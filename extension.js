@@ -25,6 +25,7 @@ import {Battery} from './lib/battery.js';
 import {TrayTint} from './lib/trayTint.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
+import {cleanupGlass} from './lib/glass.js';
 import {migrateDesktopModes} from './lib/presets.js';
 import {TaskView, WindowsSearch} from './lib/windowsMode.js';
 import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButtons.js';
@@ -86,7 +87,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-effect', 'glass-style'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {
@@ -203,6 +204,7 @@ export default class FusionDeskExtension extends Extension {
         this._pending = null;
         this._deepin?.destroy();
         this._deepin = null;
+        cleanupGlass();
     }
 
     _onSettingChanged(key) {

@@ -53,6 +53,18 @@
       <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/></choices>
       <default>'CLEAR'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark) or halo (glow in the middle)</summary>
     </key>
+    <key name="glass-material" type="s">
+      <choices><choice value="GLASS"/><choice value="GLOSS"/></choices>
+      <default>'GLASS'</default><summary>Glass material: clear glass (see-through with blur behind) or solid gloss (opaque, polished with a strong shine)</summary>
+    </key>
+    <key name="glass-opacity" type="i">
+      <range min="10" max="100"/>
+      <default>70</default><summary>Opacity of clear glass menus, start menu, control centre and launcher (percent)</summary>
+    </key>
+    <key name="glass-rim" type="b"><default>true</default><summary>Thin light rim along the edges of glass surfaces (a bevel with solid gloss)</summary></key>
+    <key name="glass-glare" type="b"><default>true</default><summary>Light reflections in the corners of glass surfaces</summary></key>
+    <key name="glass-shadow" type="b"><default>true</default><summary>Soft shadow under glass surfaces</summary></key>
+    <key name="glass-light-follows" type="b"><default>false</default><summary>A soft light spot follows the pointer over glass surfaces</summary></key>
     <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu, launcher and control centre with a gradient of the system accent colour</summary></key>
     <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the search and Task View buttons after the start button</summary></key>
     <key name="menu-theme-follow-system" type="b"><default>true</default><summary>With a custom menu theme, use light colours while the system style is light</summary></key>

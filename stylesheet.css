@@ -888,3 +888,17 @@
 .fusion-battery-big { font-size: 22pt; font-weight: 300; }
 .fusion-battery-status { font-weight: bold; }
 .fusion-battery-details { font-size: 9pt; color: rgba(127, 127, 127, 1); padding-top: 2px; }
+
+/* Connected gadgets in the battery menu (earbuds show each side). */
+.fusion-battery-device { spacing: 10px; }
+.fusion-battery-device-levels { spacing: 6px; }
+.fusion-battery-device-level {
+    spacing: 4px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 9.5pt;
+    font-weight: bold;
+    background-color: st-transparentize(-st-accent-color, 0.8);
+}
+.fusion-battery-device-part { font-weight: normal; opacity: 0.75; }
+.fusion-battery-device-low { background-color: rgba(230, 72, 77, 0.28); }
