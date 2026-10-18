@@ -34,6 +34,10 @@
       <default>'COLOR'</default><summary>Battery: coloured fill (full, normal, low, charging) with the percentage inside, or GNOME's icon</summary>
     </key>
     <key name="battery-standalone" type="b"><default>false</default><summary>Battery as its own panel button (menu with time left, power draw, health, power mode and charging mode) instead of inside the system menu</summary></key>
+    <key name="tray-app-icons" type="s">
+      <choices><choice value="ORIGINAL"/><choice value="MATCH"/></choices>
+      <default>'MATCH'</default><summary>Other apps' tray icons: original colours, or the same colour as the system status icons (taskbar text colour, or the accent with accent-coloured icons)</summary>
+    </key>
     <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, camera, Fn lock, USB charging) when the hardware has them</summary></key>
     <key name="panel-theme" type="s">
       <choices><choice value="AUTO"/><choice value="DARK"/><choice value="LIGHT"/></choices>
@@ -44,6 +48,10 @@
     <key name="glass-effect" type="s">
       <choices><choice value="OFF"/><choice value="SOFT"/><choice value="STRONG"/></choices>
       <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, launcher and control centre): blur, lighter top, bright top edge</summary>
+    </key>
+    <key name="glass-style" type="s">
+      <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/></choices>
+      <default>'CLEAR'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark) or halo (glow in the middle)</summary>
     </key>
     <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu, launcher and control centre with a gradient of the system accent colour</summary></key>
     <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the search and Task View buttons after the start button</summary></key>

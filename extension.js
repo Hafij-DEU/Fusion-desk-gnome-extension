@@ -22,6 +22,7 @@ import {SecondaryPanels} from './lib/multiMonitor.js';
 import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
 import {Battery} from './lib/battery.js';
+import {TrayTint} from './lib/trayTint.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
 import {migrateDesktopModes} from './lib/presets.js';
@@ -53,6 +54,8 @@ const MODULES = {
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
+    // Other apps' tray icons in the status-icon colour.
+    traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Coloured battery with the percentage inside (in GNOME's status area).
     battery: {cls: Battery, visible: null, keys: ['battery-style', 'battery-standalone', 'hidden-indicators']},
     // Hides chosen built-in status icons (after caffeine so its icon exists).
@@ -61,7 +64,7 @@ const MODULES = {
         keys: ['intellihide', 'intellihide-mode', 'dynamic-opacity', 'panel-position', 'panel-height', 'panel-opacity']},
     // Start button + per-monitor taskbar on every non-primary monitor.
     multimon: {cls: SecondaryPanels, visible: 'multi-monitor',
-        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent', 'accent-gradient', 'glass-effect']},
+        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent', 'accent-gradient', 'glass-effect', 'glass-style']},
 };
 
 // Fusion hides its own widget when one of these extensions is enabled, so the
@@ -83,7 +86,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-effect'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-effect', 'glass-style'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {
