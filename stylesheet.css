@@ -789,3 +789,23 @@
 #panel.fusion-panel.fusion-panel-light .panel-button#panelActivities .workspace-dot { background-color: #222226; }
 #panel.fusion-panel.fusion-panel-light:overview .panel-button#panelActivities .workspace-dot { background-color: #222226; }
 #panel.fusion-panel .panel-button#panelActivities .workspace-dot { background-color: #f2f2f4; }
+
+/* Status icons in the accent colour (icons-follow-accent); light-panel text stays dark. */
+#panel.fusion-panel.fusion-panel-light .panel-button .system-status-icon,
+#panel.fusion-panel.fusion-panel-light .panel-button StLabel { color: #1f1f23; }
+#panel.fusion-panel.fusion-accent-icons .panel-button .system-status-icon { color: -st-accent-color; }
+#panel.fusion-panel.fusion-accent-icons.fusion-panel-light .panel-button .system-status-icon { color: st-darken(-st-accent-color, 6%); }
+
+/* ==== Glass effect (Layout → Panel → Glass effect) ========================== */
+/* Popups and menus everywhere get a bright top edge and a light rim; Fusion's
+   own surfaces also get blur and a lighter top (lib/style.js). Colours stay the
+   theme's own, so light and dark shell themes both work. */
+.fusion-glass-ui .popup-menu-content,
+.fusion-glass-ui .fusion-tooltip,
+.fusion-glass-ui .fusion-preview-popup { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.12); }
+.fusion-glass-ui-strong .popup-menu-content,
+.fusion-glass-ui-strong .fusion-tooltip,
+.fusion-glass-ui-strong .fusion-preview-popup { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.30); border-color: rgba(255, 255, 255, 0.18); }
+.fusion-glass-ui .quick-toggle, .fusion-glass-ui-strong .quick-toggle,
+.fusion-glass-ui .fusion-deepin-cc-tile, .fusion-glass-ui-strong .fusion-deepin-cc-tile,
+.fusion-glass-ui .fusion-task-button:hover, .fusion-glass-ui-strong .fusion-task-button:hover { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.16); }

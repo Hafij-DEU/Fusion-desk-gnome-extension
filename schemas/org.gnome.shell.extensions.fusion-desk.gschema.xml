@@ -34,6 +34,12 @@
       <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>
     </key>
     <key name="icons-follow-accent" type="b"><default>true</default><summary>Paint the start button and Show Applications icons in the system accent colour</summary></key>
+    <key name="glass-effect" type="s">
+      <choices><choice value="OFF"/><choice value="SOFT"/><choice value="STRONG"/></choices>
+      <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, Deepin panels): blur, lighter top, bright top edge</summary>
+    </key>
+    <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu and Deepin panels with a gradient of the system accent colour</summary></key>
+    <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the Windows-like search and Task View buttons in Fusion and Deepin mode too</summary></key>
     <key name="menu-theme-follow-system" type="b"><default>true</default><summary>With a custom menu theme, use light colours while the system style is light</summary></key>
     <key name="panel-opacity" type="i"><range min="0" max="100"/><default>85</default><summary>Panel background opacity (%)</summary></key>
     <key name="multi-monitor" type="b"><default>true</default><summary>Show a panel on every monitor (start button and a taskbar with that monitor's windows)</summary></key>

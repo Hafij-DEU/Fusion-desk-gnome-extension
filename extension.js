@@ -44,8 +44,8 @@ const MODULES = {
     screenshot: {cls: ScreenshotButton, visible: 'screenshot-visible', keys: []},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
     // Extra buttons of the Windows-like and Deepin modes (see extraElements()).
-    winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: ['windows-search']},
-    taskview: {cls: TaskView, visible: 'windows-task-view', mode: 'windows', keys: []},
+    winsearch: {cls: WindowsSearch, visible: null, windowsExtra: true, keys: ['windows-search', 'windows-extras-in-fusion']},
+    taskview: {cls: TaskView, visible: 'windows-task-view', windowsExtra: true, keys: ['windows-extras-in-fusion']},
     dlauncher: {cls: DeepinLauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
     dcontrol: {cls: DeepinControlButton, visible: null, feature: 'control', keys: ['deepin-control-button', 'deepin-control-position']},
     // Not placed in the layout.
@@ -57,7 +57,7 @@ const MODULES = {
         keys: ['intellihide', 'intellihide-mode', 'dynamic-opacity', 'panel-position', 'panel-height', 'panel-opacity']},
     // Start button + per-monitor taskbar on every non-primary monitor.
     multimon: {cls: SecondaryPanels, visible: 'multi-monitor',
-        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent']},
+        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent', 'accent-gradient', 'glass-effect']},
 };
 
 // Fusion hides its own widget when one of these extensions is enabled, so the
@@ -79,7 +79,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-effect'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {
@@ -263,6 +263,11 @@ export default class FusionDeskExtension extends Extension {
         return this._deepin ?? null;
     }
 
+    /** Search and Task View buttons: Windows-like mode, or any mode when switched on for it. */
+    get windowsExtras() {
+        return this._mode === 'windows' || this._settings.get_boolean('windows-extras-in-fusion');
+    }
+
     /** Deepin features picked for use outside Deepin mode (empty when the switch is off). */
     _deepinFeatureList() {
         if (this._mode === 'deepin' || !this._settings.get_boolean('deepin-features-enabled'))
@@ -295,7 +300,7 @@ export default class FusionDeskExtension extends Extension {
     extraElements() {
         const afterMenu = [];
         const beforeQuick = [];
-        if (this._mode === 'windows')
+        if (this.windowsExtras)
             afterMenu.push('winsearch', 'taskview');
         if (this.deepinFeature('launcher') && !this.deepinStartButton)
             afterMenu.push('dlauncher');
@@ -338,6 +343,8 @@ export default class FusionDeskExtension extends Extension {
         if (def.mode && def.mode !== this._mode)
             return;
         if (def.feature && !this.deepinFeature(def.feature))
+            return;
+        if (def.windowsExtra && !this.windowsExtras)
             return;
         if (def.visible && !this.settings.get_boolean(def.visible))
             return;

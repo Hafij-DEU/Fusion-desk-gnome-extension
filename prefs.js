@@ -108,6 +108,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
             spinRow(s, 'panel-height', 'Height', 24, 96, 1, 'Pixels'),
             comboRow(s, 'panel-theme', 'Colours', ['AUTO', 'DARK', 'LIGHT'], ['Follow system style', 'Dark', 'Light']),
+            comboRow(s, 'glass-effect', 'Glass effect', ['OFF', 'SOFT', 'STRONG'], ['Off', 'Soft', 'Strong']),
+            switchRow(s, 'accent-gradient', 'Accent gradient', 'Taskbar, start menu and Deepin panels fade from the system accent colour'),
             spinRow(s, 'panel-opacity', 'Background opacity', 0, 100, 5, 'Percent'),
             switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),
             switchRow(s, 'hide-overview-dash', 'Hide overview dash', 'The taskbar replaces the dash in Activities'),
@@ -154,7 +156,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         taskbar.add(group('Taskbar', [
             spinRow(s, 'taskbar-icon-size', 'Icon size', 16, 64),
             entryRow(s, 'apps-icon', 'Show Applications icon (name or image path)'),
-            switchRow(s, 'icons-follow-accent', 'Accent-coloured icons', 'Start button and Show Applications icons take the system accent colour'),
+            switchRow(s, 'icons-follow-accent', 'Accent-coloured icons', 'Start button, Show Applications and status icons take the system accent colour'),
             switchRow(s, 'taskbar-show-favorites', 'Show pinned apps'),
             switchRow(s, 'taskbar-isolate-workspaces', 'Isolate workspaces', 'Only show windows on the current workspace'),
             switchRow(s, 'taskbar-previews', 'Window previews on hover'),
@@ -179,10 +181,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'taskbar-preview-close-middle', 'Middle-click a preview closes the window'),
         ], 'Right-click an icon for the app menu (pin / unpin, windows, quit).'));
         taskbar.add(group(_('Windows-like extras'), [
+            switchRow(s, 'windows-extras-in-fusion', _('Show in every mode'), _('Search and Task View also in Fusion and Deepin mode (Windows-like mode always has them)')),
             comboRow(s, 'windows-search', _('Search'), ['BOX', 'ICON', 'HIDDEN'], [_('Search box'), _('Icon only'), _('Hidden')]),
             switchRow(s, 'windows-task-view', _('Task View button'), _('Opens all windows and workspaces')),
             switchRow(s, 'windows-blur', _('Blur'), _('Blur behind the taskbar')),
-        ], _('Used when Desktop mode is Windows-like (Layout page). They go right after the start button; rounded hover tiles and short running pills give the Windows look.')));
+        ], _('Right after the start button. Shown in Windows-like mode (Layout page → Desktop mode), or in every mode with the first switch. Windows-like mode also adds rounded hover tiles.')));
         window.add(taskbar);
         this._addDeepinPage(window, s);
 
