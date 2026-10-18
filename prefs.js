@@ -309,6 +309,19 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             ...glassRows,
         ], _('Taskbar, menus, start menu, control centre and launcher. Clear glass is see-through with blur; solid gloss is opaque with a strong shine.')));
 
+        const blurScale = new Gtk.Scale({
+            adjustment: new Gtk.Adjustment({lower: 5, upper: 100, step_increment: 5, page_increment: 10}),
+            draw_value: true, digits: 0, hexpand: true, valign: Gtk.Align.CENTER, width_request: 200,
+        });
+        s.bind('wallpaper-blur-strength', blurScale.adjustment, 'value', Gio.SettingsBindFlags.DEFAULT);
+        const blurStrength = new Adw.ActionRow({title: _('Strength')});
+        blurStrength.add_suffix(blurScale);
+        s.bind('wallpaper-blur', blurStrength, 'sensitive', Gio.SettingsBindFlags.GET);
+        page.add(group(_('Wallpaper'), [
+            switchRow(s, 'wallpaper-blur', _('Blur wallpaper'), _('While windows are open; sharp when the desktop is empty')),
+            blurStrength,
+        ]));
+
         page.add(group(_('Colours'), [
             comboRow(s, 'panel-theme', _('Taskbar colours'), ['AUTO', 'DARK', 'LIGHT'], [_('Follow system style'), _('Dark'), _('Light')]),
             switchRow(s, 'accent-gradient', _('Accent gradient'), _('Taskbar, start menu, launcher and control centre fade from the system accent colour')),

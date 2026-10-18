@@ -23,6 +23,7 @@ import {AppHubButton, destroyStore} from './lib/menu/appHub.js';
 import {Indicators} from './lib/indicators.js';
 import {Battery} from './lib/battery.js';
 import {TrayTint} from './lib/trayTint.js';
+import {WallpaperBlur} from './lib/wallpaperBlur.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
 import {cleanupGlass} from './lib/glass.js';
@@ -57,6 +58,8 @@ const MODULES = {
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
     // Other apps' tray icons in the status-icon colour.
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
+    // Wallpaper blurs while windows are open on its monitor.
+    wallblur: {cls: WallpaperBlur, visible: 'wallpaper-blur', keys: ['wallpaper-blur-strength']},
     // Coloured battery with the percentage inside (in GNOME's status area).
     battery: {cls: Battery, visible: null, keys: ['battery-style', 'battery-standalone', 'hidden-indicators']},
     // Hides chosen built-in status icons (after caffeine so its icon exists).
@@ -65,7 +68,7 @@ const MODULES = {
         keys: ['intellihide', 'intellihide-mode', 'dynamic-opacity', 'panel-position', 'panel-height', 'panel-opacity']},
     // Start button + per-monitor taskbar on every non-primary monitor.
     multimon: {cls: SecondaryPanels, visible: 'multi-monitor',
-        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent', 'accent-gradient', 'glass-effect', 'glass-style']},
+        keys: ['layout', 'panel-', 'taskbar-', 'menu-visible', 'menu-icon', 'menu-label', 'menu-button-', 'icons-follow-accent', 'accent-gradient', 'glass-']},
 };
 
 // Fusion hides its own widget when one of these extensions is enabled, so the
