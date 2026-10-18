@@ -825,4 +825,44 @@
 }
 
 /* Coloured battery (lib/battery.js): its colour is the "normal" fill. */
-.fusion-battery { width: 30px; height: 15px; color: -st-accent-color; margin: 0 1px; }
+.fusion-battery { width: 38px; height: 19px; color: -st-accent-color; margin: 0 2px; }
+
+/* ---- Control centre: header, media card, system meters --------------------- */
+.fusion-deepin-cc-who { spacing: 10px; }
+.fusion-deepin-cc-avatar { border-radius: 99px; }
+.fusion-deepin-cc-name { font-weight: bold; font-size: 11pt; }
+.fusion-deepin-cc-header { spacing: 6px; }
+.fusion-deepin-cc-media {
+    padding: 10px;
+    spacing: 8px;
+    border-radius: 14px;
+    background-color: rgba(127, 127, 127, 0.14);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+.fusion-deepin-cc-media-chips { spacing: 6px; }
+.fusion-deepin-cc-media-chip { padding: 3px 10px 3px 6px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.14); max-width: 150px; }
+.fusion-deepin-cc-media-chip-box { spacing: 6px; font-size: 9pt; }
+.fusion-deepin-cc-media-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-deepin-cc-media-row { spacing: 12px; }
+.fusion-deepin-cc-media-cover { border-radius: 10px; padding: 2px; }
+.fusion-deepin-cc-media-cover:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-deepin-cc-media-title { font-weight: bold; }
+.fusion-deepin-cc-media-artist { font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-deepin-cc-media-controls { spacing: 6px; padding-top: 6px; }
+.fusion-deepin-cc-media-button { padding: 7px; border-radius: 99px; }
+.fusion-deepin-cc-media-button:hover { background-color: rgba(127, 127, 127, 0.20); }
+.fusion-deepin-cc-media-play { background-color: -st-accent-color; color: -st-accent-fg-color; padding: 9px; }
+.fusion-deepin-cc-media-play:hover { background-color: st-lighten(-st-accent-color, 8%); }
+.fusion-deepin-cc-meters { spacing: 8px; }
+.fusion-deepin-cc-meter {
+    padding: 8px 10px;
+    spacing: 4px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.12);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+}
+.fusion-deepin-cc-meter-head { spacing: 5px; color: rgba(127, 127, 127, 1); }
+.fusion-deepin-cc-meter-label { font-size: 8.5pt; }
+.fusion-deepin-cc-meter-value { font-weight: bold; font-size: 11pt; font-feature-settings: "tnum"; }
+.fusion-deepin-cc-meter-track { height: 4px; border-radius: 2px; background-color: rgba(127, 127, 127, 0.22); }
+.fusion-deepin-cc-meter-bar { height: 4px; border-radius: 2px; background-color: -st-accent-color; }

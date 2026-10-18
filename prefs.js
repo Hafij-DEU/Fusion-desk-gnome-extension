@@ -316,7 +316,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ], _('Blurred app grid with categories and search, or a small window with a category / A–Z list and favourites.')));
 
         page.add(group(_('Control centre'), [
-            switchRow(s, 'deepin-control-button', _('Control centre'), _('Side panel with quick toggles, volume and brightness, notifications, Settings shortcuts and a calendar')),
+            switchRow(s, 'deepin-control-button', _('Control centre'), _('Side panel with quick actions, media player, system meters, Settings shortcuts, notifications and a calendar')),
             comboRow(s, 'deepin-control-position', _('Button'), ['START', 'TRAY', 'CLOCK'],
                 [_('After the start button (opens on the left)'), _('In the tray (opens on the right)'), _('On the clock (opens on the right)')]),
         ]));
