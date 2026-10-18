@@ -287,11 +287,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(group(_('Style presets'), [presetRow], _('Pick one as a starting point, then change anything below or on the Desktop page.')));
 
         const glassRows = [
-            comboRow(s, 'glass-material', _('Material'), ['GLASS', 'GLOSS'], [_('Clear glass (see-through, blur)'), _('Solid gloss (opaque, shiny)')]),
+            comboRow(s, 'glass-material', _('Material'), ['GLASS', 'GLOSS'], [_('Clear glass (subtle shine)'), _('Gloss (strong shine, bevel)')]),
             comboRow(s, 'glass-style', _('Glass style'), ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO'],
                 [_('Clear'), _('Frosted'), _('Gel'), _('Tinted'), _('Smoke'), _('Halo')]),
-            spinRow(s, 'glass-opacity', _('Opacity'), 10, 100, 5, _('Menus, start menu, control centre and launcher; the taskbar keeps its own')),
-            switchRow(s, 'glass-rim', _('Rim highlight'), _('Thin light edge; a sharp bevel with solid gloss')),
+            spinRow(s, 'glass-opacity', _('Opacity'), 10, 100, 5, _('Menus, start menu, control centre and launcher; below 100 they blur what is behind. The taskbar keeps its own')),
+            switchRow(s, 'glass-rim', _('Rim highlight'), _('Thin light edge; a sharp bevel with gloss')),
             switchRow(s, 'glass-glare', _('Corner glare'), _('Light reflections in the corners')),
             switchRow(s, 'glass-shadow', _('Soft shadow'), _('Diffused shadow for depth')),
             switchRow(s, 'glass-light-follows', _('Light follows pointer'), _('A soft light spot moves with the pointer')),
@@ -299,15 +299,13 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const syncGlass = () => {
             const on = s.get_string('glass-effect') !== 'OFF';
             glassRows.forEach(r => r.set_sensitive(on));
-            glassRows[2].set_sensitive(on && s.get_string('glass-material') === 'GLASS');
         };
         s.connect('changed::glass-effect', syncGlass);
-        s.connect('changed::glass-material', syncGlass);
         syncGlass();
         page.add(group(_('Glass'), [
             comboRow(s, 'glass-effect', _('Glass effect'), ['OFF', 'SOFT', 'STRONG'], [_('Off'), _('Soft'), _('Strong')]),
             ...glassRows,
-        ], _('Taskbar, menus, start menu, control centre and launcher. Clear glass is see-through with blur; solid gloss is opaque with a strong shine.')));
+        ], _('Taskbar, menus, start menu, control centre and launcher. Lower the opacity to see the blurred desktop through them; 100 is solid.')));
 
         const blurScale = new Gtk.Scale({
             adjustment: new Gtk.Adjustment({lower: 5, upper: 100, step_increment: 5, page_increment: 10}),
