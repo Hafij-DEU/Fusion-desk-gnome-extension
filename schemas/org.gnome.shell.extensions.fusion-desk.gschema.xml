@@ -144,6 +144,11 @@
     </key>
     <key name="windows-task-view" type="b"><default>true</default><summary>Windows-like taskbar: show the Task View button (opens the overview)</summary></key>
     <key name="windows-blur" type="b"><default>true</default><summary>Windows-like taskbar: blur behind the taskbar</summary></key>
+    <key name="deepin-features-enabled" type="b"><default>false</default><summary>Use chosen Deepin features in Fusion and Windows-like modes, without switching to Deepin mode</summary></key>
+    <key name="deepin-features" type="as">
+      <default>['launcher', 'control', 'organizer']</default>
+      <summary>Deepin features used outside Deepin mode: launcher, control, organizer, look, floating, accent, icons</summary>
+    </key>
     <key name="deepin-organizer" type="b"><default>true</default><summary>Deepin mode: Organize Desktop (desktop files sorted into collections; Alt+O shows or hides them)</summary></key>
     <key name="deepin-organizer-collections" type="as">
       <default>['folders', 'documents', 'pictures', 'videos', 'music', 'apps', 'others']</default>

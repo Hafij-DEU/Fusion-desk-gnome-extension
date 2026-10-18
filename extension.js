@@ -29,7 +29,7 @@ import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButto
 const MODULES = {
     // Menu content settings apply live inside MenuHost; these rebuild the button/shortcuts.
     menu: {cls: StartMenu, visible: 'menu-visible',
-        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key']},
+        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key', 'deepin-launcher-button']},
     apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon']},
     taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor']},
     title: {cls: WindowTitle, visible: 'title-visible', keys: []},
@@ -45,8 +45,8 @@ const MODULES = {
     // Extra buttons of the Windows-like and Deepin modes (see extraElements()).
     winsearch: {cls: WindowsSearch, visible: null, mode: 'windows', keys: ['windows-search']},
     taskview: {cls: TaskView, visible: 'windows-task-view', mode: 'windows', keys: []},
-    dlauncher: {cls: DeepinLauncherButton, visible: 'deepin-launcher-button', mode: 'deepin', keys: ['deepin-launcher-icon', 'panel-height']},
-    dcontrol: {cls: DeepinControlButton, visible: 'deepin-control-button', mode: 'deepin', keys: []},
+    dlauncher: {cls: DeepinLauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-launcher-button', 'panel-height']},
+    dcontrol: {cls: DeepinControlButton, visible: null, feature: 'control', keys: ['deepin-control-button']},
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
@@ -150,9 +150,9 @@ export default class FusionDeskExtension extends Extension {
         this._mode = this._settings.get_string('desktop-mode');
         this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
         // Deepin and Windows-like modes add buttons and theming to the same
-        // Fusion taskbar; Deepin mode also brings its launcher, control centre
-        // and Organize Desktop.
-        if (this._mode === 'deepin') {
+        // Fusion taskbar. Deepin's parts (launcher, control centre, Organize
+        // Desktop, looks) also run outside Deepin mode when picked one by one.
+        if (this._mode === 'deepin' || this._deepinFeatureList().length) {
             try {
                 this._deepin = new DeepinMode(this);
             } catch (e) {
@@ -196,7 +196,7 @@ export default class FusionDeskExtension extends Extension {
     }
 
     _onSettingChanged(key) {
-        if (key === 'desktop-mode') {
+        if (key === 'desktop-mode' || (this._mode !== 'deepin' && (key === 'deepin-features-enabled' || key === 'deepin-features'))) {
             // Swap the whole desktop once the current event is done.
             if (!this._modeId) {
                 this._modeId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
@@ -258,13 +258,38 @@ export default class FusionDeskExtension extends Extension {
         return this._deepin ?? null;
     }
 
+    /** Deepin features picked for use outside Deepin mode (empty when the switch is off). */
+    _deepinFeatureList() {
+        if (this._mode === 'deepin' || !this._settings.get_boolean('deepin-features-enabled'))
+            return [];
+        return this._settings.get_strv('deepin-features');
+    }
+
+    /**
+     * Whether a Deepin feature is on: in Deepin mode by its own setting, in
+     * the other modes when it is picked in "Deepin features".
+     */
+    deepinFeature(id) {
+        if (this._mode !== 'deepin')
+            return this._deepinFeatureList().includes(id);
+        const own = {
+            launcher: 'deepin-launcher-button', control: 'deepin-control-button',
+            organizer: 'deepin-organizer', floating: 'deepin-floating-taskbar',
+        }[id];
+        return own ? this._settings.get_boolean(own) : true;
+    }
+
     /** Mode buttons placed around the user's layout: right after the start menu and before the system menu. */
     extraElements() {
+        const afterMenu = [];
+        const beforeQuick = [];
         if (this._mode === 'windows')
-            return {afterMenu: ['winsearch', 'taskview'], beforeQuick: []};
-        if (this._mode === 'deepin')
-            return {afterMenu: ['dlauncher'], beforeQuick: ['dcontrol']};
-        return {afterMenu: [], beforeQuick: []};
+            afterMenu.push('winsearch', 'taskview');
+        if (this.deepinFeature('launcher'))
+            afterMenu.push('dlauncher');
+        if (this.deepinFeature('control'))
+            beforeQuick.push('dcontrol');
+        return {afterMenu, beforeQuick};
     }
 
     toggleStartMenu() {
@@ -292,6 +317,8 @@ export default class FusionDeskExtension extends Extension {
     _build(name) {
         const def = MODULES[name];
         if (def.mode && def.mode !== this._mode)
+            return;
+        if (def.feature && !this.deepinFeature(def.feature))
             return;
         if (def.visible && !this.settings.get_boolean(def.visible))
             return;

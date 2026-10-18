@@ -151,6 +151,8 @@ plugins) is documented above but **not built**; its useful parts arrive as taskb
      optional icon / cursor theme (e.g. bloom from deepin-icon-theme) and accent colour from Deepin's palette while
      the mode runs, and an optional **floating taskbar** (Fashion-dock look: rounded, gap from the edges) that keeps
      the user's layout.
+   - **Outside Deepin mode** – `deepin-features-enabled` + `deepin-features` (launcher, control, organizer, look,
+     floating, accent, icons) turn single Deepin features on in Fusion / Windows-like mode.
 2. **Windows-like** – not a DDE feature, added at the user's request: search box (or icon) and Task View button after
    the start button, Windows-style rounded hover tiles, blur.
 

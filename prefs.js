@@ -259,6 +259,35 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
     /** Deepin mode: what it adds to the taskbar and desktop, and its looks. */
     _addDeepinPage(window, s) {
         const page = new Adw.PreferencesPage({title: _('Deepin'), icon_name: 'preferences-desktop-appearance-symbolic'});
+
+        // Pick Deepin parts for Fusion / Windows-like mode without switching to Deepin mode.
+        const features = new Adw.ExpanderRow({
+            title: _('Use Deepin features in Fusion mode'),
+            subtitle: _('Also in Windows-like mode. Pick the features below; Deepin mode itself always has all of them.'),
+            show_enable_switch: true,
+        });
+        s.bind('deepin-features-enabled', features, 'enable-expansion', Gio.SettingsBindFlags.DEFAULT);
+        const picks = [
+            ['launcher', _('Launcher'), _('Launcher button next to the start button (Super too, if "Super key opens the launcher" is on)')],
+            ['control', _('Control centre'), _('Bell button in the tray with toggles, notifications and Settings shortcuts')],
+            ['organizer', _('Organize desktop'), _('Desktop files in collections, Alt+O')],
+            ['look', _('Glossy look'), _('Glossy glass and blur on the taskbar (Look settings below)')],
+            ['floating', _('Floating taskbar'), _('Rounded taskbar with a gap from the screen edges')],
+            ['accent', _('Accent colour'), _('The Deepin accent chosen below')],
+            ['icons', _('Icon and cursor theme'), _('The themes chosen below')],
+        ];
+        for (const [id, title, subtitle] of picks) {
+            const row = new Adw.SwitchRow({title, subtitle});
+            row.active = s.get_strv('deepin-features').includes(id);
+            row.connect('notify::active', () => {
+                const list = s.get_strv('deepin-features').filter(f => f !== id);
+                if (row.active)
+                    list.push(id);
+                s.set_strv('deepin-features', list);
+            });
+            features.add_row(row);
+        }
+        page.add(group(_('Without Deepin mode'), [features]));
         page.add(group(_('Taskbar additions'), [
             switchRow(s, 'deepin-launcher-button', _('Launcher button'), _('Next to the start button')),
             entryRow(s, 'deepin-launcher-icon', _('Launcher button icon (name or image path, empty = built-in)')),
