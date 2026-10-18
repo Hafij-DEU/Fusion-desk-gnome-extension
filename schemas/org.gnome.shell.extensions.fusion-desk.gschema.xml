@@ -33,6 +33,8 @@
       <choices><choice value="COLOR"/><choice value="GNOME"/></choices>
       <default>'COLOR'</default><summary>Battery: coloured fill (full, normal, low, charging) with the percentage inside, or GNOME's icon</summary>
     </key>
+    <key name="battery-standalone" type="b"><default>false</default><summary>Battery as its own panel button (menu with time left, power draw, health, power mode and charging mode) instead of inside the system menu</summary></key>
+    <key name="laptop-controls" type="b"><default>true</default><summary>Laptop switches in the control centre (battery conservation, camera, Fn lock, USB charging) when the hardware has them</summary></key>
     <key name="panel-theme" type="s">
       <choices><choice value="AUTO"/><choice value="DARK"/><choice value="LIGHT"/></choices>
       <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>

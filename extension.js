@@ -54,7 +54,7 @@ const MODULES = {
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
     // Coloured battery with the percentage inside (in GNOME's status area).
-    battery: {cls: Battery, visible: null, keys: ['battery-style', 'hidden-indicators']},
+    battery: {cls: Battery, visible: null, keys: ['battery-style', 'battery-standalone', 'hidden-indicators']},
     // Hides chosen built-in status icons (after caffeine so its icon exists).
     indicators: {cls: Indicators, visible: null, keys: ['hidden-indicators']},
     autohide: {cls: AutoHide, visible: null,
@@ -276,6 +276,8 @@ export default class FusionDeskExtension extends Extension {
     extraElements() {
         const afterMenu = [];
         const beforeQuick = [];
+        // Standalone battery right after the system menu.
+        const afterQuick = this._settings.get_boolean('battery-standalone') ? ['battery'] : [];
         if (this.windowsExtras)
             afterMenu.push('winsearch', 'taskview');
         if (this.deepinFeature('launcher') && !this.deepinStartButton)
@@ -289,7 +291,7 @@ export default class FusionDeskExtension extends Extension {
             else if (where === 'TRAY')
                 beforeQuick.push('dcontrol');
         }
-        return {afterMenu, beforeQuick};
+        return {afterMenu, beforeQuick, afterQuick};
     }
 
     toggleStartMenu() {

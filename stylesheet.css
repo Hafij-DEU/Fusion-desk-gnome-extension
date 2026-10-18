@@ -715,7 +715,7 @@
 .fusion-deepin-cc-datebutton:hover { background-color: rgba(127, 127, 127, 0.14); }
 
 /* Control centre: notifications portion and month calendar at the bottom. */
-.fusion-deepin-cc-note-scroll { min-height: 60px; }
+.fusion-deepin-cc-note-scroll { min-height: 70px; }
 .fusion-deepin-cc-calendar {
     padding: 10px 12px 12px 12px;
     spacing: 6px;
@@ -866,3 +866,25 @@
 .fusion-deepin-cc-meter-value { font-weight: bold; font-size: 11pt; font-feature-settings: "tnum"; }
 .fusion-deepin-cc-meter-track { height: 4px; border-radius: 2px; background-color: rgba(127, 127, 127, 0.22); }
 .fusion-deepin-cc-meter-bar { height: 4px; border-radius: 2px; background-color: -st-accent-color; }
+
+/* Laptop switches in the control centre. */
+.fusion-deepin-cc-laptop { spacing: 8px; }
+.fusion-deepin-cc-switch {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.14);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+    transition-duration: 120ms;
+}
+.fusion-deepin-cc-switch:hover { background-color: rgba(127, 127, 127, 0.24); }
+.fusion-deepin-cc-switch:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-deepin-cc-switch:busy { opacity: 0.6; }
+.fusion-deepin-cc-switch-box { spacing: 8px; font-size: 9.5pt; }
+.fusion-deepin-cc-switch-dot { width: 8px; height: 8px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.5); }
+.fusion-deepin-cc-switch:checked .fusion-deepin-cc-switch-dot { background-color: -st-accent-fg-color; }
+
+/* Standalone battery button and its menu. */
+.fusion-battery-head { padding: 10px 16px 8px 16px; }
+.fusion-battery-big { font-size: 22pt; font-weight: 300; }
+.fusion-battery-status { font-weight: bold; }
+.fusion-battery-details { font-size: 9pt; color: rgba(127, 127, 127, 1); padding-top: 2px; }

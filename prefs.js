@@ -123,6 +123,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         layout.add(group('Battery', [
             comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
+            switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
         ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
         // Status icons (top-right system menu), one switch each.
         const status = new Adw.PreferencesGroup({title: 'Status icons',
