@@ -328,7 +328,17 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         syncPresets();
         s.connect('changed::desktop-mode', syncPresets);
         presetRow.add_suffix(presetBox);
-        page.add(group(_('Style presets'), [presetRow], _('Pick one as a starting point, then change anything below or on the Desktop page.')));
+        // Glass, colours and wallpaper back to the shipped look.
+        const LOOK_KEYS = ['panel-theme', 'glass-effect', 'glass-material', 'glass-style', 'glass-opacity', 'glass-rim',
+            'glass-glare', 'glass-shadow', 'glass-light-follows', 'accent-gradient', 'accent-gradient-style',
+            'accent-gradient-strength', 'icons-follow-accent', 'tray-app-icons', 'wallpaper-blur', 'wallpaper-blur-strength',
+            'deepin-opacity', 'deepin-blur', 'deepin-gloss'];
+        const lookRow = new Adw.ActionRow({title: _('Default look'),
+            subtitle: _('Frosted glass, aurora gradient and wallpaper blur; your layout and features stay')});
+        const lookButton = new Gtk.Button({label: _('Reset look'), valign: Gtk.Align.CENTER});
+        lookButton.connect('clicked', () => LOOK_KEYS.forEach(k => s.reset(k)));
+        lookRow.add_suffix(lookButton);
+        page.add(group(_('Style presets'), [presetRow, lookRow], _('Pick one as a starting point, then change anything below or on the Desktop page.')));
 
         const glassRows = [
             comboRow(s, 'glass-material', _('Material'), ['GLASS', 'GLOSS'], [_('Clear glass (subtle shine)'), _('Gloss (strong shine, bevel)')]),

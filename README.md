@@ -216,7 +216,8 @@ Raise **Opacity** (Settings → Appearance → Glass), pick the **Frosted** styl
 
 - A bottom 48 px panel with pills.
 - The start menu on the left, the taskbar in the centre, and the system monitor, clipboard, Quick Settings and clock on the right.
-- The **Classic** start menu with a dark theme, and strong clear glass.
+- The **Classic** start menu with a dark theme.
+- **Default look**: strong frosted glass at 75% opacity, the aurora accent gradient and a light wallpaper blur. **Settings → Appearance → Default look → Reset look** brings it back at any time without touching your layout.
 
 Change anything in the settings. To go back to the defaults:
 

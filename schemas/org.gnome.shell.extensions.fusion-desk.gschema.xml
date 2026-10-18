@@ -58,7 +58,7 @@
     </key>
     <key name="glass-style" type="s">
       <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/></choices>
-      <default>'CLEAR'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark) or halo (glow in the middle)</summary>
+      <default>'FROSTED'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark) or halo (glow in the middle)</summary>
     </key>
     <key name="glass-material" type="s">
       <choices><choice value="GLASS"/><choice value="GLOSS"/></choices>
@@ -66,24 +66,24 @@
     </key>
     <key name="glass-opacity" type="i">
       <range min="10" max="100"/>
-      <default>70</default><summary>Opacity of glass menus, start menu, control centre and launcher (percent); below 100 they blur what is behind</summary>
+      <default>75</default><summary>Opacity of glass menus, start menu, control centre and launcher (percent); below 100 they blur what is behind</summary>
     </key>
     <key name="glass-rim" type="b"><default>true</default><summary>Thin light rim along the edges of glass surfaces (a bevel with solid gloss)</summary></key>
     <key name="glass-glare" type="b"><default>true</default><summary>Light reflections in the corners of glass surfaces</summary></key>
-    <key name="glass-shadow" type="b"><default>true</default><summary>Soft shadow under glass surfaces</summary></key>
+    <key name="glass-shadow" type="b"><default>false</default><summary>Soft shadow under glass surfaces</summary></key>
     <key name="glass-light-follows" type="b"><default>false</default><summary>A soft light spot follows the pointer over glass surfaces</summary></key>
-    <key name="wallpaper-blur" type="b"><default>false</default><summary>Blur the wallpaper while windows are open; sharp when the desktop is empty</summary></key>
+    <key name="wallpaper-blur" type="b"><default>true</default><summary>Blur the wallpaper while windows are open; sharp when the desktop is empty</summary></key>
     <key name="wallpaper-blur-strength" type="i">
       <range min="5" max="100"/>
-      <default>50</default><summary>How strongly the wallpaper blurs (percent)</summary>
+      <default>5</default><summary>How strongly the wallpaper blurs (percent)</summary>
     </key>
     <key name="accent-gradient-style" type="s">
       <choices><choice value="CORNER"/><choice value="TOP"/><choice value="SIDE"/><choice value="CENTER"/><choice value="AURORA"/><choice value="SUNSET"/><choice value="OCEAN"/><choice value="BERRY"/></choices>
-      <default>'CORNER'</default><summary>Accent gradient shape: from the top-left corner, the top, the left side or the centre, or a blend with a second colour (aurora, sunset, ocean, berry)</summary>
+      <default>'AURORA'</default><summary>Accent gradient shape: from the top-left corner, the top, the left side or the centre, or a blend with a second colour (aurora, sunset, ocean, berry)</summary>
     </key>
     <key name="accent-gradient-strength" type="i">
       <range min="10" max="100"/>
-      <default>50</default><summary>How strong the accent gradient is (percent)</summary>
+      <default>100</default><summary>How strong the accent gradient is (percent)</summary>
     </key>
     <key name="accent-gradient" type="b"><default>true</default><summary>Shade the taskbar, start menu, launcher and control centre with a gradient of the system accent colour</summary></key>
     <key name="windows-extras-in-fusion" type="b"><default>false</default><summary>Show the search and Task View buttons after the start button</summary></key>
@@ -250,7 +250,7 @@
       <default>'START'</default><summary>Control centre button: after the start button (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
     </key>
     <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
-    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>80</default><summary>Launcher, control centre and collections opacity in percent</summary></key>
+    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>50</default><summary>Launcher, control centre and collections opacity in percent</summary></key>
 
   </schema>
 </schemalist>
