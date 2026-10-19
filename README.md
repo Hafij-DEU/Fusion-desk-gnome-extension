@@ -7,9 +7,10 @@
 [![GNOME 50](https://img.shields.io/badge/GNOME-50-4A86CF?logo=gnome&logoColor=white)](https://release.gnome.org/50/)
 [![Latest release](https://img.shields.io/github/v/release/Hafij-DEU/Fusion-desk-gnome-extension?color=2ea44f)](https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/Hafij-DEU/Fusion-desk-gnome-extension/total?color=orange)](https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/releases)
+[![Last commit](https://img.shields.io/github/last-commit/Hafij-DEU/Fusion-desk-gnome-extension)](https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/commits/main)
 [![License: GPL-2.0-or-later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)](LICENSE)
 
-[Install](#install) · [Features](#features) · [Screenshots](#screenshots) · [Settings](#where-to-find-things) · [FAQ](#faq) · [Credits](#credits)
+[Install](#install) · [Features](#features) · [Shortcuts](#keyboard-shortcuts) · [Screenshots](#screenshots) · [Settings](#where-to-find-things) · [FAQ](#faq) · [Contributing](#contributing)
 
 <img src="screenshots/desktop.png" alt="Fusion Desk: floating glass taskbar with the control centre open" width="900">
 
@@ -17,17 +18,27 @@
 
 ---
 
-## Why Fusion Desk
+Fusion Desk replaces Ubuntu's dock and GNOME's top bar with **one configurable panel**. It does the work of five or six extensions: taskbar, start menu, system monitor, clipboard history, media controls and more, plus a glass look you can tune or switch off.
 
-Fusion Desk replaces Ubuntu's dock and GNOME's top bar with a single, configurable panel. It brings together what usually takes five or six extensions: a taskbar, a start menu, a system monitor, clipboard history, media controls and more. It also adds a modern glass look you can tune down to the last detail.
+<table>
+  <tr>
+    <td width="33%" valign="top"><b>🪟 Taskbar</b><br>Pinned and running apps, previews, intellihide, floating or full-width, every monitor.</td>
+    <td width="33%" valign="top"><b>🚀 Start menu</b><br>7 layouts, search with math and commands, fullscreen app launcher.</td>
+    <td width="33%" valign="top"><b>🎛️ Control centre</b><br>Media, meters, notifications, calendar and quick actions in one panel.</td>
+  </tr>
+  <tr>
+    <td valign="top"><b>✨ Glass</b><br>Six styles, two materials, accent gradients, wallpaper blur.</td>
+    <td valign="top"><b>🔋 Battery</b><br>Coloured battery, device batteries, power modes, charge limit.</td>
+    <td valign="top"><b>🧩 Widgets</b><br>System monitor, clipboard, media, clock, Caffeine, desktop organizer.</td>
+  </tr>
+</table>
 
-- **Everything in one place.** The panel layout, start menu, widgets and appearance are all in one settings window.
-- **Looks the way you like.** Pick a glass style, a material, a gradient and your own opacity, or turn it all off for a flat panel.
-- **Light on your system.** Clean-room code built on GNOME Shell's own APIs, with no background daemons. The one optional helper is the charge limit's.
+> [!NOTE]
+> **New in v17:** dark-mode glass with a dark gradient instead of a white wash, full white text in dark menus, menus that follow light / dark switches, and a new default look. [All releases →](https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/releases)
 
 ## Install
 
-Needs **GNOME 50** (Ubuntu 26.04). Check with `gnome-shell --version`.
+**Requires GNOME 50** (Ubuntu 26.04). Check with `gnome-shell --version`.
 
 1. Download the latest release:
 
@@ -60,57 +71,107 @@ Needs **GNOME 50** (Ubuntu 26.04). Check with `gnome-shell --version`.
    ```
 
 > [!TIP]
-> To update, run steps 1–3 again. Your settings are kept.
+> **Updating:** repeat steps 1–3. Your settings are kept.
 
 ## Features
 
-### 🪟 Panel and taskbar
+Click a section to expand it.
+
+<details open>
+<summary><b>🪟 Panel and taskbar</b></summary>
+
 - Top or bottom, any height and opacity. **Floating** (rounded, with a gap from the screen edges) or full width.
 - **Pills** style groups the tray, clock and system monitor into rounded blocks, or choose **Flat**.
-- Pinned and running apps, grouped or one button per window, window previews, indicator styles, and click / middle-click / scroll actions. Super+1…9 opens apps.
-- **Intellihide** (with edge-pressure reveal), dynamic opacity, panels on every monitor.
+- Pinned and running apps, grouped or one button per window. Window previews, indicator styles, and click / middle-click / scroll actions.
+- **Intellihide** with edge-pressure reveal, dynamic opacity, and panels on every monitor.
 - **Element layout**: show, hide, reorder and place every item left, centre or right.
+- A busy right side never squeezes items into "…": the taskbar moves aside instead.
 - Optional **search box** and **Task View** button right after the start button.
 
-### 🚀 Start menu and app launcher
-- **7 start menu layouts** (Modern, Launcher Grid, Runner, Classic, Fusion, Sidebar, Tabbed), picked from drawn previews.
-- Search with calculator, `>commands`, recent files and web. Places, drives and bookmarks. Labelled power options. One-click import of an existing ArcMenu setup.
-- **App launcher**: fullscreen blurred grid with a category rail, or a small window. Use its own button, the start button or Super.
+</details>
 
-### 🎛️ Control centre
-- Avatar and quick actions (screenshot, Settings, lock, power).
+<details>
+<summary><b>🚀 Start menu and app launcher</b></summary>
+
+- **7 start menu layouts**: Modern, Launcher Grid, Runner, Classic, Fusion, Sidebar and Tabbed, picked from drawn previews.
+- Search with a calculator (`12*(3+4)`), commands (`>htop`), recent files and the web.
+- Places, drives and bookmarks. Labelled power options.
+- One-click import of an existing ArcMenu setup.
+- **App launcher**: a fullscreen blurred grid with a category rail, or a small window. Open it with its own button, the start button or Super.
+
+</details>
+
+<details>
+<summary><b>🎛️ Control centre</b></summary>
+
+- Avatar and quick actions: screenshot, Settings, lock, power.
 - **Media card** with cover and controls, plus a chip per player when several are playing.
 - CPU, memory, disk and battery meters. Battery care and Fn lock switches on laptops that support them.
 - **Notifications** take only the room they need. The panel grows with them, then scrolls.
-- Month calendar. The button sits after the start button, in the tray, or on the clock.
+- Month calendar.
+- The button can sit after the start button, in the tray, or on the clock.
 
-### ✨ Glass and colours
+</details>
+
+<details>
+<summary><b>✨ Glass and colours</b></summary>
+
 - **Glass effect** (off / soft / strong) on the taskbar, start menu, Quick Settings, calendar, every panel menu, control centre and launcher.
 - **Six styles**: Clear, Frosted, Gel, Tinted, Smoke, Halo.
 - **Two materials**: clear glass (subtle shine) or gloss (strong polished shine and bevel).
 - **Opacity**: below 100% the desktop shows through, blurred.
+- **Dark mode** surfaces get a dark gradient with weaker shine, so bright wallpapers don't wash them out.
 - Optional **rim highlight**, **corner glare**, **soft shadow** and a **light that follows the pointer**.
-- **Accent gradient** in eight kinds: from the corner, the top, the side or the middle, or blended with a second colour (aurora, sunset, ocean, berry). The strength is adjustable.
-- **Accent-coloured icons**. Plain white / black app tray icons take the same colour; colourful ones keep theirs.
+- **Accent gradient** in eight kinds: from the corner, the top, the side or the middle, or blended with a second colour (aurora, sunset, ocean, berry). Strength is adjustable.
+- **Accent-coloured icons**: plain white / black tray icons take the accent colour, colourful ones keep theirs.
 - **Wallpaper blur** while windows are open, sharp again on an empty desktop.
 - Light / dark taskbar that follows the system style. Optional accent colour, icon and cursor theme while Fusion Desk runs.
 
-### 🔋 Battery and power
+</details>
+
+<details>
+<summary><b>🔋 Battery and power</b></summary>
+
 - **Coloured battery** with the percentage inside: green when full or charging, accent when normal, orange when low, red when almost empty.
-- **Battery button** (optional), whose menu shows:
+- **Battery button** (optional). Its menu shows:
   - time left or time to full, power draw and battery health
   - **connected devices' batteries** (earbuds show left / right / case when the system reports them)
   - power mode and charging modes
-- **Charge limit** (default 90%): stops charging at the level you choose. [How it works ↓](#charge-limit)
+- **Charge limit** (default 90%) stops charging at the level you choose. [How it works ↓](#charge-limit)
 
-### 🧩 Widgets and extras
-- System monitor (CPU, RAM, temperature, network).
-- Clipboard history (optional Super+V; paste-on-select is opt-in).
+</details>
+
+<details>
+<summary><b>🧩 Widgets and extras</b></summary>
+
+- System monitor: CPU, RAM, temperature, network.
+- Clipboard history, with an optional Super+V shortcut. Paste-on-select is opt-in.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
-- **Organize Desktop**: Desktop-folder files in movable, resizable collections (Computer, folders, documents, pictures, videos, music, apps, others). Alt+O hides or shows them. Works with the Desktop Icons extension.
+- **Organize Desktop**: Desktop-folder files in movable, resizable collections (Computer, folders, documents, pictures, videos, music, apps, others). Works with the Desktop Icons extension.
 - **Right-click menu**: style presets, background apps (with quit buttons), disk usage, panel toggles, power, quick launchers.
-- **Style presets**: **Classic** (taskbar only), **Studio** (launcher, control centre, organizer, floating taskbar) or **Workbench** (search box and Task View). A preset only flips settings, never your layout.
+- **Style presets**:
+  - **Classic**: taskbar only.
+  - **Studio**: launcher, control centre, organizer, floating taskbar.
+  - **Workbench**: search box and Task View.
+
+  A preset only flips settings; your layout stays.
+- **No duplicates**: if another extension already shows a widget (for example GNOME's system monitor or Caffeine), Fusion Desk hides its own copy.
 - **App Hub** integration when [App Hub](https://github.com/Hafij-DEU/Application-hub) is installed.
+
+</details>
+
+## Keyboard shortcuts
+
+| Shortcut | Action | Setting |
+| --- | --- | --- |
+| <kbd>Super</kbd> | Start menu, runner or app launcher | Menu Button / Desktop |
+| <kbd>Super</kbd>+<kbd>R</kbd> | Runner (quick search) | Menu Button |
+| <kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | Open or focus the nth taskbar app | Taskbar |
+| <kbd>Ctrl</kbd>+<kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | New window of the nth taskbar app | Taskbar |
+| <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
+| <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show Organize Desktop collections | Desktop |
+
+An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Menu Button**.
 
 ## Screenshots
 
@@ -144,32 +205,46 @@ Needs **GNOME 50** (Ubuntu 26.04). Check with `gnome-shell --version`.
 
 ## Where to find things
 
+Settings pages: **Layout · Appearance · Taskbar · Desktop · Start Menu · Menu Button · Widgets · About**.
+
 | I want to… | Go to |
 | --- | --- |
-| Move the panel, change its height or opacity | Settings → **Layout** → Panel |
-| Reorder or hide panel items | Settings → **Layout** → Elements |
-| Show the battery as its own button, set a charge limit | Settings → **Layout** → Battery / Charge limit |
-| Pick a preset, glass style, material or opacity | Settings → **Appearance** → Style presets / Glass |
-| Change the gradient, accent icons or wallpaper blur | Settings → **Appearance** → Colours / Wallpaper |
-| Add the search box and Task View | Settings → **Taskbar** → Search and Task View |
-| Turn on the launcher, control centre or Organize Desktop | Settings → **Desktop** |
-| Choose a start menu layout or theme | Settings → **Start Menu** |
-| Change the start button icon or hotkeys | Settings → **Menu Button** |
-| Configure system monitor, clipboard, clock, media | Settings → **Widgets** |
+| Move the panel, change its height or opacity | **Layout** → Panel |
+| Reorder or hide panel items | **Layout** → Elements |
+| Show the battery as its own button, set a charge limit | **Layout** → Battery / Charge limit |
+| Pick a preset, glass style, material or opacity | **Appearance** → Style presets / Glass |
+| Change the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Wallpaper |
+| Add the search box and Task View | **Taskbar** → Search and Task View |
+| Turn on the launcher, control centre or Organize Desktop | **Desktop** |
+| Choose a start menu layout or theme | **Start Menu** |
+| Change the start button icon or hotkeys | **Menu Button** |
+| Configure system monitor, clipboard, clock, media | **Widgets** |
+
+## Compatibility
+
+| | |
+| --- | --- |
+| **GNOME Shell** | 50 only. 48 / 49 lack an API Fusion Desk needs; 51 is untested. |
+| **Session** | Wayland (GNOME 50 has no X11 session). |
+| **Ubuntu Dock** | Turn it off; Fusion Desk replaces it. |
+| **Dash to Panel** | Turn it off. Fusion Desk pauses itself while Dash to Panel is on and tells you so. |
+| **ArcMenu** | Turn it off; both want the Super key. Import its setup in **Start Menu → Import from ArcMenu**. |
+| **System monitor, Caffeine, Clipboard History, Date Menu Formatter** | Fine to keep. Fusion Desk hides its own duplicate. |
+| **Desktop Icons (DING)** | Works alongside Organize Desktop. |
 
 ## Charge limit
 
 Settings → **Layout** → **Charge limit** stops charging at a level you choose (60–100%, default 90%).
 
-- **Laptops with an adjustable limit** (`charge_control_end_threshold`) get it set directly by the firmware.
-- **Others**, for example IdeaPads with a fixed battery-protection mode: Fusion Desk charges normally up to your level, then switches to protection so charging stops. Below the level minus 3%, it charges again. The limit can't go below the laptop's own protection level (often 60 or 80%).
+- **Laptops with an adjustable limit** (`charge_control_end_threshold`): the firmware enforces it directly.
+- **Other laptops**, for example IdeaPads with a fixed battery-protection mode: Fusion Desk charges normally up to your level, then switches protection on so charging stops. It charges again below your level minus 3%. The limit can't go below the laptop's own protection level (often 60 or 80%).
 
 Changing the charging mode needs administrator rights. **Set up** asks for your password **once** and installs:
 
 - `/usr/local/libexec/fusion-desk-charge`: a tiny helper that can only write a charging mode or a limit between 50 and 100%.
 - A polkit rule that lets your logged-in session run that helper without a password.
 
-The same button (**Remove**) takes both out again.
+**Remove** takes both out again.
 
 ## FAQ
 
@@ -188,7 +263,7 @@ The graphical way is the **Extension Manager** app (`sudo apt install gnome-shel
 <details>
 <summary><b>I use Dash to Panel or ArcMenu</b></summary>
 
-Turn them off: they change the same panel and the Super key. Fusion Desk pauses itself while Dash to Panel is on and tells you so. To bring over an ArcMenu setup, use **Settings → Start Menu → Import from ArcMenu**.
+Turn them off: they change the same panel and the Super key. To bring over an ArcMenu setup, use **Settings → Start Menu → Import from ArcMenu**.
 
 ```bash
 gnome-extensions disable dash-to-panel@jderose9.github.com
@@ -217,9 +292,9 @@ Raise **Opacity** (Settings → Appearance → Glass), pick the **Frosted** styl
 - A bottom 48 px panel with pills.
 - The start menu on the left, the taskbar in the centre, and the system monitor, clipboard, Quick Settings and clock on the right.
 - The **Classic** start menu with a dark theme.
-- **Default look**: strong frosted glass at 75% opacity, the aurora accent gradient and a light wallpaper blur. **Settings → Appearance → Default look → Reset look** brings it back at any time without touching your layout.
+- **Default look**: strong frosted glass at 75% opacity, the aurora accent gradient and a light wallpaper blur.
 
-Change anything in the settings. To go back to the defaults:
+**Settings → Appearance → Style presets → Reset look** brings the default look back at any time without touching your layout. To reset everything:
 
 ```bash
 dconf reset -f /org/gnome/shell/extensions/fusion-desk/
@@ -252,6 +327,19 @@ gnome-extensions pack --force --extra-source=lib --extra-source=icons --extra-so
 gnome-extensions install --force dist/fusion-desk@hafij-deu.github.io.shell-extension.zip
 ```
 
+Log out and back in to load the build.
+
+## Contributing
+
+- **Bugs and ideas**: [open an issue](https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/issues). Include `gnome-shell --version`, your list of enabled extensions (`gnome-extensions list --enabled`) and any lines from:
+
+  ```bash
+  journalctl --user -b | grep -i fusion
+  ```
+
+- **Code**: pull requests are welcome. Keep changes clean-room: no code copied from other extensions.
+- **Translations**: the UI is English only for now.
+
 ## Privacy
 
 - **Clipboard history** is kept in memory. With **Remember after restart** (on by default), it is also stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600).
@@ -260,8 +348,8 @@ gnome-extensions install --force dist/fusion-desk@hafij-deu.github.io.shell-exte
 - **Web search** runs only when you pick that result. The URL is configurable.
 - **Organize Desktop** only lists your Desktop folder. It opens, shows or trashes a file only when you ask.
 - **Themes**: if you pick an accent colour, icon or cursor theme on the Appearance page, Fusion Desk switches GNOME's setting while it runs. Yours comes back when you choose "Keep mine" or turn the extension off.
-- **App Hub** actions run your installed `app-hub` command only when you click them. While the App Hub button is shown, there is also a background `app-hub list` check once an hour.
-- **Nothing is ever sent anywhere** by Fusion Desk itself.
+- **App Hub** actions run your installed `app-hub` command only when you click them. While the App Hub button is shown, `app-hub list` also runs in the background once an hour.
+- **Fusion Desk itself never sends anything anywhere.**
 
 ## Credits
 
