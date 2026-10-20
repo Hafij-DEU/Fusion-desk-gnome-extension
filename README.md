@@ -40,6 +40,20 @@ Fusion Desk replaces Ubuntu's dock and GNOME's top bar with **one configurable p
 
 **Requires GNOME 50** (Ubuntu 26.04). Check with `gnome-shell --version`.
 
+### One command
+
+This downloads the latest release, installs it for your user (no `sudo`) and turns it on:
+
+```bash
+curl -fL https://github.com/Hafij-DEU/Fusion-desk-gnome-extension/releases/latest/download/fusion-desk@hafij-deu.github.io.shell-extension.zip -o /tmp/fusion-desk.zip && gnome-extensions install --force /tmp/fusion-desk.zip && { gsettings get org.gnome.shell enabled-extensions | grep -q "'fusion-desk@hafij-deu.github.io'" || gsettings set org.gnome.shell enabled-extensions "$(gsettings get org.gnome.shell enabled-extensions | sed "s/]$/, 'fusion-desk@hafij-deu.github.io']/; s/^@as \[, /[/")"; }
+```
+
+Then **log out and back in**, and turn off Ubuntu's dock (step 4 below). Run the same command again to update.
+
+With [App Hub](https://github.com/Hafij-DEU/Application-hub), install it from **My Apps ▸ Extensions** instead. App Hub also updates it.
+
+### Step by step
+
 1. Download the latest release:
 
    ```bash
