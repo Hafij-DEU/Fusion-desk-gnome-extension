@@ -5,7 +5,7 @@ import Gtk from 'gi://Gtk';
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import {ELEMENT_NAMES, parseLayout} from './lib/layoutModel.js';
-import {addMenuPages} from './lib/prefsMenu.js';
+import {addMenuPages, appInfo, chooseApp} from './lib/prefsMenu.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
 
@@ -456,7 +456,46 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'pip-on-top', _('Always on top'), _('Picture-in-picture windows of every app stay above other windows')),
             switchRow(s, 'pip-all-workspaces', _('On every workspace'), _('They follow you when you switch workspaces')),
             pipTitles,
-        ], _('Works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf) and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.')));
+        ], _('Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.')));
+
+        // Apps whose every window stays on top (also: right-click the app on the taskbar).
+        const onTop = new Adw.PreferencesGroup({
+            title: _('Always on top apps'),
+            description: _('Windows of these apps always stay above other windows. Also: right-click an app on the taskbar → Always on top.'),
+        });
+        const addApp = new Gtk.Button({icon_name: 'list-add-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
+            tooltip_text: _('Add an app')});
+        addApp.connect('clicked', () => chooseApp(window, id => {
+            const ids = s.get_strv('ontop-apps');
+            if (!ids.includes(id))
+                s.set_strv('ontop-apps', [...ids, id]);
+        }));
+        onTop.set_header_suffix(addApp);
+        let onTopRows = [];
+        const fillOnTop = () => {
+            onTopRows.forEach(r => onTop.remove(r));
+            onTopRows = s.get_strv('ontop-apps').map(id => {
+                const info = appInfo(id);
+                const row = new Adw.ActionRow({title: info?.get_display_name() ?? id, subtitle: info ? '' : _('Not installed')});
+                if (info?.get_icon())
+                    row.add_prefix(new Gtk.Image({gicon: info.get_icon(), pixel_size: 32}));
+                const del = new Gtk.Button({icon_name: 'user-trash-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
+                    tooltip_text: _('Remove')});
+                del.connect('clicked', () => s.set_strv('ontop-apps', s.get_strv('ontop-apps').filter(x => x !== id)));
+                row.add_suffix(del);
+                onTop.add(row);
+                return row;
+            });
+            if (!onTopRows.length) {
+                const empty = new Adw.ActionRow({title: _('No apps yet'), subtitle: _('Use + to add one')});
+                onTop.add(empty);
+                onTopRows = [empty];
+            }
+        };
+        fillOnTop();
+        const onTopId = s.connect('changed::ontop-apps', fillOnTop);
+        page.connect('destroy', () => s.disconnect(onTopId));
+        page.add(onTop);
         window.add(page);
     }
 

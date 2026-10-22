@@ -61,8 +61,8 @@ const MODULES = {
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
-    // Picture-in-picture windows of any app stay on top (options apply live).
-    pip: {cls: PipOnTop, visible: 'pip-on-top', keys: []},
+    // Picture-in-picture windows and chosen apps stay on top (options apply live).
+    pip: {cls: PipOnTop, visible: null, keys: []},
     // Other apps' tray icons in the status-icon colour.
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Wallpaper blurs while windows are open on its monitor.
