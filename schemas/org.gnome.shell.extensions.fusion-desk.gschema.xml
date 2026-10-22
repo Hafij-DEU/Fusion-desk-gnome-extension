@@ -162,6 +162,11 @@
       <choices><choice value="12H"/><choice value="24H"/><choice value="SYSTEM"/></choices>
       <default>'12H'</default><summary>Dashboard layout clock: 12-hour, 24-hour or the system clock format</summary>
     </key>
+    <key name="menu-weather-unit" type="s">
+      <choices><choice value="C"/><choice value="F"/><choice value="SYSTEM"/></choices>
+      <default>'C'</default><summary>Dashboard weather temperature: Celsius, Fahrenheit or the locale's unit</summary>
+    </key>
+    <key name="menu-pinned-files" type="as"><default>[]</default><summary>Recent files pinned on the Dashboard (URIs, shown first)</summary></key>
     <key name="menu-dash-image" type="s"><default>''</default><summary>Dashboard layout background image path (for IMAGE)</summary></key>
     <key name="menu-weather-city" type="s"><default>''</default><summary>Dashboard weather city as typed (empty = no weather card)</summary></key>
     <key name="menu-weather-location" type="av"><default>[]</default><summary>Dashboard weather location found for menu-weather-city (serialized GWeather location)</summary></key>

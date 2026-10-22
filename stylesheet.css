@@ -1088,9 +1088,10 @@
 .fusion-sm-dash-chips .fusion-sm-chip:hover { background-color: rgba(127, 127, 127, 0.16); }
 .fusion-sm-dash-recent { spacing: 8px; }
 .fusion-sm-dash-recent .fusion-sm-rec-row { spacing: 8px; }
-.fusion-sm-dash-recent .fusion-sm-card { padding: 10px 12px; border-radius: 14px; background-color: rgba(127, 127, 127, 0.08); }
-.fusion-sm-dash-recent .fusion-sm-card-art { width: 54px; height: 54px; }
-.fusion-sm-dash-recent .fusion-sm-item-box { spacing: 12px; }
+.fusion-sm-dash-recent .fusion-sm-card { padding: 8px 6px 8px 10px; border-radius: 14px; background-color: rgba(127, 127, 127, 0.08); }
+.fusion-sm-dash-recent .fusion-sm-card-art { width: 44px; height: 44px; }
+.fusion-sm-dash-recent .fusion-sm-item-box { spacing: 8px; }
+.fusion-sm-dash-recent .fusion-sm-item-name { font-size: 0.95em; }
 
 /* Widgets */
 .fusion-sm-dash-widget { min-height: 108px; spacing: 6px; }
@@ -1284,8 +1285,13 @@
     background-gradient-end: #1c2368;
 }
 .fusion-sm-dashboard.fusion-sm-dash-space .fusion-sm-dash-tint {
-    background-gradient-start: rgba(255, 255, 255, 0.0);
-    background-gradient-end: rgba(255, 255, 255, 0.0);
+    /* Pale lavender haze at the top, as in the design, gone by the widgets. */
+    background-gradient-start: rgba(246, 240, 255, 0.42);
+    background-gradient-end: rgba(246, 240, 255, 0.0);
+}
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint {
+    background-gradient-start: rgba(20, 22, 70, 0.30);
+    background-gradient-end: rgba(10, 12, 40, 0.0);
 }
 /* The haze sits on the pinned area only, so the banner shows the picture vivid. */
 .fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box {
@@ -1311,3 +1317,16 @@
     box-shadow: none;
 }
 .fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom.fusion-sm-dash-slot:hover { background-gradient-start: rgba(60, 80, 170, 0.55); }
+
+/* Rounder type, as in the design (Inter where installed). */
+.fusion-sm-dashboard { font-family: Inter, Cantarell, sans-serif; }
+.fusion-sm-dashboard .fusion-sm-search { font-size: 1.08em; padding: 10px 18px; }
+.fusion-sm-dashboard .fusion-sm-dash-title, .fusion-sm-dashboard .fusion-sm-item-name { font-weight: 600; }
+.fusion-sm-dashboard .fusion-sm-dash-time { font-size: 3.2em; font-weight: 700; }
+.fusion-sm-dashboard .fusion-sm-dash-tile .fusion-sm-tile-label { font-size: 1em; }
+
+/* File card pin and ⋮ */
+.fusion-sm-card-pin, .fusion-sm-card-more { padding: 3px; }
+.fusion-sm-card-pin, .fusion-sm-card-more { color: rgba(110, 110, 140, 0.85); }
+.fusion-sm-card-pin.pinned { color: -st-accent-color; }
+.fusion-sm-dashboard.fusion-sm-dash-dark .fusion-sm-card-pin, .fusion-sm-dashboard.fusion-sm-dash-dark .fusion-sm-card-more { color: rgba(255, 255, 255, 0.75); }
