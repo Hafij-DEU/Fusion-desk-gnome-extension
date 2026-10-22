@@ -1695,3 +1695,15 @@
     background-gradient-start: rgba(30, 50, 160, 0.42);
     background-gradient-end: rgba(25, 30, 110, 0.34);
 }
+
+/* Galaxy: widgets and bar outside the pinned panel */
+.fusion-sm-galaxy .fusion-sm-galaxy-right { spacing: 10px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-panel.fusion-sm-galaxy-pinned { padding-bottom: 12px; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-widget-holder StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-quick StLabel { text-shadow: 0 1px 3px rgba(5, 8, 40, 0.85); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-widget-holder .fusion-sm-galaxy-widget,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick .fusion-sm-galaxy-quick-item,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick .fusion-sm-galaxy-quick-more {
+    background-gradient-start: rgba(40, 50, 150, 0.46);
+    background-gradient-end: rgba(20, 24, 96, 0.56);
+}
