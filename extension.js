@@ -9,6 +9,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {PanelLayout} from './lib/panelLayout.js';
 import {StartMenu} from './lib/startMenu.js';
 import {AppsButton, Taskbar} from './lib/taskbar.js';
+import {TrayOverflow} from './lib/trayOverflow.js';
 import {WindowTitle} from './lib/windowTitle.js';
 import {Workspaces} from './lib/workspaces.js';
 import {MediaControls} from './lib/media.js';
@@ -48,6 +49,8 @@ const MODULES = {
     clipboard: {cls: ClipboardHistory, visible: null, keys: ['clipboard-visible', 'clipboard-super-v']},
     apphub: {cls: AppHubButton, visible: 'apphub-visible', keys: []},
     screenshot: {cls: ScreenshotButton, visible: 'screenshot-visible', keys: []},
+    // Other apps' tray icons behind a "show hidden icons" arrow (pins apply live).
+    overflow: {cls: TrayOverflow, visible: 'overflow-visible', keys: ['panel-position']},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
     // Extra buttons of the Windows-like and Deepin modes (see extraElements()).
     winsearch: {cls: WindowsSearch, visible: null, windowsExtra: true, keys: ['windows-search', 'windows-extras-in-fusion']},

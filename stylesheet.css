@@ -945,3 +945,18 @@
 .fusion-deepin-dark .fusion-deepin-cc-date, .fusion-deepin-dark .fusion-deepin-cc-note-body,
 .fusion-deepin-dark .fusion-deepin-cc-cal-dayname, .fusion-deepin-dark .fusion-deepin-cc-media-artist,
 .fusion-deepin-dark .fusion-deepin-cc-meter-head { color: #ffffff; }
+
+/* ---- Hidden icons arrow ------------------------------------------------- */
+.fusion-overflow-grid { spacing: 4px; padding: 4px 8px; }
+.fusion-overflow-row { spacing: 4px; }
+.fusion-overflow-cell {
+    min-width: 36px;
+    min-height: 36px;
+    border-radius: 8px;
+}
+.fusion-overflow-cell:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-overflow-cell > .panel-button {
+    margin: 0;
+    padding: 6px;
+    border-radius: 8px;
+}

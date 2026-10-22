@@ -3,7 +3,7 @@
   <schema id="org.gnome.shell.extensions.fusion-desk" path="/org/gnome/shell/extensions/fusion-desk/">
     <!-- Element layout: "element:box" in display order. box = left | center | right -->
     <key name="layout" type="as">
-      <default>['menu:left', 'activities:left', 'media:left', 'title:left', 'apps:center', 'taskbar:center', 'workspaces:right', 'sysmon:right', 'clipboard:right', 'apphub:right', 'screenshot:right', 'quick:right', 'date:right', 'desktop:right']</default>
+      <default>['menu:left', 'activities:left', 'media:left', 'title:left', 'apps:center', 'taskbar:center', 'workspaces:right', 'sysmon:right', 'clipboard:right', 'apphub:right', 'screenshot:right', 'overflow:right', 'quick:right', 'date:right', 'desktop:right']</default>
       <summary>Panel element order and box</summary>
     </key>
 
@@ -23,6 +23,8 @@
     <key name="screenshot-visible" type="b"><default>false</default><summary>Show screenshot button</summary></key>
     <key name="desktop-visible" type="b"><default>true</default><summary>Show the show-desktop button</summary></key>
     <key name="hidden-indicators" type="as"><default>[]</default><summary>Built-in status icons to hide (network, bluetooth, volume, microphone, battery, battery-percentage, …)</summary></key>
+    <key name="overflow-visible" type="b"><default>true</default><summary>Show other apps' tray icons behind a "show hidden icons" arrow</summary></key>
+    <key name="overflow-pinned" type="as"><default>[]</default><summary>Tray icons (by id) kept on the taskbar instead of behind the arrow</summary></key>
     <key name="caffeine-visible" type="b"><default>true</default><summary>Add Caffeine to Quick Settings</summary></key>
 
     <!-- Panel -->
