@@ -153,7 +153,7 @@
     </key>
     <key name="menu-dash-background" type="s">
       <choices><choice value="NONE"/><choice value="COSMIC"/><choice value="SPACE"/><choice value="WALLPAPER"/><choice value="IMAGE"/></choices>
-      <default>'COSMIC'</default><summary>Dashboard layout background: NONE (plain menu surface), COSMIC (space scene drawn in code, animated), SPACE (built-in space picture), WALLPAPER (the desktop wallpaper) or IMAGE (menu-dash-image)</summary>
+      <default>'SPACE'</default><summary>Dashboard layout background: NONE (plain menu surface), COSMIC (space scene drawn in code, animated), SPACE (built-in sky and planet pictures with moving stars between), WALLPAPER (the desktop wallpaper) or IMAGE (menu-dash-image)</summary>
     </key>
     <key name="menu-dash-sections" type="as"><default>['pinned', 'clock', 'weather', 'greeting', 'continue', 'capture', 'downloads', 'tools', 'recent', 'calendar', 'note', 'storage', 'slot']</default><summary>Parts shown on the Dashboard layout (ids from lib/menu/dashItems.js)</summary></key>
     <key name="menu-dash-pinned-rows" type="i"><range min="1" max="4"/><default>3</default><summary>Dashboard layout: rows of pinned apps per page</summary></key>
