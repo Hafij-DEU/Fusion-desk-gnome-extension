@@ -132,7 +132,7 @@
     <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
     <key name="menu-hover-categories" type="b"><default>false</default><summary>Switch categories on hover</summary></key>
     <key name="menu-web-search" type="s"><default>'https://duckduckgo.com/?q=%s'</default><summary>Web search URL (%s = query)</summary></key>
-    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, windows, fusion, mint, grid, plasma, runner</summary></key>
+    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, dashboard, windows, fusion, mint, grid, plasma, runner</summary></key>
     <key name="menu-width" type="i"><range min="0" max="2400"/><default>0</default><summary>Menu width in px (0 = layout default)</summary></key>
     <key name="menu-height" type="i"><range min="0" max="2000"/><default>700</default><summary>Menu height in px (0 = layout default)</summary></key>
     <key name="menu-gap" type="i"><range min="-1" max="40"/><default>0</default><summary>Space in px between the menu and the screen edge / panel (-1 = theme default, 0 = none)</summary></key>
@@ -151,6 +151,14 @@
       <choices><choice value="MIXED"/><choice value="APPS"/><choice value="FILES"/></choices>
       <default>'MIXED'</default><summary>Recommended section (Modern layout): apps and files, apps only, or files only</summary>
     </key>
+    <key name="menu-dash-background" type="s">
+      <choices><choice value="NONE"/><choice value="WALLPAPER"/><choice value="IMAGE"/></choices>
+      <default>'NONE'</default><summary>Dashboard layout background: NONE (plain menu surface), WALLPAPER (the desktop wallpaper) or IMAGE (menu-dash-image)</summary>
+    </key>
+    <key name="menu-dash-sections" type="as"><default>['pinned', 'clock', 'weather', 'greeting', 'continue', 'capture', 'downloads', 'tools', 'recent', 'calendar', 'note', 'tip', 'storage']</default><summary>Parts shown on the Dashboard layout (ids from lib/menu/dashItems.js)</summary></key>
+    <key name="menu-dash-image" type="s"><default>''</default><summary>Dashboard layout background image path (for IMAGE)</summary></key>
+    <key name="menu-weather-city" type="s"><default>''</default><summary>Dashboard weather city as typed (empty = no weather card)</summary></key>
+    <key name="menu-weather-location" type="av"><default>[]</default><summary>Dashboard weather location found for menu-weather-city (serialized GWeather location)</summary></key>
     <key name="menu-recent-apps" type="as"><default>[]</default><summary>Recently opened apps, newest first (kept by the extension)</summary></key>
     <key name="menu-app-hours" type="as"><default>[]</default><summary>App launches per hour of day as "id|c0,…,c23" (for "usually now" suggestions)</summary></key>
     <key name="menu-known-apps" type="as"><default>[]</default><summary>Installed apps already seen (to spot newly installed ones)</summary></key>
