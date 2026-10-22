@@ -143,6 +143,13 @@
     <key name="menu-show-user" type="b"><default>true</default><summary>Show the user avatar and name</summary></key>
     <key name="menu-show-places" type="b"><default>true</default><summary>Show places (Home, Documents, …)</summary></key>
     <key name="menu-show-shortcuts" type="b"><default>true</default><summary>Show shortcuts (Settings, Software, Terminal, Files)</summary></key>
+    <key name="menu-recommended" type="s">
+      <choices><choice value="MIXED"/><choice value="APPS"/><choice value="FILES"/></choices>
+      <default>'MIXED'</default><summary>Recommended section (Modern layout): apps and files, apps only, or files only</summary>
+    </key>
+    <key name="menu-recent-apps" type="as"><default>[]</default><summary>Recently opened apps, newest first (kept by the extension)</summary></key>
+    <key name="menu-known-apps" type="as"><default>[]</default><summary>Installed apps already seen (to spot newly installed ones)</summary></key>
+    <key name="menu-new-apps" type="as"><default>[]</default><summary>Newly installed apps as "id|unix time" (kept by the extension)</summary></key>
     <key name="menu-show-frequent" type="b"><default>true</default><summary>Show frequently used apps</summary></key>
     <key name="menu-show-apphub" type="b"><default>true</default><summary>Show the App Hub panel (updates, installs, disk space) when App Hub is installed</summary></key>
     <key name="menu-show-notes" type="b"><default>true</default><summary>Show the Notes page (Fusion layout)</summary></key>
