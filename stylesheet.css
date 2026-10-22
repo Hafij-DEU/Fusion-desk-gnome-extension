@@ -1440,3 +1440,215 @@
 .fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-storage .fusion-sm-dash-legend-size,
 .fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-storage .fusion-sm-dash-storage-free { color: rgba(220, 225, 255, 0.85); }
 .fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-storage-more { color: #161a33; background-color: rgba(37, 99, 235, 0.10); }
+
+/* ---- Start menu: Galaxy layout -------------------------------------------- */
+/* Wallpaper on the scene; each panel has a blurred copy of it under glass.
+   -dark (light text) = deep blue glass, -light (dark text) = lavender glass. */
+.fusion-sm-galaxy { padding: 0; spacing: 0; font-family: Inter, Cantarell, sans-serif; }
+.fusion-sm-galaxy-body { padding: 14px; spacing: 12px; }
+.fusion-sm-galaxy-blur { border-radius: 22px; }
+.fusion-sm-galaxy-panel { border-radius: 22px; padding: 14px; spacing: 10px; }
+.fusion-sm-galaxy-rail { padding: 10px 8px; }
+.fusion-sm-galaxy-apps { width: 390px; }
+.fusion-sm-galaxy-pane { spacing: 10px; }
+.fusion-sm-galaxy-rail-box { spacing: 8px; }
+.fusion-sm-galaxy-rail-gap { height: 8px; }
+.fusion-sm-galaxy-rail-item { padding: 12px; border-radius: 16px; transition-duration: 120ms; }
+.fusion-sm-galaxy-head { spacing: 6px; padding: 2px 4px 0; }
+.fusion-sm-galaxy-title { font-size: 1.45em; font-weight: bold; }
+.fusion-sm-galaxy-head-button { padding: 7px; }
+.fusion-sm-galaxy-tabs { spacing: 6px; }
+.fusion-sm-galaxy-tab { padding: 6px 14px; border-radius: 12px; font-weight: 600; transition-duration: 100ms; }
+.fusion-sm-galaxy-list { spacing: 2px; padding-right: 4px; }
+.fusion-sm-galaxy-row { spacing: 2px; border-radius: 14px; padding-right: 4px; }
+.fusion-sm-galaxy-row-main { padding: 6px 8px; border-radius: 14px; }
+.fusion-sm-galaxy-row .fusion-sm-item-name { font-size: 1.02em; font-weight: 600; }
+.fusion-sm-galaxy-row-pin, .fusion-sm-galaxy-row-more { padding: 6px; }
+.fusion-sm-galaxy-letter { font-weight: bold; padding: 10px 10px 2px; }
+.fusion-sm-galaxy-search { border-radius: 99px; padding: 2px 8px 2px 4px; spacing: 6px; }
+.fusion-sm-galaxy-search-entry { background-color: transparent; border: none; box-shadow: none; }
+.fusion-sm-galaxy-key { font-size: 0.8em; font-weight: bold; padding: 2px 8px; border-radius: 8px; }
+.fusion-sm-galaxy-toggle { spacing: 2px; padding: 2px; border-radius: 12px; }
+.fusion-sm-galaxy-toggle-button { padding: 7px; border-radius: 10px; }
+.fusion-sm-galaxy-tiles { spacing: 12px; padding: 2px 4px 4px 2px; }
+.fusion-sm-galaxy-tile-row { spacing: 12px; }
+.fusion-sm-galaxy-tile { width: 0; height: 112px; padding: 16px 6px 6px; border-radius: 18px; transition-duration: 120ms; }
+.fusion-sm-galaxy-tile .fusion-sm-tile-box { spacing: 6px; }
+.fusion-sm-galaxy-tile .fusion-sm-tile-label { font-weight: 600; max-width: 108px; }
+.fusion-sm-galaxy-free { height: 108px; border-radius: 18px; border: 1px dashed; transition-duration: 120ms; padding: 0 10px; }
+.fusion-sm-galaxy-free-box { spacing: 8px; }
+.fusion-sm-galaxy-free-label { font-size: 0.88em; font-weight: 600; }
+.fusion-sm-galaxy-quick { spacing: 6px; }
+.fusion-sm-galaxy-quick-item { padding: 9px 4px; border-radius: 16px; transition-duration: 120ms; }
+.fusion-sm-galaxy-quick-box { spacing: 6px; }
+.fusion-sm-galaxy-quick-label { font-size: 0.86em; font-weight: 600; }
+.fusion-sm-galaxy-quick-more { padding: 10px; border-radius: 16px; }
+
+/* Dark glass */
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-panel {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(30, 46, 140, 0.40);
+    background-gradient-end: rgba(22, 26, 100, 0.50);
+    border: 1px solid rgba(150, 175, 255, 0.50);
+    box-shadow: 0 8px 26px rgba(4, 6, 40, 0.45);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark StLabel,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-panel StIcon { color: #ffffff; }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-item-desc { color: rgba(215, 222, 255, 0.78); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-letter { color: rgba(225, 230, 255, 0.85); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-rail-item:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-row:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tab:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-round:hover { background-color: rgba(255, 255, 255, 0.12); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-rail-item:checked,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tab:checked,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-toggle-button:checked {
+    background-gradient-direction: vertical;
+    background-gradient-start: #6e8bff;
+    background-gradient-end: #3f55e6;
+    border: 1px solid rgba(190, 205, 255, 0.85);
+    box-shadow: 0 0 14px rgba(110, 140, 255, 0.70);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-row.highlight {
+    background-color: rgba(90, 110, 255, 0.30);
+    border: 1px solid rgba(160, 185, 255, 0.85);
+    box-shadow: 0 0 12px rgba(110, 140, 255, 0.45);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-row { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-search { background-color: rgba(255, 255, 255, 0.10); border: 1px solid rgba(170, 190, 255, 0.55); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-key { background-color: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.30); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-toggle { background-color: rgba(255, 255, 255, 0.08); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tile,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick-item,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick-more {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.20);
+    background-gradient-end: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 210, 255, 0.40);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tile:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tile:focus,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick-item:hover { background-gradient-start: rgba(255, 255, 255, 0.32); border-color: rgba(220, 228, 255, 0.85); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-free { border-color: rgba(200, 210, 255, 0.55); background-color: rgba(255, 255, 255, 0.04); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-free:hover { background-color: rgba(255, 255, 255, 0.12); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-row-pin.pinned StIcon { color: #ffd166; }
+
+/* Light glass */
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-panel {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(248, 245, 255, 0.70);
+    background-gradient-end: rgba(236, 232, 255, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.90);
+    box-shadow: 0 8px 26px rgba(30, 30, 110, 0.25);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-light StLabel,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-panel StIcon { color: #141833; }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-item-desc { color: rgba(30, 36, 80, 0.66); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-letter { color: #3b4ad6; }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-rail-item:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-row:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tab:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-round:hover { background-color: rgba(60, 70, 200, 0.10); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-rail-item:checked,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tab:checked,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-toggle-button:checked {
+    background-gradient-direction: vertical;
+    background-gradient-start: #6e8bff;
+    background-gradient-end: #3f55e6;
+    border: 1px solid rgba(255, 255, 255, 0.90);
+    box-shadow: 0 0 12px rgba(80, 110, 255, 0.55);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-rail-item:checked StIcon,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tab:checked,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-toggle-button:checked StIcon { color: #ffffff; }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tab { color: #141833; }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-row.highlight {
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(90, 120, 255, 0.70);
+    box-shadow: 0 0 10px rgba(90, 120, 255, 0.35);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-row { border-bottom: 1px solid rgba(20, 24, 51, 0.06); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-search { background-color: rgba(255, 255, 255, 0.80); border: 1px solid rgba(90, 120, 255, 0.55); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-key { background-color: rgba(20, 24, 51, 0.06); border: 1px solid rgba(20, 24, 51, 0.15); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-toggle { background-color: rgba(20, 24, 51, 0.06); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tile,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-quick-item,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-quick-more {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.88);
+    background-gradient-end: rgba(255, 255, 255, 0.66);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tile:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-tile:focus,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-quick-item:hover { border-color: rgba(90, 120, 255, 0.75); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-free { border-color: rgba(80, 100, 220, 0.50); background-color: rgba(255, 255, 255, 0.35); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-free:hover { background-color: rgba(255, 255, 255, 0.60); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-row-pin.pinned StIcon { color: #3f55e6; }
+
+/* Galaxy: shortcut cards and the quick bar, glass pills as in the design */
+.fusion-sm-galaxy-card { height: 104px; border-radius: 18px; transition-duration: 120ms; }
+.fusion-sm-galaxy-card-box { spacing: 8px; }
+.fusion-sm-galaxy-card-bubble { width: 48px; height: 48px; border-radius: 99px; }
+.fusion-sm-galaxy-card-label { font-size: 0.9em; font-weight: 600; max-width: 108px; text-align: center; }
+.fusion-sm-galaxy-quick-accent {
+    width: 24px; height: 24px; border-radius: 99px; color: #ffffff;
+    background-gradient-direction: vertical; background-gradient-start: #4fb7ff; background-gradient-end: #2463eb;
+    box-shadow: 0 0 10px rgba(80, 160, 255, 0.70);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-card,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick-item,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-quick-more {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(70, 80, 170, 0.42);
+    background-gradient-end: rgba(30, 36, 110, 0.48);
+    border: 1px solid rgba(190, 200, 255, 0.45);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-card:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-card:focus { border-color: rgba(220, 228, 255, 0.90); background-gradient-start: rgba(100, 110, 210, 0.55); }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-card-bubble { background-color: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.35); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-card {
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(255, 255, 255, 0.80);
+    background-gradient-end: rgba(240, 236, 255, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-card:hover,
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-card:focus { border-color: rgba(90, 120, 255, 0.75); }
+.fusion-sm-galaxy.fusion-sm-galaxy-light .fusion-sm-galaxy-card-bubble { background-color: rgba(60, 80, 220, 0.10); border: 1px solid rgba(60, 80, 220, 0.25); }
+.fusion-sm-galaxy .fusion-sm-galaxy-quick-accent StIcon { color: #ffffff; }
+/* Galaxy keeps its own colours: beats the custom menu theme (loaded later) in both styles. */
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark StLabel,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-panel StIcon,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tab,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-search { color: #ffffff; }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-item-desc,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-item-desc { color: rgba(215, 222, 255, 0.78); }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-letter { color: rgba(225, 230, 255, 0.85); }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-item:hover,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-item:focus,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-round:hover { background-color: rgba(255, 255, 255, 0.12); color: #ffffff; }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-search { background-color: transparent; border: none; }
+
+/* Galaxy: Dashboard widget cards under the tiles (fixed deep blue glass) */
+.fusion-sm-galaxy-widget {
+    height: 128px; border-radius: 18px; padding: 10px 12px; spacing: 6px;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(70, 80, 170, 0.42);
+    background-gradient-end: rgba(30, 36, 110, 0.48);
+    border: 1px solid rgba(190, 200, 255, 0.45);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+.fusion-sm-galaxy-widget-head { spacing: 6px; }
+.fusion-sm-galaxy-widget-title { font-weight: bold; }
+.fusion-sm-galaxy-events { spacing: 4px; }
+.fusion-sm-galaxy-event { spacing: 6px; }
+.fusion-sm-galaxy-event-time { font-size: 0.85em; font-weight: bold; }
+.fusion-sm-notes.fusion-sm-galaxy-note {
+    min-height: 0; padding: 6px 8px; border-radius: 10px; font-size: 0.9em;
+    background-color: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: none;
+}
+.fusion-sm-galaxy-storage-free { font-size: 1.15em; font-weight: bold; }
+.fusion-sm-galaxy .fusion-sm-galaxy-free { height: 128px; }

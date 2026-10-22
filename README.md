@@ -23,7 +23,7 @@ Fusion Desk replaces Ubuntu's dock and GNOME's top bar with **one configurable p
 <table>
   <tr>
     <td width="33%" valign="top"><b>🪟 Taskbar</b><br>Pinned and running apps, previews, intellihide, floating or full-width, every monitor.</td>
-    <td width="33%" valign="top"><b>🚀 Start menu</b><br>8 layouts, search with math and commands, fullscreen app launcher.</td>
+    <td width="33%" valign="top"><b>🚀 Start menu</b><br>9 layouts, search with math and commands, fullscreen app launcher.</td>
     <td width="33%" valign="top"><b>🎛️ Control centre</b><br>Media, meters, notifications, calendar and quick actions in one panel.</td>
   </tr>
   <tr>

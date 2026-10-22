@@ -132,7 +132,7 @@
     <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
     <key name="menu-hover-categories" type="b"><default>false</default><summary>Switch categories on hover</summary></key>
     <key name="menu-web-search" type="s"><default>'https://duckduckgo.com/?q=%s'</default><summary>Web search URL (%s = query)</summary></key>
-    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, dashboard, windows, fusion, mint, grid, plasma, runner</summary></key>
+    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, dashboard, galaxy, windows, fusion, mint, grid, plasma, runner</summary></key>
     <key name="menu-width" type="i"><range min="0" max="2400"/><default>0</default><summary>Menu width in px (0 = layout default)</summary></key>
     <key name="menu-height" type="i"><range min="0" max="2000"/><default>700</default><summary>Menu height in px (0 = layout default)</summary></key>
     <key name="menu-gap" type="i"><range min="-1" max="40"/><default>0</default><summary>Space in px between the menu and the screen edge / panel (-1 = theme default, 0 = none)</summary></key>
