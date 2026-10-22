@@ -1330,3 +1330,29 @@
 .fusion-sm-card-pin, .fusion-sm-card-more { color: rgba(110, 110, 140, 0.85); }
 .fusion-sm-card-pin.pinned { color: -st-accent-color; }
 .fusion-sm-dashboard.fusion-sm-dash-dark .fusion-sm-card-pin, .fusion-sm-dashboard.fusion-sm-dash-dark .fusion-sm-card-more { color: rgba(255, 255, 255, 0.75); }
+
+/* Space: pinned apps straight on the picture, no panel, border, shadow or haze. */
+.fusion-sm-dashboard.fusion-sm-dash-space .fusion-sm-dash-tint,
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint { background-gradient-start: transparent; background-gradient-end: transparent; background-color: transparent; }
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box,
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box {
+    background-gradient-start: transparent;
+    background-gradient-end: transparent;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+/* The Space sky is bright in both styles: dark pinned labels in both. */
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-pinned-box StLabel,
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-pinned-box .fusion-sm-dash-title-icon { color: #141833; }
+.fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-pinned-box .fusion-sm-pill {
+    color: #2463eb;
+    background-color: rgba(255, 255, 255, 0.70);
+}
+/* Pinned on the Space sky: bold, deep navy labels. */
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-space .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-pinned-box .fusion-sm-tile-label,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-space .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-pinned-box .fusion-sm-dash-title {
+    color: #0d1240;
+    font-weight: bold;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-space .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-pinned-box .fusion-sm-dash-title-icon { color: #0d1240; }
