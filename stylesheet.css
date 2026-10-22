@@ -1676,3 +1676,22 @@
     font-size: 0.94em;
     text-shadow: 0 1px 3px rgba(10, 10, 60, 0.70);
 }
+
+/* Galaxy: rail joined to the app list; pinned panel nearly clear, as designed */
+.fusion-sm-galaxy .fusion-sm-galaxy-left-panel { padding: 0; }
+.fusion-sm-galaxy .fusion-sm-galaxy-left { spacing: 0; }
+.fusion-sm-galaxy .fusion-sm-galaxy-rail {
+    padding: 14px 10px; border-radius: 22px 0 0 22px;
+    background-color: rgba(10, 16, 70, 0.35);
+    border-right: 1px solid rgba(160, 180, 255, 0.30);
+}
+.fusion-sm-galaxy .fusion-sm-galaxy-apps { padding: 14px; }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-panel.fusion-sm-galaxy-pinned {
+    background-gradient-start: rgba(40, 50, 150, 0.16);
+    background-gradient-end: rgba(30, 30, 110, 0.12);
+    border: 1px solid rgba(190, 205, 255, 0.55);
+}
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-panel.fusion-sm-galaxy-left-panel {
+    background-gradient-start: rgba(30, 50, 160, 0.42);
+    background-gradient-end: rgba(25, 30, 110, 0.34);
+}
