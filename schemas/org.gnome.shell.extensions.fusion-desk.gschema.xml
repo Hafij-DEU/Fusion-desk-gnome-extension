@@ -155,7 +155,7 @@
       <choices><choice value="NONE"/><choice value="COSMIC"/><choice value="SPACE"/><choice value="WALLPAPER"/><choice value="IMAGE"/></choices>
       <default>'SPACE'</default><summary>Dashboard layout background: NONE (plain menu surface), COSMIC (space scene drawn in code, animated), SPACE (built-in sky and planet pictures with moving stars between), WALLPAPER (the desktop wallpaper) or IMAGE (menu-dash-image)</summary>
     </key>
-    <key name="menu-dash-sections" type="as"><default>['pinned', 'clock', 'weather', 'greeting', 'continue', 'capture', 'downloads', 'tools', 'recent', 'calendar', 'note', 'storage', 'slot']</default><summary>Parts shown on the Dashboard layout (ids from lib/menu/dashItems.js)</summary></key>
+    <key name="menu-dash-sections" type="as"><default>['pinned', 'clock', 'weather', 'greeting', 'continue', 'capture', 'downloads', 'tools', 'recent', 'calendar', 'note', 'storage']</default><summary>Parts shown on the Dashboard layout (ids from lib/menu/dashItems.js)</summary></key>
     <key name="menu-dash-pinned-rows" type="i"><range min="1" max="4"/><default>3</default><summary>Dashboard layout: rows of pinned apps per page</summary></key>
     <key name="menu-dash-pinned-columns" type="i"><range min="3" max="10"/><default>6</default><summary>Dashboard layout: columns of pinned apps</summary></key>
     <key name="menu-dash-clock" type="s">
