@@ -152,6 +152,7 @@
       <default>'MIXED'</default><summary>Recommended section (Modern layout): apps and files, apps only, or files only</summary>
     </key>
     <key name="menu-recent-apps" type="as"><default>[]</default><summary>Recently opened apps, newest first (kept by the extension)</summary></key>
+    <key name="menu-app-hours" type="as"><default>[]</default><summary>App launches per hour of day as "id|c0,…,c23" (for "usually now" suggestions)</summary></key>
     <key name="menu-known-apps" type="as"><default>[]</default><summary>Installed apps already seen (to spot newly installed ones)</summary></key>
     <key name="menu-new-apps" type="as"><default>[]</default><summary>Newly installed apps as "id|unix time" (kept by the extension)</summary></key>
     <key name="menu-show-frequent" type="b"><default>true</default><summary>Show frequently used apps</summary></key>

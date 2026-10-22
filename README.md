@@ -111,6 +111,7 @@ Click a section to expand it.
 - Search with a calculator (`12*(3+4)`), commands (`>htop`), recent files and the web.
 - Places, drives and bookmarks. Labelled power options.
 - One-click import of an existing ArcMenu setup.
+- **Recommended** (Modern layout): a *Jump back in* row of apps marked **Usually now** (learned from when you open them), **New** and **Recent**, then recent files as cards with picture thumbnails, the app that opens them, and a folder button. Filter by Documents, Images or Media; **More** shows everything grouped by Today, Yesterday, This week and Earlier.
 - **App launcher**: a fullscreen blurred grid with a category rail, or a small window. Open it with its own button, the start button or Super.
 
 </details>
