@@ -1290,9 +1290,9 @@
 /* The haze sits on the pinned area only, so the banner shows the picture vivid. */
 .fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box {
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255, 255, 255, 0.62);
-    background-gradient-end: rgba(255, 255, 255, 0.30);
-    border: 1px solid rgba(255, 255, 255, 0.45);
+    background-gradient-start: rgba(246, 240, 255, 0.78);
+    background-gradient-end: rgba(240, 232, 255, 0.40);
+    border: 1px solid rgba(255, 255, 255, 0.55);
 }
 .fusion-sm-dashboard.fusion-sm-dash-space.fusion-sm-dash-dark .fusion-sm-dash-tint {
     background-gradient-start: rgba(8, 10, 40, 0.30);
