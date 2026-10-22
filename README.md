@@ -159,6 +159,7 @@ Click a section to expand it.
 <summary><b>🧩 Widgets and extras</b></summary>
 
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
+- **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, …) stays above other windows and on every workspace. Add your own titles for apps that name it differently.
 - System monitor: CPU, RAM, temperature, network.
 - Clipboard history, with an optional Super+V shortcut. Paste-on-select is opt-in.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.

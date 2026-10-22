@@ -446,6 +446,17 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent, while the Glass effect is off')),
             switchRow(s, 'deepin-gloss', _('Glossy'), _('Lighter top and bright edge, also with Glass effect off')),
         ]));
+
+        // Extra titles: a comma-separated list stored as a string array.
+        const pipTitles = new Adw.EntryRow({title: _('Other picture-in-picture titles (comma-separated)'), show_apply_button: true});
+        pipTitles.text = s.get_strv('pip-extra-titles').join(', ');
+        pipTitles.connect('apply', () => s.set_strv('pip-extra-titles',
+            pipTitles.text.split(',').map(t => t.trim()).filter(Boolean)));
+        page.add(group(_('Picture-in-picture'), [
+            switchRow(s, 'pip-on-top', _('Always on top'), _('Picture-in-picture windows of every app stay above other windows')),
+            switchRow(s, 'pip-all-workspaces', _('On every workspace'), _('They follow you when you switch workspaces')),
+            pipTitles,
+        ], _('Works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf) and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.')));
         window.add(page);
     }
 

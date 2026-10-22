@@ -23,6 +23,9 @@
     <key name="screenshot-visible" type="b"><default>false</default><summary>Show screenshot button</summary></key>
     <key name="desktop-visible" type="b"><default>true</default><summary>Show the show-desktop button</summary></key>
     <key name="hidden-indicators" type="as"><default>[]</default><summary>Built-in status icons to hide (network, bluetooth, volume, microphone, battery, battery-percentage, …)</summary></key>
+    <key name="pip-on-top" type="b"><default>true</default><summary>Keep every app's picture-in-picture window above other windows</summary></key>
+    <key name="pip-all-workspaces" type="b"><default>true</default><summary>Show picture-in-picture windows on every workspace</summary></key>
+    <key name="pip-extra-titles" type="as"><default>[]</default><summary>Extra window titles that count as picture-in-picture (exact title, any case)</summary></key>
     <key name="overflow-visible" type="b"><default>true</default><summary>Show other apps' tray icons behind a "show hidden icons" arrow</summary></key>
     <key name="overflow-pinned" type="as"><default>[]</default><summary>Tray icons (by id) kept on the taskbar instead of behind the arrow</summary></key>
     <key name="caffeine-visible" type="b"><default>true</default><summary>Add Caffeine to Quick Settings</summary></key>

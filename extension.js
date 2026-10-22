@@ -10,6 +10,7 @@ import {PanelLayout} from './lib/panelLayout.js';
 import {StartMenu} from './lib/startMenu.js';
 import {AppsButton, Taskbar} from './lib/taskbar.js';
 import {TrayOverflow} from './lib/trayOverflow.js';
+import {PipOnTop} from './lib/pip.js';
 import {WindowTitle} from './lib/windowTitle.js';
 import {Workspaces} from './lib/workspaces.js';
 import {MediaControls} from './lib/media.js';
@@ -60,6 +61,8 @@ const MODULES = {
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
+    // Picture-in-picture windows of any app stay on top (options apply live).
+    pip: {cls: PipOnTop, visible: 'pip-on-top', keys: []},
     // Other apps' tray icons in the status-icon colour.
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Wallpaper blurs while windows are open on its monitor.
