@@ -290,22 +290,25 @@ export default class FusionDeskExtension extends Extension {
     extraElements() {
         const afterMenu = [];
         const beforeQuick = [];
+        const leftEdge = [];
         // Standalone battery right after the system menu.
         const afterQuick = this._settings.get_boolean('battery-standalone') ? ['battery'] : [];
         if (this.windowsExtras)
             afterMenu.push('winsearch', 'taskview');
         if (this.deepinFeature('launcher') && !this.deepinStartButton)
             afterMenu.push('dlauncher');
-        // The control centre button follows the start button unless set to the tray
-        // (on the clock it has no button of its own).
+        // The control centre button follows the start button, sits at the left edge
+        // or in the tray (on the clock it has no button of its own).
         if (this.deepinFeature('control')) {
             const where = this._settings.get_string('deepin-control-position');
             if (where === 'START')
                 afterMenu.push('dcontrol');
+            else if (where === 'LEFT')
+                leftEdge.push('dcontrol');
             else if (where === 'TRAY')
                 beforeQuick.push('dcontrol');
         }
-        return {afterMenu, beforeQuick, afterQuick};
+        return {afterMenu, beforeQuick, afterQuick, leftEdge};
     }
 
     toggleStartMenu() {

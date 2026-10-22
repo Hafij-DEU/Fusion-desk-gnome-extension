@@ -248,8 +248,8 @@
     </key>
     <key name="deepin-control-button" type="b"><default>false</default><summary>Control centre (side panel with toggles, notifications, calendar) and its button</summary></key>
     <key name="deepin-control-position" type="s">
-      <choices><choice value="START"/><choice value="TRAY"/><choice value="CLOCK"/></choices>
-      <default>'START'</default><summary>Control centre button: after the start button (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
+      <choices><choice value="START"/><choice value="LEFT"/><choice value="TRAY"/><choice value="CLOCK"/></choices>
+      <default>'START'</default><summary>Control centre button: after the start button or at the left edge of the taskbar (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
     </key>
     <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
     <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>50</default><summary>Launcher, control centre and collections opacity in percent</summary></key>

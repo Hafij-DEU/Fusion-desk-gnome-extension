@@ -310,7 +310,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         // One-click presets: they only switch the settings on these pages.
         const presetRow = new Adw.ActionRow({
             title: _('Style'),
-            subtitle: _('Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating taskbar. Workbench: search and Task View buttons. Centered: start button, search and apps together in the middle (moves the start button).'),
+            subtitle: _('Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating taskbar. Workbench: search and Task View buttons. Centered: start button, search and apps in the middle, control centre on the left (moves the start button).'),
         });
         const presetBox = new Gtk.Box({spacing: 6, valign: Gtk.Align.CENTER});
         const presetButtons = PRESETS.map(([id, label]) => {
@@ -410,8 +410,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         page.add(group(_('Control centre'), [
             switchRow(s, 'deepin-control-button', _('Control centre'), _('Side panel with quick actions, media player, system meters, Settings shortcuts, notifications and a calendar')),
-            comboRow(s, 'deepin-control-position', _('Button'), ['START', 'TRAY', 'CLOCK'],
-                [_('After the start button (opens on the left)'), _('In the tray (opens on the right)'), _('On the clock (opens on the right)')]),
+            comboRow(s, 'deepin-control-position', _('Button'), ['START', 'LEFT', 'TRAY', 'CLOCK'],
+                [_('After the start button (opens on the left)'), _('At the left edge (opens on the left)'), _('In the tray (opens on the right)'), _('On the clock (opens on the right)')]),
         ]));
 
         const cols = [['places', _('Computer (Home, Trash, drives)')], ['folders', _('Folders')], ['documents', _('Documents')], ['pictures', _('Pictures')],
