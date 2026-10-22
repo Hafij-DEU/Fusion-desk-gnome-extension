@@ -1299,3 +1299,15 @@
     background-gradient-end: rgba(4, 6, 24, 0.10);
 }
 .fusion-sm-dashboard.fusion-sm-dash-space .fusion-sm-dash-tint .fusion-sm-dash-hero { background-color: transparent; }
+
+/* Free widget place */
+.fusion-sm-dash-slot { border: 1px solid rgba(127, 127, 127, 0.35); background-color: rgba(127, 127, 127, 0.04); }
+.fusion-sm-dash-slot:hover, .fusion-sm-dash-slot:focus { background-color: rgba(127, 127, 127, 0.14); }
+.fusion-sm-dash-slot-box { spacing: 6px; }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom.fusion-sm-dash-slot {
+    background-gradient-start: rgba(34, 50, 128, 0.40);
+    background-gradient-end: rgba(20, 30, 92, 0.30);
+    border: 1px solid rgba(190, 210, 255, 0.45);
+    box-shadow: none;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom.fusion-sm-dash-slot:hover { background-gradient-start: rgba(60, 80, 170, 0.55); }
