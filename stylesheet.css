@@ -1707,3 +1707,20 @@
     background-gradient-start: rgba(40, 50, 150, 0.46);
     background-gradient-end: rgba(20, 24, 96, 0.56);
 }
+
+/* Galaxy: detailed storage (two widget places) */
+.fusion-sm-galaxy-storage { min-width: 380px; spacing: 6px; }
+.fusion-sm-galaxy-storage-head { spacing: 10px; }
+.fusion-sm-galaxy-storage .fusion-sm-galaxy-storage-free { font-size: 0.95em; font-weight: 600; }
+.fusion-sm-galaxy-storage-more { padding: 6px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.14); }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-storage .fusion-sm-dash-legend-size { color: rgba(220, 225, 255, 0.85); }
+/* Galaxy: white bold bar labels and icons; bold, larger pinned names */
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-quick StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-quick StLabel { color: #ffffff; font-weight: bold; font-size: 0.95em; }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-quick StIcon,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-quick StIcon { color: #ffffff; icon-shadow: 0 1px 3px rgba(5, 8, 40, 0.85); }
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-tile .fusion-sm-tile-label {
+    font-weight: bold;
+    font-size: 1em;
+    max-width: 126px;
+}
