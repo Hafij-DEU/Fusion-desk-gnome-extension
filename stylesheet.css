@@ -998,119 +998,240 @@
 .fusion-sm-recent-list { spacing: 2px; }
 
 /* ---- Start menu: Dashboard layout ------------------------------------------ */
-/* Plain (no picture): flat cards on the normal menu surface. With a picture,
-   a frosted tint and frosted cards keep text readable; -dark / -light follow
-   the menu text colour, so light themes get light glass. */
+/* Plain (no picture): flat cards on the normal menu surface, theme colours.
+   With a picture (.fusion-sm-dash-on): the designed look, a clear banner over
+   the picture, white glass cards at the top (navy ones when the menu text is
+   light) and navy glass widgets and footer. Rules there carry four classes or
+   more, so they win over the custom menu theme, which loads later. */
 .fusion-sm-dashboard { padding: 0; spacing: 0; }
-.fusion-sm-dash-tint { padding: 16px 18px 12px; spacing: 10px; }
-.fusion-sm-dash-body, .fusion-sm-dash-home { spacing: 8px; }
-.fusion-sm-dash-section { spacing: 2px; }
-.fusion-sm-dash-row { spacing: 8px; }
+.fusion-sm-dash-tint { padding: 14px 16px 12px; spacing: 10px; }
+.fusion-sm-dash-body, .fusion-sm-dash-home { spacing: 9px; }
+.fusion-sm-dash-row { spacing: 9px; }
 .fusion-sm-dash-card {
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 10px 12px;
-    spacing: 2px;
+    spacing: 4px;
     background-color: rgba(127, 127, 127, 0.08);
     transition-duration: 100ms;
 }
+.fusion-sm-dash-section { border-radius: 16px; padding: 8px 10px; spacing: 6px; }
+.fusion-sm-dash-section.fusion-sm-dash-top { background-color: rgba(127, 127, 127, 0.05); }
+.fusion-sm-dash-card-head { spacing: 8px; }
+.fusion-sm-dash-title { font-weight: bold; }
+.fusion-sm-dash-title-icon { color: -st-accent-color; }
+.fusion-sm-dash-chevron { color: rgba(127, 127, 127, 0.9); }
 .fusion-sm-dash-weather:hover, .fusion-sm-dash-weather:focus,
 .fusion-sm-dash-action:hover, .fusion-sm-dash-action:focus { background-color: rgba(127, 127, 127, 0.18); }
-.fusion-sm-dash-tile { padding: 8px 4px 6px; }
+
+/* Pinned */
+.fusion-sm-dash-tile { padding: 4px 4px 3px; }
 .fusion-sm-dash-tile .fusion-sm-tile-box { spacing: 5px; }
-.fusion-sm-dash-tile .fusion-sm-tile-label { max-width: 130px; }
+.fusion-sm-dash-tile .fusion-sm-tile-label { max-width: 130px; font-size: 0.9em; }
 .fusion-sm-dash-pager { spacing: 5px; padding: 0 6px; }
-.fusion-sm-dash-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 99px;
-    background-color: rgba(127, 127, 127, 0.35);
-}
+.fusion-sm-dash-dot { width: 7px; height: 7px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.35); }
 .fusion-sm-dash-dot:hover { background-color: rgba(127, 127, 127, 0.6); }
 .fusion-sm-dash-dot:checked { width: 18px; background-color: -st-accent-color; }
 
-.fusion-sm-dash-clock { padding: 10px 16px; }
-.fusion-sm-dash-time { font-size: 2.7em; font-weight: 300; }
-.fusion-sm-dash-date { font-weight: bold; }
-.fusion-sm-dash-quote, .fusion-sm-dash-cheer, .fusion-sm-dash-tip { font-size: 0.86em; color: #8e8e96; }
-.fusion-sm-dash-quote { font-style: italic; padding-top: 4px; }
-.fusion-sm-dash-weather { width: 210px; }
-.fusion-sm-dash-weather-box { spacing: 12px; }
-.fusion-sm-dash-temp { font-size: 1.7em; font-weight: bold; }
-.fusion-sm-dash-greet { width: 250px; spacing: 6px; }
-.fusion-sm-dash-greet-line { spacing: 8px; padding-top: 4px; }
-.fusion-sm-dash-greet-title { font-size: 1.12em; font-weight: bold; }
-.fusion-sm-dash-greet-icon, .fusion-sm-dash-weather-icon { color: -st-accent-color; }
-
-.fusion-sm-dash-action { padding: 8px 10px; }
-.fusion-sm-dash-action-box { spacing: 10px; }
-.fusion-sm-dash-bubble {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    color: -st-accent-color;
-    background-color: st-transparentize(-st-accent-color, 0.82);
+/* Banner: clock, weather, greeting */
+.fusion-sm-dash-hero-box, .fusion-sm-dash-hero-picture { border-radius: 18px; }
+.fusion-sm-dash-hero {
+    border-radius: 18px;
+    padding: 12px 14px 12px 22px;
+    spacing: 12px;
+    background-color: rgba(127, 127, 127, 0.08);
 }
-.fusion-sm-dash-tools { padding: 6px 10px; }
-.fusion-sm-dash-tool-row { spacing: 4px; }
-.fusion-sm-dash-tool { padding: 7px; background-color: rgba(127, 127, 127, 0.12); }
-.fusion-sm-dash-recent { spacing: 2px; }
-.fusion-sm-dash-recent .fusion-sm-card-art { width: 38px; height: 38px; }
-.fusion-sm-dash-recent .fusion-sm-card { padding: 5px 8px; }
+.fusion-sm-dash-time { font-size: 3em; font-weight: bold; }
+.fusion-sm-dash-time-row { spacing: 8px; }
+.fusion-sm-dash-ampm { font-size: 1.5em; font-weight: bold; padding-bottom: 6px; }
+.fusion-sm-dash-date { font-size: 1.15em; font-weight: bold; }
+.fusion-sm-dash-quote { font-size: 0.92em; padding-top: 8px; max-width: 320px; }
+.fusion-sm-dash-glass { border-radius: 16px; padding: 12px 14px; background-color: rgba(127, 127, 127, 0.10); }
+.fusion-sm-dash-weather { width: 200px; }
+.fusion-sm-dash-weather-box { spacing: 12px; }
+.fusion-sm-dash-weather-icon { color: #f5c542; }
+.fusion-sm-dash-temp { font-size: 1.8em; font-weight: bold; }
+.fusion-sm-dash-greet { width: 210px; spacing: 1px; }
+.fusion-sm-dash-greet-hello { font-size: 1.05em; }
+.fusion-sm-dash-greet-name { font-size: 1.55em; font-weight: bold; padding-bottom: 4px; }
+.fusion-sm-dash-quote, .fusion-sm-dash-cheer, .fusion-sm-dash-tip { font-size: 0.9em; }
 
-.fusion-sm-dash-widget { height: 118px; spacing: 4px; }
-.fusion-sm-dash-card-head { spacing: 4px; }
+/* Actions */
+.fusion-sm-dash-action, .fusion-sm-dash-tools { padding: 9px 10px; min-height: 58px; }
+.fusion-sm-dash-tools { width: 176px; }
+.fusion-sm-dash-action-box { spacing: 9px; }
+.fusion-sm-dash-action-text { spacing: 2px; }
+.fusion-sm-dash-bubble {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    color: #ffffff;
+    background-gradient-direction: vertical;
+}
+.fusion-sm-dash-bubble-blue { background-gradient-start: #4c8dff; background-gradient-end: #2463eb; }
+.fusion-sm-dash-bubble-purple { background-gradient-start: #a083ff; background-gradient-end: #6c4cf1; }
+.fusion-sm-dash-bubble-dark { background-gradient-start: #33276b; background-gradient-end: #130e33; }
+.fusion-sm-dash-progress, .fusion-sm-dash-progress .fusion-hub-bar-fill { height: 5px; }
+.fusion-sm-dash-progress { margin-top: 4px; }
+.fusion-sm-dash-tools { spacing: 8px; }
+.fusion-sm-dash-tool-row { spacing: 6px; }
+.fusion-sm-dash-tool {
+    padding: 7px 12px;
+    border-radius: 10px;
+    background-color: rgba(127, 127, 127, 0.14);
+    transition-duration: 100ms;
+}
+.fusion-sm-dash-tool:hover, .fusion-sm-dash-tool:focus { background-color: rgba(127, 127, 127, 0.28); }
+
+/* Recent files */
+.fusion-sm-dash-chips { spacing: 6px; padding: 0 8px; }
+.fusion-sm-dash-chips .fusion-sm-chip { padding: 3px 14px; border: 1px solid rgba(127, 127, 127, 0.30); background-color: transparent; }
+.fusion-sm-dash-chips .fusion-sm-chip:hover { background-color: rgba(127, 127, 127, 0.16); }
+.fusion-sm-dash-recent { spacing: 8px; }
+.fusion-sm-dash-recent .fusion-sm-rec-row { spacing: 8px; }
+.fusion-sm-dash-recent .fusion-sm-card { padding: 10px 12px; border-radius: 14px; background-color: rgba(127, 127, 127, 0.08); }
+.fusion-sm-dash-recent .fusion-sm-card-art { width: 54px; height: 54px; }
+.fusion-sm-dash-recent .fusion-sm-item-box { spacing: 12px; }
+
+/* Widgets */
+.fusion-sm-dash-widget { min-height: 108px; spacing: 6px; }
 .fusion-sm-dash-mini { padding: 4px; }
-.fusion-sm-dash-events { spacing: 4px; }
+.fusion-sm-dash-tip-count { font-size: 0.85em; }
+.fusion-sm-dash-events { spacing: 6px; }
 .fusion-sm-dash-event { spacing: 8px; }
-.fusion-sm-dash-event-time { font-size: 0.86em; font-weight: bold; color: -st-accent-color; min-width: 52px; }
+.fusion-sm-dash-event-dot { width: 8px; height: 8px; border-radius: 99px; }
+.fusion-sm-dash-event-dot-0 { background-color: #3ec6ff; }
+.fusion-sm-dash-event-dot-1 { background-color: #b57bff; }
+.fusion-sm-dash-event-dot-2 { background-color: #ffd166; }
+.fusion-sm-dash-event-dot-3 { background-color: #c9c9d6; }
+.fusion-sm-dash-event-time { font-size: 0.9em; font-weight: bold; min-width: 48px; }
 .fusion-sm-dash-event-name { font-size: 0.9em; }
+.fusion-sm-dash-note-box { border-radius: 10px; background-color: rgba(127, 127, 127, 0.10); }
 .fusion-sm-notes.fusion-sm-dash-note {
     min-height: 0;
-    padding: 4px 6px;
-    border-radius: 8px;
+    padding: 6px 8px;
+    border-radius: 10px;
     font-size: 0.92em;
     background-color: transparent;
     border: none;
     box-shadow: none;
 }
-.fusion-sm-dash-footer { padding: 6px 10px; }
-
-/* With a picture behind (four classes: wins over the custom theme's rules) */
-.fusion-sm-dash-on .fusion-sm-dash-section { border-radius: 14px; padding: 2px 6px 6px; }
-.fusion-sm-dash-on .fusion-sm-dash-panel { border-radius: 14px; padding: 4px 6px; }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint { background-color: rgba(6, 8, 16, 0.34); }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint { background-color: rgba(248, 249, 252, 0.40); }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-card,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-section,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-panel,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-footer-bar,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-search {
-    background-color: rgba(16, 18, 28, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-}
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-card,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-section,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-panel,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-footer-bar,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-search {
-    background-color: rgba(255, 255, 255, 0.70);
-    border: 1px solid rgba(0, 0, 0, 0.07);
-}
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-weather:hover,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-action:hover { background-color: rgba(40, 44, 60, 0.74); }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-weather:hover,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-action:hover { background-color: rgba(255, 255, 255, 0.86); }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-heading,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-item-desc,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-quote,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-cheer,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tip { color: rgba(255, 255, 255, 0.72); }
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-heading,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-item-desc,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-quote,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-cheer,
-.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tip { color: rgba(0, 0, 0, 0.62); }
-/* Accent-coloured pills are too dark on dark cards: lighter text there. */
-.fusion-sm-dashboard.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-pill { color: rgba(255, 255, 255, 0.92); }
 .fusion-sm-dash-storage { spacing: 6px; }
-.fusion-sm-dash-storage-free { font-size: 1.25em; font-weight: bold; }
+.fusion-sm-dash-storage-free { font-size: 1.3em; font-weight: bold; }
+
+/* Footer */
+.fusion-sm-dash-footer {
+    border-radius: 18px;
+    padding: 8px 12px 8px 14px;
+    spacing: 10px;
+    background-color: rgba(127, 127, 127, 0.08);
+}
+.fusion-sm-dash-footer-name { font-weight: bold; }
+.fusion-sm-dash-footer-group {
+    spacing: 4px;
+    padding: 3px 6px;
+    border-radius: 14px;
+    background-color: rgba(127, 127, 127, 0.10);
+    border: 1px solid rgba(127, 127, 127, 0.18);
+}
+.fusion-sm-dash-footer-button { padding: 8px 10px; border-radius: 10px; }
+.fusion-sm-dash-power { spacing: 2px; }
+
+/* ---- Dashboard with a picture behind (the designed look) ---- */
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint { background-color: rgba(255, 255, 255, 0.14); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint { background-color: rgba(0, 0, 12, 0.18); }
+
+/* Banner: clear glass, white text, any tone */
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero {
+    background-color: rgba(12, 16, 48, 0.26);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero .fusion-sm-dash-glass {
+    background-color: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.40);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero .fusion-sm-dash-glass:hover { background-color: rgba(255, 255, 255, 0.26); }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero StLabel {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 30, 0.55);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-hero .fusion-sm-dash-chevron { color: rgba(255, 255, 255, 0.85); }
+
+/* Navy glass: widgets and footer, any tone; the top cards too when the menu text is light */
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-top,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-panel,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-recent .fusion-sm-card {
+    background-color: rgba(22, 32, 88, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box { background-color: rgba(16, 22, 64, 0.42); }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom StLabel,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-top StLabel,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-panel StLabel { color: #ffffff; }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-dash-tip-count,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-top .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-panel .fusion-sm-item-desc { color: rgba(255, 255, 255, 0.74); }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-pill,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-pill {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.14);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-dash-note-box,
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-footer-group { background-color: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.18); }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-dash-title-icon { color: #ffd166; }
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-round:hover,
+.fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-bottom .fusion-sm-user:hover { background-color: rgba(255, 255, 255, 0.16); }
+
+/* White glass: search, pinned, actions and recent files when the menu text is dark */
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top.fusion-sm-dash-pinned-box {
+    background-color: rgba(255, 255, 255, 0.34);
+    border: 1px solid rgba(255, 255, 255, 0.50);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-search {
+    background-color: rgba(255, 255, 255, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.90);
+    color: #161a33;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-action,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-tools,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-panel {
+    background-color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    color: #161a33;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-action:hover { background-color: rgba(255, 255, 255, 0.95); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-top {
+    background-color: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.80);
+    color: #161a33;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-recent .fusion-sm-card { background-color: rgba(255, 255, 255, 0.90); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-top StLabel,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-panel StLabel { color: #161a33; }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-top .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-panel .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-top .fusion-sm-heading { color: rgba(22, 26, 51, 0.62); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-top .fusion-sm-pill {
+    background-color: rgba(255, 255, 255, 0.70);
+    border: 1px solid rgba(37, 99, 235, 0.30);
+    color: #2463eb;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-chips .fusion-sm-chip {
+    background-color: rgba(255, 255, 255, 0.70);
+    border-color: rgba(22, 26, 51, 0.14);
+    color: #161a33;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-chips .fusion-sm-chip:checked {
+    background-color: rgba(37, 99, 235, 0.16);
+    border-color: rgba(37, 99, 235, 0.45);
+    color: #2463eb;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-chips .fusion-sm-chip { color: #ffffff; border-color: rgba(255, 255, 255, 0.22); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-dark .fusion-sm-dash-tint .fusion-sm-dash-chips .fusion-sm-chip:checked { color: #ffffff; background-color: rgba(80, 140, 255, 0.45); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-tool { background-color: rgba(22, 26, 51, 0.06); border: 1px solid rgba(22, 26, 51, 0.10); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-tool:hover { background-color: rgba(22, 26, 51, 0.12); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-top .fusion-sm-dash-chevron { color: rgba(22, 26, 51, 0.55); }
