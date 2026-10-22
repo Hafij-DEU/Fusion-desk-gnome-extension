@@ -195,8 +195,8 @@
 
     <!-- Desktop mode: Fusion panel or Deepin-style environment -->
     <key name="desktop-mode" type="s">
-      <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/></choices>
-      <default>'fusion'</default><summary>Last applied style preset (fusion = Classic, deepin = Studio, windows = Workbench)</summary>
+      <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/><choice value="centered"/></choices>
+      <default>'fusion'</default><summary>Last applied style preset (fusion = Classic, deepin = Studio, windows = Workbench, centered = Centered)</summary>
     </key>
     <!-- Windows-like mode: extra buttons and theming for the Fusion taskbar -->
     <key name="windows-search" type="s">

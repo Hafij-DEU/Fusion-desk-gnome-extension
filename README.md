@@ -168,8 +168,9 @@ Click a section to expand it.
   - **Classic**: taskbar only.
   - **Studio**: launcher, control centre, organizer, floating taskbar.
   - **Workbench**: search box and Task View.
+  - **Centered**: start button, search box, Task View and apps together in the middle of a flat bottom bar, tray icons behind the hidden-icons arrow.
 
-  A preset only flips settings; your layout stays.
+  A preset only flips settings; your layout stays (Centered also moves the start button to the middle).
 - **No duplicates**: if another extension already shows a widget (for example GNOME's system monitor or Caffeine), Fusion Desk hides its own copy.
 - **App Hub** integration when [App Hub](https://github.com/Hafij-DEU/Application-hub) is installed.
 

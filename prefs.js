@@ -310,7 +310,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         // One-click presets: they only switch the settings on these pages.
         const presetRow = new Adw.ActionRow({
             title: _('Style'),
-            subtitle: _('Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating taskbar. Workbench: search and Task View buttons.'),
+            subtitle: _('Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating taskbar. Workbench: search and Task View buttons. Centered: start button, search and apps together in the middle (moves the start button).'),
         });
         const presetBox = new Gtk.Box({spacing: 6, valign: Gtk.Align.CENTER});
         const presetButtons = PRESETS.map(([id, label]) => {
