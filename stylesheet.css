@@ -1270,8 +1270,8 @@
 .fusion-sm-dashboard.fusion-sm-dash-on .fusion-sm-dash-tint .fusion-sm-dash-footer-box .fusion-sm-dash-footer {
     /* Glossy glass over the blurred panorama: bright sheen on top, deeper below, light rim. */
     background-gradient-direction: vertical;
-    background-gradient-start: rgba(255, 255, 255, 0.30);
-    background-gradient-end: rgba(20, 28, 96, 0.38);
+    background-gradient-start: rgba(70, 80, 160, 0.55);
+    background-gradient-end: rgba(10, 14, 56, 0.82);
     border: 1px solid rgba(255, 255, 255, 0.45);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.70);
 }
@@ -1358,3 +1358,34 @@
     font-weight: bold;
 }
 .fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-space .fusion-sm-dash-tint .fusion-sm-dash-section.fusion-sm-dash-pinned-box .fusion-sm-dash-title-icon { color: #0d1240; }
+
+/* Light style: widgets are white glass like the cards above (the footer stays dark glass). */
+.fusion-sm-dashboard.fusion-sm-dash-light .fusion-sm-dash-low-veil { background-color: rgba(246, 242, 255, 0.45); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom {
+    background-gradient-start: rgba(255, 255, 255, 0.86);
+    background-gradient-end: rgba(250, 248, 255, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 18px rgba(40, 50, 120, 0.16);
+    color: #161a33;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom StLabel { color: #161a33; }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-item-desc,
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-dash-tip-count { color: rgba(22, 26, 51, 0.62); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-pill {
+    color: #2463eb;
+    background-color: rgba(255, 255, 255, 0.70);
+    border: 1px solid rgba(37, 99, 235, 0.30);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-dash-note-box {
+    background-color: rgba(22, 26, 51, 0.05);
+    border: 1px solid rgba(22, 26, 51, 0.10);
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-round { color: #161a33; }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom .fusion-sm-round:hover { background-color: rgba(22, 26, 51, 0.08); }
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-widget.fusion-sm-dash-bottom.fusion-sm-dash-slot {
+    background-gradient-start: rgba(255, 255, 255, 0.50);
+    background-gradient-end: rgba(255, 255, 255, 0.36);
+    border: 1px solid rgba(37, 99, 235, 0.30);
+    box-shadow: none;
+}
+.fusion-sm-dashboard.fusion-sm-dash-on.fusion-sm-dash-light .fusion-sm-dash-tint .fusion-sm-dash-slot .fusion-sm-dash-slot-icon { color: #2463eb; }
