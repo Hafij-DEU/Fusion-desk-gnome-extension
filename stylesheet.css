@@ -1724,3 +1724,8 @@
     font-size: 1em;
     max-width: 126px;
 }
+
+.fusion-sm-galaxy-widget-button { border-radius: 18px; padding: 0; }
+.fusion-sm-galaxy-widget-button:hover .fusion-sm-galaxy-widget,
+.fusion-sm-galaxy-widget-button:focus .fusion-sm-galaxy-widget { border-color: rgba(230, 236, 255, 0.95); }
+.fusion-sm-galaxy-storage-hint { color: rgba(255, 255, 255, 0.8); }
