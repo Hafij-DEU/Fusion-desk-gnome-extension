@@ -26,6 +26,8 @@ import {Indicators} from './lib/indicators.js';
 import {Battery} from './lib/battery.js';
 import {TrayTint} from './lib/trayTint.js';
 import {WallpaperBlur} from './lib/wallpaperBlur.js';
+import {OverviewBlur} from './lib/overviewBlur.js';
+import {AddToDesktopMenus} from './lib/addToDesktop.js';
 import {ChargeLimit} from './lib/chargeLimit.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
@@ -67,6 +69,10 @@ const MODULES = {
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Wallpaper blurs while windows are open on its monitor.
     wallblur: {cls: WallpaperBlur, visible: 'wallpaper-blur', keys: ['wallpaper-blur-strength']},
+    // Blurred wallpaper behind the overview and app grid, frosted app folders.
+    overviewblur: {cls: OverviewBlur, visible: 'overview-blur', keys: ['overview-blur-strength']},
+    // "Add to Desktop" in GNOME's app menus (app grid, dash, taskbar).
+    addtodesktop: {cls: AddToDesktopMenus, visible: 'add-to-desktop', keys: []},
     // Stops charging at the chosen level (needs the one-time charge helper setup).
     chargelimit: {cls: ChargeLimit, visible: 'charge-limit', keys: ['charge-limit-percent', 'charge-helper-ready']},
     // Coloured battery with the percentage inside (in GNOME's status area).
@@ -90,6 +96,8 @@ const DUPLICATES = {
     ],
     clipboard: ['clipboard-history@alexsaveau.dev', 'clipboard-indicator@tudmotu.com'],
     caffeine: ['caffeine@patapon.info'],
+    overviewblur: ['blur-my-shell@aunetx'],
+    addtodesktop: ['add-to-desktop@tommimon.github.com'],
     clock: ['date-menu-formatter@marcinjakubowski.github.com', 'panel-date-format@keiii.github.com'],
 };
 

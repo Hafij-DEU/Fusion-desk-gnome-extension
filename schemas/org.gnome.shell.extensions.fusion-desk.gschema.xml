@@ -25,6 +25,11 @@
     <key name="hidden-indicators" type="as"><default>[]</default><summary>Built-in status icons to hide (network, bluetooth, volume, microphone, battery, battery-percentage, …)</summary></key>
     <key name="pip-on-top" type="b"><default>true</default><summary>Keep every app's picture-in-picture window above other windows</summary></key>
     <key name="pip-all-workspaces" type="b"><default>true</default><summary>Show picture-in-picture windows on every workspace</summary></key>
+    <key name="deepin-organizer-style" type="s"><default>'COLLECTIONS'</default><summary>Desktop files as COLLECTIONS (sorted boxes) or ICONS (plain desktop icons)</summary></key>
+    <key name="desktop-icon-positions" type="s"><default>'{}'</default><summary>Grid cell of each desktop icon (Icons style), as JSON {name: [column, row]}</summary></key>
+    <key name="overview-blur" type="b"><default>true</default><summary>Blurred wallpaper behind the Activities overview and app grid, frosted app folders</summary></key>
+    <key name="overview-blur-strength" type="i"><range min="10" max="100"/><default>50</default><summary>Overview blur strength in percent</summary></key>
+    <key name="add-to-desktop" type="b"><default>true</default><summary>"Add to Desktop" in app menus (app grid, dash, taskbar, start menu)</summary></key>
     <key name="ontop-hotkey" type="s"><default>'&lt;Alt&gt;Return'</default><summary>Shortcut that keeps the focused window always on top, or lets it go (empty = off)</summary></key>
     <key name="ontop-apps" type="as"><default>[]</default><summary>Apps (desktop ids) whose windows always stay above other windows</summary></key>
     <key name="pip-extra-titles" type="as"><default>[]</default><summary>Extra window titles that count as picture-in-picture (exact title, any case)</summary></key>
@@ -163,6 +168,7 @@
     <key name="menu-show-notes" type="b"><default>true</default><summary>Show the Notes page (Fusion layout)</summary></key>
     <key name="menu-power-options" type="as"><default>['poweroff', 'restart', 'lock', 'logout']</default><summary>Power actions shown: lock, switch-user, logout, suspend, restart, poweroff</summary></key>
     <key name="menu-search-position" type="s"><default>'AUTO'</default><summary>Search entry position: AUTO (layout default), TOP or BOTTOM</summary></key>
+    <key name="menu-search-fuzzy" type="b"><default>true</default><summary>Fuzzy app search: find apps despite typos or skipped letters (start menu, runner and app launcher)</summary></key>
     <key name="menu-search-files" type="b"><default>true</default><summary>Search recent files</summary></key>
     <key name="menu-search-calc" type="b"><default>true</default><summary>Calculator in search</summary></key>
     <key name="menu-search-commands" type="b"><default>true</default><summary>Run commands typed as >command</summary></key>

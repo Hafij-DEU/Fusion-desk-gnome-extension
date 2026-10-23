@@ -108,7 +108,8 @@ Click a section to expand it.
 <summary><b>🚀 Start menu and app launcher</b></summary>
 
 - **7 start menu layouts**: Modern, Launcher Grid, Runner, Classic, Fusion, Sidebar and Tabbed, picked from drawn previews.
-- Search with a calculator (`12*(3+4)`), commands (`>htop`), recent files and the web.
+- Search with a calculator (`12*(3+4)`), commands (`>htop`), recent files and the web (DuckDuckGo, Google, Bing, Brave Search, Startpage, Ecosia, Wikipedia or your own address).
+- **Fuzzy app search**: finds apps despite typos or skipped letters (`termnal`, `lbrwrt`), in the start menu, runner and app launcher.
 - Places, drives and bookmarks. Labelled power options.
 - One-click import of an existing ArcMenu setup.
 - **Recommended** (Modern layout): a *Jump back in* row of apps marked **Usually now** (learned from when you open them), **New** and **Recent**, then recent files as cards with picture thumbnails, the app that opens them, and a folder button. Filter by Documents, Images or Media; **More** shows everything grouped by Today, Yesterday, This week and Earlier.
@@ -140,6 +141,7 @@ Click a section to expand it.
 - **Accent gradient** in eight kinds: from the corner, the top, the side or the middle, or blended with a second colour (aurora, sunset, ocean, berry). Strength is adjustable.
 - **Accent-coloured icons**: plain white / black tray icons take the accent colour, colourful ones keep theirs.
 - **Wallpaper blur** while windows are open, sharp again on an empty desktop.
+- **Overview blur**: a blurred wallpaper behind Activities and the app grid, and frosted app folders. One switch and a strength slider (Appearance → Wallpaper).
 - Light / dark taskbar that follows the system style. Optional accent colour, icon and cursor theme while Fusion Desk runs.
 
 </details>
@@ -165,7 +167,12 @@ Click a section to expand it.
 - System monitor: CPU, RAM, temperature, network.
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
-- **Organize Desktop**: Desktop-folder files in movable, resizable collections (Computer, folders, documents, pictures, videos, music, apps, others). Works with the Desktop Icons extension.
+- **Desktop files**, in two styles:
+  - **Icons**: your Desktop folder as plain desktop icons (plus Home, Trash and drives). Drag each one to any spot and it stays there; double-click to open, right-click for a menu. Right-click the desktop for **New Folder** and **Arrange icons**.
+  - **Collections**: files sorted into movable, resizable boxes (Computer, folders, documents, pictures, videos, music, apps, others).
+
+  Either one replaces the Desktop Icons extension: its icons hide while Fusion shows yours.
+- **Add to Desktop**: right-click an app in the app grid, dash, taskbar or start menu to put its launcher on the desktop (ready to start with a double click), or take it off again.
 - **Right-click menu**: style presets, background apps (with quit buttons), disk usage, panel toggles, power, quick launchers.
 - **Style presets**:
   - **Classic**: taskbar only.
@@ -194,7 +201,7 @@ Click a section to expand it.
 | <kbd>Alt</kbd>+<kbd>Enter</kbd> | Keep the focused window always on top, or let it go | System |
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
 | <kbd>Ctrl</kbd>+<kbd>V</kbd> | Sent for you when you pick a clipboard entry (Paste on select) | Widgets |
-| <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show Organize Desktop collections | Desktop |
+| <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show the desktop icons or collections | Desktop |
 
 An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Start Menu → Keyboard**.
 
@@ -258,7 +265,9 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | **Dash to Panel** | Turn it off. Fusion Desk pauses itself while Dash to Panel is on and tells you so. |
 | **ArcMenu** | Turn it off; both want the Super key. Import its setup in **Start Menu → Import from ArcMenu**. |
 | **System monitor, Caffeine, Clipboard History, Date Menu Formatter** | Fine to keep. Fusion Desk hides its own duplicate. |
-| **Desktop Icons (DING)** | Works alongside Organize Desktop. |
+| **Desktop Icons (DING)** | Not needed with **Show desktop files** on (Desktop page); its icons hide while Fusion shows yours. |
+| **Blur my Shell, Add to Desktop** | Not needed: Fusion Desk has overview blur and Add to Desktop. If they stay on, Fusion Desk turns its own copy off. |
+| **Fuzzy app search, Web search provider** | Fine to keep; they work in the Activities search. Fusion Desk's start menu has both built in. |
 
 ## Charge limit
 

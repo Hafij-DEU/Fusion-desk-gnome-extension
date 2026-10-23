@@ -695,6 +695,9 @@
 .fusion-deepin-desktop-file:hover { background-color: rgba(127, 127, 127, 0.16); }
 .fusion-deepin-desktop-file:focus { background-color: st-transparentize(-st-accent-color, 0.7); }
 .fusion-deepin-desktop-file-label { font-size: 9pt; padding-top: 4px; }
+/* Icons style: on the wallpaper itself, so light text with a shadow. */
+.fusion-desktop-icon .fusion-deepin-desktop-file-label { color: #fff; text-align: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+.fusion-desktop-icon:hover { background-color: rgba(255, 255, 255, 0.16); }
 .fusion-deepin-collection-grip { margin: 0 3px 3px 0; border-radius: 0 0 8px 0; border-right: 2px solid rgba(127, 127, 127, 0.5); border-bottom: 2px solid rgba(127, 127, 127, 0.5); }
 
 /* Floating taskbar (Deepin mode option): soft shadow and a light rim. */
@@ -974,7 +977,6 @@
 .fusion-sm-thumb {
     border-radius: 8px;
     background-size: cover;
-    background-position: center;
     border: 1px solid rgba(127, 127, 127, 0.25);
 }
 .fusion-sm-opener {

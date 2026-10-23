@@ -182,6 +182,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             ...dependsOn(s, ['wallpaper-blur'], () => s.get_boolean('wallpaper-blur'), [
                 spinRow(s, 'wallpaper-blur-strength', 'Strength', 5, 100, 5, 'Percent'),
             ]),
+            switchRow(s, 'overview-blur', 'Blur the overview',
+                'Blurred wallpaper behind Activities and the app grid, frosted app folders'),
+            ...dependsOn(s, ['overview-blur'], () => s.get_boolean('overview-blur'), [
+                spinRow(s, 'overview-blur-strength', 'Overview strength', 10, 100, 5, 'Percent'),
+            ]),
         ]));
 
         const icons = listThemes('icons');
@@ -271,20 +276,30 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             });
             organize.add_row(row);
         }
-        const reset = new Adw.ActionRow({title: 'Organize again', subtitle: 'Put every collection back into the default columns'});
-        const resetButton = new Gtk.Button({label: 'Organize', valign: Gtk.Align.CENTER});
-        resetButton.connect('clicked', () => s.set_string('deepin-organizer-geometry', '{}'));
+        const reset = new Adw.ActionRow({title: 'Arrange again', subtitle: 'Put every icon or collection back into the default columns'});
+        const resetButton = new Gtk.Button({label: 'Arrange', valign: Gtk.Align.CENTER});
+        resetButton.connect('clicked', () => {
+            s.set_string('deepin-organizer-geometry', '{}');
+            s.set_string('desktop-icon-positions', '{}');
+        });
         reset.add_suffix(resetButton);
-        page.add(group('Organize desktop', [
-            withShortcut(switchRow(s, 'deepin-organizer', 'Organize desktop',
-                'Files in your Desktop folder sorted into collections. Alt+O hides or shows them; right-click the desktop for more.'),
+        const collections = () => s.get_boolean('deepin-organizer') && s.get_string('deepin-organizer-style') !== 'ICONS';
+        page.add(group('Desktop files', [
+            withShortcut(switchRow(s, 'deepin-organizer', 'Show desktop files',
+                'Files in your Desktop folder on the desktop. Alt+O hides or shows them; right-click the desktop for more.'),
             s, () => ['Alt', 'O']),
             ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [
+                comboRow(s, 'deepin-organizer-style', 'Style', ['ICONS', 'COLLECTIONS'],
+                    ['Icons (drag each one where you like)', 'Collections (sorted into boxes)']),
+            ]),
+            ...dependsOn(s, ['deepin-organizer', 'deepin-organizer-style'], collections, [
                 comboRow(s, 'deepin-organizer-size', 'Collection size', ['SMALL', 'MEDIUM', 'LARGE'], ['Small', 'Medium', 'Large']),
                 organize,
-                reset,
             ]),
-        ], 'Works with the Desktop Icons extension: its icons are hidden while the collections show, and come back with Alt+O.'));
+            ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [reset]),
+            switchRow(s, 'add-to-desktop', 'Add to Desktop in app menus',
+                'Right-click an app in the app grid, dash, taskbar or start menu to put its launcher on the desktop'),
+        ], 'Replaces the Desktop Icons extension: its icons are hidden while Fusion shows your files, and come back with Alt+O.'));
         window.add(page);
     }
 
