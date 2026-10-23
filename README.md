@@ -142,6 +142,7 @@ Click a section to expand it.
 - **Accent-coloured icons**: plain white / black tray icons take the accent colour, colourful ones keep theirs.
 - **Wallpaper blur** while windows are open, sharp again on an empty desktop.
 - **Overview blur**: a blurred wallpaper behind Activities and the app grid, and frosted app folders. One switch and a strength slider (Appearance → Wallpaper).
+- **Window effects** when windows open and close: **Fire** (burns away from the bottom up, rises from the flames when it opens), **Dissolve** or **Glide**, with an adjustable length (Appearance → Window effects).
 - Light / dark taskbar that follows the system style. Optional accent colour, icon and cursor theme while Fusion Desk runs.
 
 </details>
@@ -181,6 +182,7 @@ Click a section to expand it.
   - **Centered**: start button, search box, Task View and apps together in the middle of a flat bottom bar, the control centre at the left edge, tray icons behind the hidden-icons arrow.
 
   A preset only flips settings; your layout stays (Centered also moves the start button to the middle).
+- **Behaviour** (System page): bring apps that ask for attention to the front instead of a "… is ready" notification, hide the workspace switcher popup, and make every animation faster or slower.
 - **No duplicates**: if another extension already shows a widget (for example GNOME's system monitor or Caffeine), Fusion Desk hides its own copy.
 - **App Hub** integration when [App Hub](https://github.com/Hafij-DEU/Application-hub) is installed.
 
@@ -266,7 +268,7 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | **ArcMenu** | Turn it off; both want the Super key. Import its setup in **Start Menu → Import from ArcMenu**. |
 | **System monitor, Caffeine, Clipboard History, Date Menu Formatter** | Fine to keep. Fusion Desk hides its own duplicate. |
 | **Desktop Icons (DING)** | Not needed with **Show desktop files** on (Desktop page); its icons hide while Fusion shows yours. |
-| **Blur my Shell, Add to Desktop** | Not needed: Fusion Desk has overview blur and Add to Desktop. If they stay on, Fusion Desk turns its own copy off. |
+| **Blur my Shell, Add to Desktop, Burn My Windows, Just Perfection** | Not needed for what Fusion Desk covers: overview blur, Add to Desktop, window effects and the Behaviour options. If they stay on, Fusion Desk turns its own copy off. |
 | **Fuzzy app search, Web search provider** | Fine to keep; they work in the Activities search. Fusion Desk's start menu has both built in. |
 
 ## Charge limit

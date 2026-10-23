@@ -191,6 +191,16 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         const icons = listThemes('icons');
         const cursors = listThemes('cursors');
+        page.add(group('Window effects', [
+            comboRow(s, 'window-effect', 'Effect', ['NONE', 'FIRE', 'DISSOLVE', 'GLIDE'],
+                ['GNOME default', 'Fire (burns away, rises from flames)', 'Dissolve (crumbles into noise)', 'Glide (slides and fades)']),
+            ...dependsOn(s, ['window-effect'], () => s.get_string('window-effect') !== 'NONE', [
+                switchRow(s, 'window-effect-open', 'When a window opens'),
+                switchRow(s, 'window-effect-close', 'When a window closes'),
+                spinRow(s, 'window-effect-duration', 'Length', 200, 2500, 100, 'Milliseconds'),
+            ]),
+        ], 'Normal app windows only; dialogs and menus keep GNOME\'s animations. Off while Burn My Windows is on.'));
+
         page.add(group('System accent and themes', [
             comboRow(s, 'deepin-accent', 'Accent colour', ['', 'blue', 'teal', 'green', 'yellow', 'orange', 'pink', 'purple', 'slate'],
                 ['Keep mine', 'Blue', 'Teal', 'Green', 'Yellow', 'Orange', 'Pink', 'Purple', 'Grey']),
@@ -375,6 +385,12 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         }
         page.add(status);
         this._addOnTopGroups(page, window, s);
+        page.add(group('Behaviour', [
+            switchRow(s, 'tweak-focus-attention', 'Bring apps that ask for attention to the front',
+                'Instead of the “… is ready” notification, for example when a link opens in a browser'),
+            switchRow(s, 'tweak-workspace-popup', 'Workspace switcher popup', 'The workspace overlay shown while switching'),
+            comboRow(s, 'tweak-animation-speed', 'Animation speed', ['FAST', 'NORMAL', 'SLOW'], ['Faster', 'Normal', 'Slower']),
+        ], 'Off while Just Perfection is on, which has the same options.'));
         window.add(page);
     }
 

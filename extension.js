@@ -28,6 +28,8 @@ import {TrayTint} from './lib/trayTint.js';
 import {WallpaperBlur} from './lib/wallpaperBlur.js';
 import {OverviewBlur} from './lib/overviewBlur.js';
 import {AddToDesktopMenus} from './lib/addToDesktop.js';
+import {WindowEffects} from './lib/windowEffects.js';
+import {Tweaks} from './lib/tweaks.js';
 import {ChargeLimit} from './lib/chargeLimit.js';
 import {DeepinMode} from './lib/deepin/index.js';
 import {watchSystemStyle} from './lib/style.js';
@@ -73,6 +75,10 @@ const MODULES = {
     overviewblur: {cls: OverviewBlur, visible: 'overview-blur', keys: ['overview-blur-strength']},
     // "Add to Desktop" in GNOME's app menus (app grid, dash, taskbar).
     addtodesktop: {cls: AddToDesktopMenus, visible: 'add-to-desktop', keys: []},
+    // Fire / dissolve / glide when windows open and close (other options apply live).
+    windowfx: {cls: WindowEffects, visible: null, keys: ['window-effect']},
+    // Attention focus, workspace popup, animation speed.
+    tweaks: {cls: Tweaks, visible: null, keys: ['tweak-']},
     // Stops charging at the chosen level (needs the one-time charge helper setup).
     chargelimit: {cls: ChargeLimit, visible: 'charge-limit', keys: ['charge-limit-percent', 'charge-helper-ready']},
     // Coloured battery with the percentage inside (in GNOME's status area).
@@ -98,6 +104,8 @@ const DUPLICATES = {
     caffeine: ['caffeine@patapon.info'],
     overviewblur: ['blur-my-shell@aunetx'],
     addtodesktop: ['add-to-desktop@tommimon.github.com'],
+    windowfx: ['burn-my-windows@schneegans.github.com'],
+    tweaks: ['just-perfection-desktop@just-perfection'],
     clock: ['date-menu-formatter@marcinjakubowski.github.com', 'panel-date-format@keiii.github.com'],
 };
 
