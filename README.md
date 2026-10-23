@@ -161,7 +161,7 @@ Click a section to expand it.
 
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, …) stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
-- **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top).
+- **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top). <kbd>Alt</kbd>+<kbd>Enter</kbd> keeps any focused window on top; press it again to let it go.
 - System monitor: CPU, RAM, temperature, network.
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
@@ -191,6 +191,7 @@ Click a section to expand it.
 | <kbd>Super</kbd>+<kbd>R</kbd> | Runner (quick search) | Start Menu → Keyboard |
 | <kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | Open or focus the nth taskbar app | Taskbar |
 | <kbd>Ctrl</kbd>+<kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | New window of the nth taskbar app | Taskbar |
+| <kbd>Alt</kbd>+<kbd>Enter</kbd> | Keep the focused window always on top, or let it go | System |
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
 | <kbd>Ctrl</kbd>+<kbd>V</kbd> | Sent for you when you pick a clipboard entry (Paste on select) | Widgets |
 | <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show Organize Desktop collections | Desktop |

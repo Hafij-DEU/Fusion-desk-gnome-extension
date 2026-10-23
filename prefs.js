@@ -9,7 +9,7 @@ import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js
 import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
-import {shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
+import {accelKeys, shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -422,6 +422,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 pipTitles,
             ]),
         ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.'));
+
+        page.add(group('Always on top shortcut', [
+            withShortcut(entryRow(s, 'ontop-hotkey', 'Shortcut (e.g. <Alt>Return, empty = off)'),
+                s, () => accelKeys(s.get_string('ontop-hotkey')), ['ontop-hotkey']),
+        ], 'Keeps the focused window above all others; press it again to let it go. Works on any window, including picture-in-picture.'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
         const onTop = new Adw.PreferencesGroup({
