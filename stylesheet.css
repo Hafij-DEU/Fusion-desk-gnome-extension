@@ -1808,3 +1808,31 @@
 .fusion-sm-galaxy .fusion-sm-galaxy-chip:hover, .fusion-sm-galaxy .fusion-sm-galaxy-chip:focus { background-color: rgba(255, 255, 255, 0.22); }
 .fusion-sm-galaxy .fusion-sm-galaxy-chip-primary { background-gradient-direction: vertical; background-gradient-start: #6e8bff; background-gradient-end: #3f55e6; }
 .fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-form-error { color: #ffd166; font-size: 0.85em; }
+
+/* Galaxy Today: entries that open on click, and the event editor across the widget row */
+.fusion-sm-galaxy-event-box { spacing: 6px; }
+.fusion-sm-galaxy-event-line { spacing: 10px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-event:hover,
+.fusion-sm-galaxy .fusion-sm-galaxy-event:focus { background-color: rgba(255, 255, 255, 0.16); border-color: rgba(230, 236, 255, 0.70); }
+.fusion-sm-galaxy-event-detail { spacing: 6px; padding: 2px 0 2px 20px; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event .fusion-sm-galaxy-event-when { color: #a9c8ff; font-size: 0.88em; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event .fusion-sm-galaxy-event-desc { color: #ffffff; font-weight: 600; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event .fusion-sm-galaxy-event-nodesc { color: rgba(220, 225, 255, 0.65); font-style: italic; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event .fusion-sm-galaxy-event-more { color: rgba(220, 225, 255, 0.80); }
+.fusion-sm-galaxy .fusion-sm-galaxy-chip-small { padding: 4px 10px; font-size: 0.88em; }
+.fusion-sm-galaxy-chip-box { spacing: 6px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-routine-card .fusion-sm-galaxy-routine-form { spacing: 8px; }
+.fusion-sm-galaxy-stepper { spacing: 8px; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-form-label { color: rgba(220, 225, 255, 0.80); font-size: 0.88em; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-date-label { color: #ffffff; font-weight: bold; }
+.fusion-sm-galaxy .fusion-sm-galaxy-num-input { width: 44px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-ampm { min-width: 40px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-days { spacing: 5px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-day,
+.fusion-sm-galaxy .fusion-sm-galaxy-preset { padding: 4px 8px; font-size: 0.88em; }
+.fusion-sm-galaxy .fusion-sm-galaxy-day { min-width: 30px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-day:checked,
+.fusion-sm-galaxy .fusion-sm-galaxy-preset:checked {
+    background-gradient-direction: vertical; background-gradient-start: #6e8bff; background-gradient-end: #3f55e6;
+    border-color: rgba(190, 210, 255, 0.95);
+}
