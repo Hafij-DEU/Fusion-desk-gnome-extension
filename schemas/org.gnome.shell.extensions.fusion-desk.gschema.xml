@@ -172,6 +172,11 @@
     </key>
     <key name="menu-pinned-files" type="as"><default>[]</default><summary>Recent files pinned on the Dashboard (URIs, shown first)</summary></key>
     <key name="menu-dash-scale" type="i"><range min="60" max="100"/><default>82</default><summary>Dashboard and Galaxy layouts: size in percent (everything shrinks together)</summary></key>
+    <key name="menu-galaxy-columns" type="i"><range min="2" max="8"/><default>4</default><summary>Galaxy layout: pinned tiles per row</summary></key>
+    <key name="menu-galaxy-icon-size" type="i"><range min="16" max="128"/><default>44</default><summary>Galaxy layout: pinned tile icon size in px</summary></key>
+    <key name="menu-galaxy-text-size" type="i"><range min="50" max="200"/><default>100</default><summary>Galaxy layout: pinned tile name size in percent</summary></key>
+    <key name="menu-galaxy-tile-width" type="i"><range min="0" max="400"/><default>0</default><summary>Galaxy layout: pinned tile width in px (0 = share the row)</summary></key>
+    <key name="menu-galaxy-tile-height" type="i"><range min="60" max="400"/><default>124</default><summary>Galaxy layout: pinned tile height in px</summary></key>
     <key name="menu-dash-image" type="s"><default>''</default><summary>Dashboard layout background image path (for IMAGE)</summary></key>
     <key name="menu-weather-city" type="s"><default>''</default><summary>Dashboard weather city as typed (empty = no weather card)</summary></key>
     <key name="menu-weather-location" type="av"><default>[]</default><summary>Dashboard weather location found for menu-weather-city (serialized GWeather location)</summary></key>
