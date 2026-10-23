@@ -1775,3 +1775,36 @@
 .fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note { color: #ffffff; caret-color: #ffffff; font-size: 1em; }
 .fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note StLabel { color: rgba(225, 230, 255, 0.75); }
 .fusion-sm-galaxy .fusion-sm-galaxy-event { padding: 8px 10px; }
+
+/* Galaxy widgets: blurred background behind, bold readable text */
+.fusion-sm-galaxy-widgets .fusion-sm-galaxy-blur { border-radius: 18px; }
+.fusion-sm-galaxy.fusion-sm-galaxy-dark .fusion-sm-galaxy-widget-holder .fusion-sm-galaxy-widget {
+    background-gradient-start: rgba(30, 40, 130, 0.40);
+    background-gradient-end: rgba(16, 20, 80, 0.50);
+}
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-widget StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note {
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(5, 8, 40, 0.85);
+}
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-empty { color: rgba(235, 238, 255, 0.92); }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event-repeat { color: rgba(220, 225, 255, 0.80); font-size: 0.85em; }
+.fusion-sm-galaxy-event-list { spacing: 6px; }
+.fusion-sm-galaxy-event-del { padding: 4px; }
+.fusion-sm-galaxy-routine-form, .fusion-sm-galaxy-form-line { spacing: 8px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-input {
+    padding: 6px 10px; border-radius: 10px; color: #ffffff; font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.30);
+    caret-color: #ffffff; selected-color: #ffffff; selection-background-color: rgba(80, 140, 255, 0.6);
+}
+.fusion-sm-galaxy .fusion-sm-galaxy-input:focus { border-color: rgba(140, 180, 255, 0.95); }
+.fusion-sm-galaxy .fusion-sm-galaxy-input StLabel { color: rgba(220, 225, 255, 0.65); font-weight: normal; }
+.fusion-sm-galaxy-time-input { width: 80px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-chip {
+    padding: 6px 12px; border-radius: 10px; color: #ffffff; font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255, 255, 255, 0.30);
+}
+.fusion-sm-galaxy .fusion-sm-galaxy-chip:hover, .fusion-sm-galaxy .fusion-sm-galaxy-chip:focus { background-color: rgba(255, 255, 255, 0.22); }
+.fusion-sm-galaxy .fusion-sm-galaxy-chip-primary { background-gradient-direction: vertical; background-gradient-start: #6e8bff; background-gradient-end: #3f55e6; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-form-error { color: #ffd166; font-size: 0.85em; }
