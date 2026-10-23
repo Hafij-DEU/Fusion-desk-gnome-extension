@@ -9,6 +9,7 @@ import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js
 import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
+import {shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -72,7 +73,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         this._addDesktopPage(window, s);
         this._addWidgetsPage(window, s);
         this._addSystemPage(window, s);
-        this._addAboutPage(window);
+        this._addAboutPage(window, s);
     }
 
     /** Panel position, shape, pills, auto-hide and the order of its items. */
@@ -206,7 +207,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'taskbar-labels', 'Show window titles', 'Next to running app icons'),
             switchRow(s, 'taskbar-previews', 'Window previews on hover'),
             switchRow(s, 'taskbar-tooltips', 'App name tooltips'),
-            switchRow(s, 'taskbar-hotkeys', 'Super+1…9 hotkeys', 'Activate taskbar apps; Ctrl+Super+N opens a new window'),
+            withShortcut(switchRow(s, 'taskbar-hotkeys', 'Super+1…9 hotkeys', 'Activate taskbar apps; Ctrl+Super+N opens a new window'),
+                s, () => ['Super', '1…9']),
         ]));
         page.add(group('Running indicators', [
             comboRow(s, 'taskbar-indicator-style', 'Style', ['DASHES', 'DOTS', 'SQUARES', 'LINE', 'NONE'],
@@ -274,8 +276,9 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         resetButton.connect('clicked', () => s.set_string('deepin-organizer-geometry', '{}'));
         reset.add_suffix(resetButton);
         page.add(group('Organize desktop', [
-            switchRow(s, 'deepin-organizer', 'Organize desktop',
+            withShortcut(switchRow(s, 'deepin-organizer', 'Organize desktop',
                 'Files in your Desktop folder sorted into collections. Alt+O hides or shows them; right-click the desktop for more.'),
+            s, () => ['Alt', 'O']),
             ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [
                 comboRow(s, 'deepin-organizer-size', 'Collection size', ['SMALL', 'MEDIUM', 'LARGE'], ['Small', 'Medium', 'Large']),
                 organize,
@@ -308,9 +311,13 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ]), 'Previous / play-pause / next for the playing app. Show, hide or move them on the Panel page.'));
         page.add(group('Clipboard history', [
             spinRow(s, 'clipboard-size', 'Entries to keep', 5, 200),
-            switchRow(s, 'clipboard-super-v', 'Super+V opens history', 'Super+M still opens the notification list'),
-            switchRow(s, 'clipboard-auto-paste', 'Paste on select',
-                'Choosing an entry also pastes it by sending Ctrl+V to the focused window through a virtual keyboard'),
+            withShortcut(switchRow(s, 'clipboard-super-v', 'Super+V opens history', 'Super+M still opens the notification list'),
+                s, () => ['Super', 'V']),
+            withShortcut(switchRow(s, 'clipboard-auto-paste', 'Paste on select',
+                'Choosing an entry (text or image) pastes it straight into the focused window by sending Ctrl+V through a virtual keyboard'),
+            s, () => ['Ctrl', 'V']),
+            switchRow(s, 'clipboard-images', 'Keep copied images',
+                'Saved as files in ~/.local/share/fusion-desk/clipboard-images; choose one to paste it again, or its link button to copy the file path'),
             switchRow(s, 'clipboard-persist', 'Remember after restart', 'Stored unencrypted in ~/.cache/fusion-desk'),
         ]));
         page.add(group('Other extensions', [
@@ -511,7 +518,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         return g;
     }
 
-    _addAboutPage(window) {
+    _addAboutPage(window, s) {
         const page = new Adw.PreferencesPage({title: 'About', icon_name: 'help-about-symbolic'});
         const head = new Adw.PreferencesGroup();
         const box = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 6, halign: Gtk.Align.CENTER, margin_bottom: 12});
@@ -522,6 +529,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
         head.add(box);
         page.add(head);
+        page.add(shortcutsGroup(s));
         const link = (title, subtitle, uri) => {
             const row = new Adw.ActionRow({title, subtitle, activatable: true});
             row.add_suffix(new Gtk.Image({icon_name: 'external-link-symbolic'}));

@@ -197,7 +197,8 @@
     <!-- Clipboard -->
     <key name="clipboard-size" type="i"><range min="5" max="200"/><default>30</default><summary>Entries to keep</summary></key>
     <key name="clipboard-super-v" type="b"><default>false</default><summary>Super+V opens the clipboard history (the notification list keeps its other shortcuts)</summary></key>
-    <key name="clipboard-auto-paste" type="b"><default>false</default><summary>Paste the chosen entry into the focused window by sending Ctrl+V through a virtual keyboard (opt-in)</summary></key>
+    <key name="clipboard-auto-paste" type="b"><default>true</default><summary>Paste the chosen entry (text or image) straight into the focused window by sending Ctrl+V through a virtual keyboard</summary></key>
+    <key name="clipboard-images" type="b"><default>true</default><summary>Keep copied images in the history (saved as files in ~/.local/share/fusion-desk/clipboard-images, readable only by you)</summary></key>
     <key name="clipboard-persist" type="b"><default>true</default><summary>Save history to disk (~/.cache/fusion-desk/clipboard.json, readable only by you)</summary></key>
 
     <!-- Clock -->

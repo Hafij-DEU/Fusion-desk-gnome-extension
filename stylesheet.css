@@ -382,6 +382,10 @@
 .fusion-clip-item:focus { background-color: #8e8e96; }
 .fusion-clip-delete { padding: 6px; border-radius: 99px; }
 .fusion-clip-delete:hover { background-color: rgba(217, 54, 74, 0.8); }
+.fusion-clip-image { spacing: 10px; }
+.fusion-clip-thumb { border-radius: 6px; }
+.fusion-clip-link { padding: 6px; border-radius: 99px; }
+.fusion-clip-link:hover { background-color: rgba(142, 142, 150, 0.45); }
 .fusion-clip-empty { padding: 12px; color: #8e8e96; }
 
 .fusion-clock { text-align: center; font-feature-settings: "tnum"; font-size: 0.95em; }

@@ -163,7 +163,7 @@ Click a section to expand it.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, …) stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
 - **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top).
 - System monitor: CPU, RAM, temperature, network.
-- Clipboard history, with an optional Super+V shortcut. Paste-on-select is opt-in.
+- Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
 - **Organize Desktop**: Desktop-folder files in movable, resizable collections (Computer, folders, documents, pictures, videos, music, apps, others). Works with the Desktop Icons extension.
 - **Right-click menu**: style presets, background apps (with quit buttons), disk usage, panel toggles, power, quick launchers.
@@ -192,9 +192,12 @@ Click a section to expand it.
 | <kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | Open or focus the nth taskbar app | Taskbar |
 | <kbd>Ctrl</kbd>+<kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | New window of the nth taskbar app | Taskbar |
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Sent for you when you pick a clipboard entry (Paste on select) | Widgets |
 | <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show Organize Desktop collections | Desktop |
 
 An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Start Menu → Keyboard**.
+
+In Settings, each shortcut is shown as keys next to the setting it belongs to, and **About → Keyboard shortcuts** lists them all, including the keys inside the start menu, app launcher and clipboard history.
 
 ## Screenshots
 
@@ -366,7 +369,7 @@ Log out and back in to load the build.
 
 ## Privacy
 
-- **Clipboard history** is kept in memory. With **Remember after restart** (on by default), it is also stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600).
+- **Clipboard history** is kept in memory. With **Remember after restart** (on by default), it is also stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600). Copied images are saved in `~/.local/share/fusion-desk/clipboard-images` (mode 0600) and deleted when they leave the history; turn **Keep copied images** off to record text only.
   - Entries that password managers mark as secret are never recorded.
   - Use **Private mode** before copying other passwords.
 - **Web search** runs only when you pick that result. The URL is configurable.
