@@ -421,7 +421,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 switchRow(s, 'pip-all-workspaces', 'On every workspace', 'They follow you when you switch workspaces'),
                 pipTitles,
             ]),
-        ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.'));
+        ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture", or ends in "— Picture in picture", "- PiP" or "- Mini player". Add other titles for apps that name it differently, or press Alt+Enter on any window.'));
 
         page.add(group('Always on top shortcut', [
             withShortcut(entryRow(s, 'ontop-hotkey', 'Shortcut (e.g. <Alt>Return, empty = off)'),

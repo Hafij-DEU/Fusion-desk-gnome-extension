@@ -160,7 +160,7 @@ Click a section to expand it.
 <summary><b>🧩 Widgets and extras</b></summary>
 
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
-- **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, …) stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
+- **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, Telegram, and players whose mini window is titled like "Player — Picture in picture" or "… - PiP") stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
 - **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top). <kbd>Alt</kbd>+<kbd>Enter</kbd> keeps any focused window on top; press it again to let it go.
 - System monitor: CPU, RAM, temperature, network.
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
