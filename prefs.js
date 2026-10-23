@@ -9,6 +9,7 @@ import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js
 import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
+import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
 const BOX_LABELS = ['Left', 'Center', 'Right'];
@@ -77,6 +78,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
     /** Panel position, shape, pills, auto-hide and the order of its items. */
     _addPanelPage(window, s) {
         const page = new Adw.PreferencesPage({title: 'Panel', icon_name: 'view-grid-symbolic'});
+        page.add(this._mySetupGroup(window, s));
         page.add(group('Panel', [
             comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
             comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
@@ -452,6 +454,61 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const onTopId = s.connect('changed::ontop-apps', fillOnTop);
         page.connect('destroy', () => s.disconnect(onTopId));
         page.add(onTop);
+    }
+
+    /** Save all settings as "my setup" and bring them back with one click. */
+    _mySetupGroup(window, s) {
+        const g = new Adw.PreferencesGroup({
+            title: 'My setup',
+            description: 'Save everything you set up here, then bring it all back with one click if something changes.',
+        });
+        const restoreRow = new Adw.ActionRow({title: 'Restore my setup'});
+        const restore = new Gtk.Button({label: 'Restore', valign: Gtk.Align.CENTER, css_classes: ['suggested-action']});
+        restoreRow.add_suffix(restore);
+        restoreRow.activatable_widget = restore;
+        const saveRow = new Adw.ActionRow({title: 'Save current settings as my setup',
+            subtitle: 'Stored in ~/.config/fusion-desk/my-setup.json (kept when settings are reset)'});
+        const save = new Gtk.Button({label: 'Save', valign: Gtk.Align.CENTER});
+        saveRow.add_suffix(save);
+        saveRow.activatable_widget = save;
+
+        const toast = text => window.add_toast?.(new Adw.Toast({title: text, timeout: 3}));
+        const sync = () => {
+            const data = readSnapshot();
+            restore.sensitive = !!data;
+            restoreRow.subtitle = data ? `Saved ${savedLabel(data)}` : 'Nothing saved yet: save your setup first';
+        };
+        sync();
+
+        const doSave = () => {
+            try {
+                saveSnapshot(s);
+                sync();
+                toast('Your setup is saved');
+            } catch (e) {
+                toast(`Could not save: ${e.message}`);
+            }
+        };
+        save.connect('clicked', () => {
+            if (!readSnapshot()) {
+                doSave();
+                return;
+            }
+            const dialog = new Adw.AlertDialog({heading: 'Replace your saved setup?',
+                body: `The setup saved ${savedLabel()} will be replaced by the current settings.`});
+            dialog.add_response('cancel', 'Cancel');
+            dialog.add_response('save', 'Replace');
+            dialog.set_response_appearance('save', Adw.ResponseAppearance.DESTRUCTIVE);
+            dialog.connect('response', (_d, id) => id === 'save' && doSave());
+            dialog.present(window);
+        });
+        restore.connect('clicked', () => {
+            if (restoreSnapshot(s))
+                toast('Your setup is back');
+        });
+        g.add(restoreRow);
+        g.add(saveRow);
+        return g;
     }
 
     _addAboutPage(window) {

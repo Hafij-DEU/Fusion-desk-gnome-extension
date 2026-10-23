@@ -179,6 +179,10 @@ Click a section to expand it.
 
 </details>
 
+## My setup
+
+**Settings → Panel → My setup → Save** stores every Fusion Desk setting in `~/.config/fusion-desk/my-setup.json`. If anything changes later (an update, a reset, a wrong click), **Restore** brings it all back in one click. It's also in the panel's right-click menu under **Style → Restore my setup**. The file is outside GNOME's settings database, so it survives `dconf reset` and reinstalls.
+
 ## Keyboard shortcuts
 
 | Shortcut | Action | Setting |
