@@ -161,7 +161,7 @@ Click a section to expand it.
 
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, …) stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
-- **Always on top apps**: pick apps whose windows always stay above the rest (Settings → Desktop, or right-click an app on the taskbar → Always on top).
+- **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top).
 - System monitor: CPU, RAM, temperature, network.
 - Clipboard history, with an optional Super+V shortcut. Paste-on-select is opt-in.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
@@ -183,14 +183,14 @@ Click a section to expand it.
 
 | Shortcut | Action | Setting |
 | --- | --- | --- |
-| <kbd>Super</kbd> | Start menu, runner or app launcher | Menu Button / Desktop |
-| <kbd>Super</kbd>+<kbd>R</kbd> | Runner (quick search) | Menu Button |
+| <kbd>Super</kbd> | Start menu, runner, app launcher or Activities | Start Menu → Keyboard |
+| <kbd>Super</kbd>+<kbd>R</kbd> | Runner (quick search) | Start Menu → Keyboard |
 | <kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | Open or focus the nth taskbar app | Taskbar |
 | <kbd>Ctrl</kbd>+<kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | New window of the nth taskbar app | Taskbar |
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
 | <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show Organize Desktop collections | Desktop |
 
-An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Menu Button**.
+An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Start Menu → Keyboard**.
 
 ## Screenshots
 
@@ -224,20 +224,21 @@ An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can
 
 ## Where to find things
 
-Settings pages: **Layout · Appearance · Taskbar · Desktop · Start Menu · Menu Button · Widgets · About**.
+Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Widgets · System · About**.
 
 | I want to… | Go to |
 | --- | --- |
-| Move the panel, change its height or opacity | **Layout** → Panel |
-| Reorder or hide panel items | **Layout** → Elements |
-| Show the battery as its own button, set a charge limit | **Layout** → Battery / Charge limit |
+| Move the panel, change its height, opacity or make it float | **Panel** → Panel |
+| Reorder or hide panel items | **Panel** → Elements |
+| Show the battery as its own button, set a charge limit | **System** → Battery / Charge limit |
 | Pick a preset, glass style, material or opacity | **Appearance** → Style presets / Glass |
-| Change the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Wallpaper |
+| Change colours, the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Accent gradient / Wallpaper |
 | Add the search box and Task View | **Taskbar** → Search and Task View |
 | Turn on the launcher, control centre or Organize Desktop | **Desktop** |
-| Choose a start menu layout or theme | **Start Menu** |
-| Change the start button icon or hotkeys | **Menu Button** |
+| Choose a start menu layout, size or contents | **Start Menu** |
+| Change the start button icon or hotkeys | **Start Menu** → Start button / Keyboard |
 | Configure system monitor, clipboard, clock, media | **Widgets** |
+| Hide status icons, keep awake, keep windows on top | **System** |
 
 ## Compatibility
 
@@ -253,7 +254,7 @@ Settings pages: **Layout · Appearance · Taskbar · Desktop · Start Menu · Me
 
 ## Charge limit
 
-Settings → **Layout** → **Charge limit** stops charging at a level you choose (60–100%, default 90%).
+Settings → **System** → **Charge limit** stops charging at a level you choose (60–100%, default 90%).
 
 - **Laptops with an adjustable limit** (`charge_control_end_threshold`): the firmware enforces it directly.
 - **Other laptops**, for example IdeaPads with a fixed battery-protection mode: Fusion Desk charges normally up to your level, then switches protection on so charging stops. It charges again below your level minus 3%. The limit can't go below the laptop's own protection level (often 60 or 80%).
@@ -323,7 +324,7 @@ dconf reset -f /org/gnome/shell/extensions/fusion-desk/
 <details>
 <summary><b>Uninstall</b></summary>
 
-1. If you set up the charge limit, click **Remove** first (Settings → Layout → Charge limit).
+1. If you set up the charge limit, click **Remove** first (Settings → System → Charge limit).
 2. Uninstall the extension:
 
    ```bash

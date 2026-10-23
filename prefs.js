@@ -2,10 +2,11 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk';
-import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import {ELEMENT_NAMES, parseLayout} from './lib/layoutModel.js';
-import {addMenuPages, appInfo, chooseApp} from './lib/prefsMenu.js';
+import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js';
+import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
 
@@ -13,40 +14,6 @@ const BOXES = ['left', 'center', 'right'];
 const BOX_LABELS = ['Left', 'Center', 'Right'];
 // Elements whose visibility is controlled elsewhere (GNOME built-ins).
 const ALWAYS_VISIBLE = new Set(['quick', 'date']);
-
-function switchRow(settings, key, title, subtitle = '') {
-    const row = new Adw.SwitchRow({title, subtitle});
-    settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
-    return row;
-}
-
-function spinRow(settings, key, title, min, max, step = 1, subtitle = '') {
-    const row = new Adw.SpinRow({
-        title,
-        subtitle,
-        adjustment: new Gtk.Adjustment({lower: min, upper: max, step_increment: step, page_increment: step * 5}),
-    });
-    settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
-    return row;
-}
-
-function entryRow(settings, key, title) {
-    const row = new Adw.EntryRow({title, show_apply_button: true});
-    // Show escaped newlines so multi-line clock formats stay editable on one line.
-    row.text = settings.get_string(key).replace(/\n/g, '\\n');
-    row.connect('apply', () => settings.set_string(key, row.text.replace(/\\n/g, '\n')));
-    return row;
-}
-
-function comboRow(settings, key, title, values, labels) {
-    const row = new Adw.ComboRow({title, model: Gtk.StringList.new(labels)});
-    const sync = () => {
-        row.selected = Math.max(0, values.indexOf(settings.get_string(key)));
-    };
-    sync();
-    row.connect('notify::selected', () => settings.set_string(key, values[row.selected]));
-    return row;
-}
 
 /** Installed icon themes ('icons') or cursor themes ('cursors'), sorted by name. */
 function listThemes(kind) {
@@ -86,13 +53,307 @@ function listThemes(kind) {
     return [...found].sort((a, b) => a.localeCompare(b));
 }
 
-function group(title, rows, description = '') {
-    const g = new Adw.PreferencesGroup({title, description});
-    rows.forEach(r => g.add(r));
-    return g;
-}
+// Glass, colours and wallpaper back to the shipped look (Appearance → Reset look).
+const LOOK_KEYS = ['panel-theme', 'glass-effect', 'glass-material', 'glass-style', 'glass-opacity', 'glass-rim',
+    'glass-glare', 'glass-shadow', 'glass-light-follows', 'accent-gradient', 'accent-gradient-style',
+    'accent-gradient-strength', 'icons-follow-accent', 'tray-app-icons', 'wallpaper-blur', 'wallpaper-blur-strength'];
 
 export default class FusionDeskPrefs extends ExtensionPreferences {
+    fillPreferencesWindow(window) {
+        const s = this.getSettings();
+        window.set_default_size(720, 820);
+        window.search_enabled = true;
+
+        this._addPanelPage(window, s);
+        this._addAppearancePage(window, s);
+        this._addTaskbarPage(window, s);
+        addMenuPage(window, s);
+        this._addDesktopPage(window, s);
+        this._addWidgetsPage(window, s);
+        this._addSystemPage(window, s);
+        this._addAboutPage(window);
+    }
+
+    /** Panel position, shape, pills, auto-hide and the order of its items. */
+    _addPanelPage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'Panel', icon_name: 'view-grid-symbolic'});
+        page.add(group('Panel', [
+            comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
+            comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
+            spinRow(s, 'panel-height', 'Height', 24, 96, 1, 'Pixels'),
+            spinRow(s, 'panel-opacity', 'Background opacity', 0, 100, 5, 'Percent'),
+            switchRow(s, 'deepin-floating-taskbar', 'Floating', 'Rounded, with a gap from the screen edges'),
+            switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),
+            switchRow(s, 'hide-overview-dash', 'Hide overview dash', 'The taskbar replaces the dash in Activities'),
+        ]));
+        page.add(group('Pills', dependsOn(s, ['panel-style'], () => s.get_string('panel-style') === 'PILLS', [
+            spinRow(s, 'pill-margin', 'Space above and below', 0, 20, 1, 'Pixels between each pill and the panel edge (the clock uses 4 less)'),
+            spinRow(s, 'pill-gap', 'Space beside each pill', 0, 24, 1, 'Pixels on each side, so twice this between two pills'),
+            spinRow(s, 'pill-padding', 'Inner padding', 0, 30, 1, 'Pixels at the pill’s rounded ends'),
+            spinRow(s, 'pill-spacing', 'Icon spacing', 0, 30, 1, 'Pixels between the icons inside the tray and system monitor pills'),
+        ]), 'For the Pills style: system tray, clock and system monitor.'));
+        page.add(group('Auto-hide', [
+            switchRow(s, 'intellihide', 'Intellihide', 'Hide the panel when a window overlaps it; push the pointer against the screen edge to reveal'),
+            ...dependsOn(s, ['intellihide'], () => s.get_boolean('intellihide'), [
+                comboRow(s, 'intellihide-mode', 'Hide for', ['ALL', 'FOCUSED', 'MAXIMIZED'],
+                    ['Any window', 'Focused window', 'Maximized windows']),
+            ]),
+            switchRow(s, 'dynamic-opacity', 'Dynamic opacity', 'Panel turns opaque when a window touches it'),
+        ]));
+        const elements = new Adw.PreferencesGroup({
+            title: 'Elements',
+            description: 'Order, visibility and box of each panel item. Items in the right box line up after other extensions’ icons.',
+        });
+        page.add(elements);
+        this._fillElements(elements, s);
+        s.connect('changed::layout', () => this._fillElements(elements, s));
+        window.add(page);
+    }
+
+    /** Style presets, glass, colours, wallpaper and system themes. */
+    _addAppearancePage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'Appearance', icon_name: 'preferences-desktop-appearance-symbolic'});
+
+        // One-click presets: they only switch the settings on these pages.
+        const presetRow = new Adw.ActionRow({
+            title: 'Style',
+            subtitle: 'Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating panel. Workbench: search and Task View buttons. Centered: start button, search and apps in the middle, control centre on the left (moves the start button).',
+        });
+        const presetBox = new Gtk.Box({spacing: 6, valign: Gtk.Align.CENTER});
+        const presetButtons = PRESETS.map(([id, label]) => {
+            const b = new Gtk.Button({label});
+            b.connect('clicked', () => applyPreset(s, id));
+            presetBox.append(b);
+            return [id, b];
+        });
+        const syncPresets = () => presetButtons.forEach(([id, b]) => {
+            if (s.get_string('desktop-mode') === id)
+                b.add_css_class('suggested-action');
+            else
+                b.remove_css_class('suggested-action');
+        });
+        syncPresets();
+        s.connect('changed::desktop-mode', syncPresets);
+        presetRow.add_suffix(presetBox);
+        const lookRow = new Adw.ActionRow({title: 'Default look',
+            subtitle: 'Frosted glass, aurora gradient and wallpaper blur; your layout and features stay'});
+        const lookButton = new Gtk.Button({label: 'Reset look', valign: Gtk.Align.CENTER});
+        lookButton.connect('clicked', () => LOOK_KEYS.forEach(k => s.reset(k)));
+        lookRow.add_suffix(lookButton);
+        page.add(group('Style presets', [presetRow, lookRow], 'Pick one as a starting point, then change anything below or on the other pages.'));
+
+        page.add(group('Glass', [
+            comboRow(s, 'glass-effect', 'Glass effect', ['OFF', 'SOFT', 'STRONG'], ['Off (solid)', 'Soft', 'Strong']),
+            ...dependsOn(s, ['glass-effect'], () => s.get_string('glass-effect') !== 'OFF', [
+                comboRow(s, 'glass-material', 'Material', ['GLASS', 'GLOSS'], ['Clear glass (subtle shine)', 'Gloss (strong shine, bevel)']),
+                comboRow(s, 'glass-style', 'Glass style', ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO'],
+                    ['Clear', 'Frosted', 'Gel', 'Tinted', 'Smoke', 'Halo']),
+                spinRow(s, 'glass-opacity', 'Opacity', 10, 100, 5, 'Percent; below 100 the desktop shows blurred through them'),
+                switchRow(s, 'glass-rim', 'Rim highlight', 'Thin light edge; a sharp bevel with gloss'),
+                switchRow(s, 'glass-glare', 'Corner glare', 'Light reflections in the corners'),
+                switchRow(s, 'glass-shadow', 'Soft shadow', 'Diffused shadow for depth'),
+                switchRow(s, 'glass-light-follows', 'Light follows pointer', 'A soft light spot moves with the pointer'),
+            ]),
+        ], 'Taskbar, menus, start menu, control centre, launcher and desktop collections. Off: solid, no blur.'));
+
+        page.add(group('Colours', [
+            comboRow(s, 'panel-theme', 'Taskbar', ['AUTO', 'DARK', 'LIGHT'], ['Follow system style', 'Dark', 'Light']),
+            comboRow(s, 'deepin-theme', 'Launcher, control centre and collections', ['AUTO', 'LIGHT', 'DARK'], ['Follow system style', 'Light', 'Dark']),
+            navRow(window, 'Start menu', 'Shell theme or own colours, presets, border and corners', 'applications-graphics-symbolic', menuThemePage(s)),
+            switchRow(s, 'icons-follow-accent', 'Accent-coloured icons', 'Start button, Show Applications and status icons take the system accent colour'),
+            comboRow(s, 'tray-app-icons', 'App tray icons', ['MATCH', 'ORIGINAL'], ['Plain icons like status icons', 'Original colours']),
+        ]));
+
+        page.add(group('Accent gradient', [
+            switchRow(s, 'accent-gradient', 'Accent gradient', 'Taskbar, start menu, launcher and control centre fade from the system accent colour'),
+            ...dependsOn(s, ['accent-gradient'], () => s.get_boolean('accent-gradient'), [
+                comboRow(s, 'accent-gradient-style', 'Gradient', ['CORNER', 'TOP', 'SIDE', 'CENTER', 'AURORA', 'SUNSET', 'OCEAN', 'BERRY'],
+                    ['From the corner', 'From the top', 'From the side', 'Glow in the middle',
+                        'Aurora (accent + shifted hue)', 'Sunset (accent + warm orange)', 'Ocean (accent + teal)', 'Berry (accent + pink)']),
+                spinRow(s, 'accent-gradient-strength', 'Strength', 10, 100, 5, 'Percent'),
+            ]),
+        ]));
+
+        page.add(group('Wallpaper', [
+            switchRow(s, 'wallpaper-blur', 'Blur wallpaper', 'While windows are open; sharp when the desktop is empty'),
+            ...dependsOn(s, ['wallpaper-blur'], () => s.get_boolean('wallpaper-blur'), [
+                spinRow(s, 'wallpaper-blur-strength', 'Strength', 5, 100, 5, 'Percent'),
+            ]),
+        ]));
+
+        const icons = listThemes('icons');
+        const cursors = listThemes('cursors');
+        page.add(group('System accent and themes', [
+            comboRow(s, 'deepin-accent', 'Accent colour', ['', 'blue', 'teal', 'green', 'yellow', 'orange', 'pink', 'purple', 'slate'],
+                ['Keep mine', 'Blue', 'Teal', 'Green', 'Yellow', 'Orange', 'Pink', 'Purple', 'Grey']),
+            comboRow(s, 'deepin-icon-theme', 'Icon theme', ['', ...icons], ['Keep mine', ...icons]),
+            comboRow(s, 'deepin-cursor-theme', 'Cursor theme', ['', ...cursors], ['Keep mine', ...cursors]),
+        ], 'Fusion Desk switches GNOME to these while it runs; yours come back when you pick "Keep mine" or turn the extension off.'));
+        window.add(page);
+    }
+
+    /** Taskbar buttons, running indicators, mouse actions, search and Task View. */
+    _addTaskbarPage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'Taskbar', icon_name: 'view-app-grid-symbolic'});
+        page.add(group('Taskbar', [
+            spinRow(s, 'taskbar-icon-size', 'Icon size', 16, 64, 1, 'Pixels'),
+            entryRow(s, 'apps-icon', 'Show Applications icon (name or image path)'),
+            switchRow(s, 'taskbar-show-favorites', 'Show pinned apps'),
+            switchRow(s, 'taskbar-isolate-workspaces', 'Isolate workspaces', 'Only show windows on the current workspace'),
+            switchRow(s, 'taskbar-group-apps', 'Group windows by app', 'Off: one button per window with its title; pinned apps stay as launchers'),
+            switchRow(s, 'taskbar-labels', 'Show window titles', 'Next to running app icons'),
+            switchRow(s, 'taskbar-previews', 'Window previews on hover'),
+            switchRow(s, 'taskbar-tooltips', 'App name tooltips'),
+            switchRow(s, 'taskbar-hotkeys', 'Super+1…9 hotkeys', 'Activate taskbar apps; Ctrl+Super+N opens a new window'),
+        ]));
+        page.add(group('Running indicators', [
+            comboRow(s, 'taskbar-indicator-style', 'Style', ['DASHES', 'DOTS', 'SQUARES', 'LINE', 'NONE'],
+                ['Dashes', 'Dots', 'Squares', 'Line', 'None']),
+            ...dependsOn(s, ['taskbar-indicator-style'], () => s.get_string('taskbar-indicator-style') !== 'NONE', [
+                comboRow(s, 'taskbar-indicator-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
+                entryRow(s, 'taskbar-indicator-color', 'Colour (CSS, e.g. #4f8cff; empty = system accent)'),
+            ]),
+        ]));
+        page.add(group('Mouse', [
+            comboRow(s, 'taskbar-click-action', 'Click', ['CYCLE', 'MINIMIZE', 'PREVIEW'],
+                ['Raise, minimize, cycle windows', 'Raise or minimize all', 'Show window previews']),
+            comboRow(s, 'taskbar-middle-click', 'Middle click', ['NEW_WINDOW', 'MINIMIZE', 'QUIT'],
+                ['New window', 'Minimize', 'Quit']),
+            comboRow(s, 'taskbar-scroll-action', 'Scroll on icon', ['CYCLE', 'WORKSPACE', 'NOTHING'],
+                ['Cycle windows', 'Switch workspace', 'Nothing']),
+            switchRow(s, 'taskbar-preview-close-middle', 'Middle-click a preview closes the window'),
+        ], 'Right-click an icon for the app menu (pin / unpin, windows, always on top, quit).'));
+        page.add(group('Search and Task View', [
+            switchRow(s, 'windows-extras-in-fusion', 'Search and Task View buttons', 'Right after the start button, with rounded hover tiles'),
+            ...dependsOn(s, ['windows-extras-in-fusion'], () => s.get_boolean('windows-extras-in-fusion'), [
+                comboRow(s, 'windows-search', 'Search', ['BOX', 'ICON', 'HIDDEN'], ['Search box', 'Icon only', 'Hidden']),
+                switchRow(s, 'windows-task-view', 'Task View button', 'Opens all windows and workspaces'),
+            ]),
+        ]));
+        window.add(page);
+    }
+
+    /** App launcher, control centre and desktop organizer. */
+    _addDesktopPage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'Desktop', icon_name: 'user-desktop-symbolic'});
+        page.add(group('App launcher', [
+            comboRow(s, 'deepin-start', 'Launcher', ['FUSION', 'BOTH', 'DEEPIN'],
+                ['Off (start menu only)', 'Start menu + launcher button', 'Start button opens the launcher']),
+            ...dependsOn(s, ['deepin-start'], () => s.get_string('deepin-start') !== 'FUSION', [
+                comboRow(s, 'deepin-launcher-mode', 'Style', ['FULLSCREEN', 'WINDOWED'], ['Fullscreen grid with categories', 'Small window']),
+                entryRow(s, 'deepin-launcher-icon', 'Launcher button icon (name or image path, empty = built-in)'),
+            ]),
+        ], 'Blurred app grid with categories and search, or a small window with a category / A–Z list and favourites. The Super key can open it (Start Menu → Keyboard).'));
+
+        page.add(group('Control centre', [
+            switchRow(s, 'deepin-control-button', 'Control centre', 'Side panel with quick actions, media player, system meters, Settings shortcuts, notifications and a calendar'),
+            ...dependsOn(s, ['deepin-control-button'], () => s.get_boolean('deepin-control-button'), [
+                comboRow(s, 'deepin-control-position', 'Button', ['START', 'LEFT', 'TRAY', 'CLOCK'],
+                    ['After the start button (opens on the left)', 'At the left edge (opens on the left)', 'In the tray (opens on the right)', 'On the clock (opens on the right)']),
+            ]),
+        ]));
+
+        const cols = [['places', 'Computer (Home, Trash, drives)'], ['folders', 'Folders'], ['documents', 'Documents'], ['pictures', 'Pictures'],
+            ['videos', 'Videos'], ['music', 'Music'], ['apps', 'Apps'], ['others', 'Others']];
+        const organize = new Adw.ExpanderRow({title: 'Collections', subtitle: 'Which file types get their own collection'});
+        for (const [id, title] of cols) {
+            const row = new Adw.SwitchRow({title});
+            row.active = s.get_strv('deepin-organizer-collections').includes(id);
+            row.connect('notify::active', () => {
+                const list = s.get_strv('deepin-organizer-collections').filter(c => c !== id);
+                if (row.active)
+                    list.push(id);
+                s.set_strv('deepin-organizer-collections', list);
+            });
+            organize.add_row(row);
+        }
+        const reset = new Adw.ActionRow({title: 'Organize again', subtitle: 'Put every collection back into the default columns'});
+        const resetButton = new Gtk.Button({label: 'Organize', valign: Gtk.Align.CENTER});
+        resetButton.connect('clicked', () => s.set_string('deepin-organizer-geometry', '{}'));
+        reset.add_suffix(resetButton);
+        page.add(group('Organize desktop', [
+            switchRow(s, 'deepin-organizer', 'Organize desktop',
+                'Files in your Desktop folder sorted into collections. Alt+O hides or shows them; right-click the desktop for more.'),
+            ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [
+                comboRow(s, 'deepin-organizer-size', 'Collection size', ['SMALL', 'MEDIUM', 'LARGE'], ['Small', 'Medium', 'Large']),
+                organize,
+                reset,
+            ]),
+        ], 'Works with the Desktop Icons extension: its icons are hidden while the collections show, and come back with Alt+O.'));
+        window.add(page);
+    }
+
+    /** Panel widgets: system monitor, clock, media controls, clipboard. */
+    _addWidgetsPage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'Widgets', icon_name: 'applications-utilities-symbolic'});
+        page.add(group('System monitor', [
+            switchRow(s, 'sysmon-cpu', 'CPU usage'),
+            switchRow(s, 'sysmon-ram', 'Memory usage'),
+            switchRow(s, 'sysmon-net', 'Network speed'),
+            switchRow(s, 'sysmon-temp', 'CPU temperature'),
+            spinRow(s, 'sysmon-interval', 'Refresh interval', 1, 10, 1, 'Seconds'),
+        ]));
+        page.add(group('Clock', [
+            switchRow(s, 'clock-custom', 'Custom format'),
+            ...dependsOn(s, ['clock-custom'], () => s.get_boolean('clock-custom'), [
+                entryRow(s, 'clock-format', 'Format (strftime, \\n = new line)'),
+            ]),
+        ], 'Examples: %H:%M   ·   %I:%M %p\\n%d/%m/%Y   ·   %a %d %b  %H:%M'));
+        page.add(group('Media controls', dependsOn(s, ['media-visible'], () => s.get_boolean('media-visible'), [
+            spinRow(s, 'media-title-length', 'Title length', 0, 60, 1, 'Characters of the song title, 0 = buttons only'),
+            switchRow(s, 'media-audio-fallback', 'Apps without media controls',
+                'Show any app playing sound (e.g. the Opera snap) with its title, a mute button and click-to-show; play/pause needs the app\'s own support'),
+        ]), 'Previous / play-pause / next for the playing app. Show, hide or move them on the Panel page.'));
+        page.add(group('Clipboard history', [
+            spinRow(s, 'clipboard-size', 'Entries to keep', 5, 200),
+            switchRow(s, 'clipboard-super-v', 'Super+V opens history', 'Super+M still opens the notification list'),
+            switchRow(s, 'clipboard-auto-paste', 'Paste on select',
+                'Choosing an entry also pastes it by sending Ctrl+V to the focused window through a virtual keyboard'),
+            switchRow(s, 'clipboard-persist', 'Remember after restart', 'Stored unencrypted in ~/.cache/fusion-desk'),
+        ]));
+        page.add(group('Other extensions', [
+            switchRow(s, 'avoid-duplicates', 'Hide widgets other extensions already show',
+                'e.g. Fusion’s system monitor hides while GNOME’s System Monitor extension is on'),
+        ]));
+        window.add(page);
+    }
+
+    /** Battery, charging, status icons, keep awake and windows that stay on top. */
+    _addSystemPage(window, s) {
+        const page = new Adw.PreferencesPage({title: 'System', icon_name: 'battery-good-symbolic'});
+        page.add(group('Battery', [
+            comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
+            switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
+        ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
+        page.add(this._chargeLimitGroup(s));
+        page.add(group('Keep awake', [
+            switchRow(s, 'caffeine-visible', 'Caffeine toggle', 'In Quick Settings: keeps the screen awake and blocks suspend'),
+        ]));
+
+        // Status icons (top-right system menu), one switch each.
+        const status = new Adw.PreferencesGroup({title: 'Status icons',
+            description: 'Show or hide each icon of the system menu. The Quick Settings menu itself is unchanged.'});
+        for (const [id, label, note] of INDICATORS) {
+            const row = new Adw.SwitchRow({title: label, subtitle: note});
+            const sync = () => {
+                row.active = !s.get_strv('hidden-indicators').includes(id);
+            };
+            sync();
+            s.connect('changed::hidden-indicators', sync);
+            row.connect('notify::active', () => {
+                const list = s.get_strv('hidden-indicators').filter(x => x !== id);
+                if (!row.active)
+                    list.push(id);
+                if (list.join() !== s.get_strv('hidden-indicators').join())
+                    s.set_strv('hidden-indicators', list);
+            });
+            status.add(row);
+        }
+        page.add(status);
+        this._addOnTopGroups(page, window, s);
+        window.add(page);
+    }
+
     /** Charge limit: switch, level and the one-time helper setup (asks for the password once). */
     _chargeLimitGroup(s) {
         const HELPER = '/usr/local/libexec/fusion-desk-charge';
@@ -131,352 +392,35 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         sync();
         return group('Charge limit', [
             switchRow(s, 'charge-limit', 'Stop charging at a level', 'Keeps the battery healthier when the laptop is mostly plugged in'),
-            spinRow(s, 'charge-limit-percent', 'Level', 60, 100, 5, 'Percent'),
+            ...dependsOn(s, ['charge-limit'], () => s.get_boolean('charge-limit'), [
+                spinRow(s, 'charge-limit-percent', 'Level', 60, 100, 5, 'Percent'),
+            ]),
             setupRow,
         ], 'Laptops with an adjustable limit get it set directly. Others charge normally up to the level, then switch to battery protection, so it cannot go below the laptop\'s own protection level (often 60 or 80%).');
     }
 
-    fillPreferencesWindow(window) {
-        const s = this.getSettings();
-        window.set_default_size(720, 820);
-        window.search_enabled = true;
-
-        // ---- Layout page ---------------------------------------------------
-        const layout = new Adw.PreferencesPage({title: 'Layout', icon_name: 'view-grid-symbolic'});
-        layout.add(group('Panel', [
-            comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
-            comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
-            spinRow(s, 'panel-height', 'Height', 24, 96, 1, 'Pixels'),
-            spinRow(s, 'panel-opacity', 'Background opacity', 0, 100, 5, 'Percent'),
-            switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),
-            switchRow(s, 'hide-overview-dash', 'Hide overview dash', 'The taskbar replaces the dash in Activities'),
-        ]));
-        layout.add(group('Pills', [
-            spinRow(s, 'pill-margin', 'Space above and below', 0, 20, 1, 'Pixels between each pill and the panel edge (the clock uses 4 less)'),
-            spinRow(s, 'pill-gap', 'Space beside each pill', 0, 24, 1, 'Pixels on each side, so twice this between two pills'),
-            spinRow(s, 'pill-padding', 'Inner padding', 0, 30, 1, 'Pixels at the pill\u2019s rounded ends'),
-            spinRow(s, 'pill-spacing', 'Icon spacing', 0, 30, 1, 'Pixels between the icons inside the tray and system monitor pills'),
-        ], 'For the Pills style: system tray, clock and system monitor.'));
-        layout.add(group('Auto-hide', [
-            switchRow(s, 'intellihide', 'Intellihide', 'Hide the panel when a window overlaps it; push the pointer against the screen edge to reveal'),
-            comboRow(s, 'intellihide-mode', 'Hide for', ['ALL', 'FOCUSED', 'MAXIMIZED'],
-                ['Any window', 'Focused window', 'Maximized windows']),
-            switchRow(s, 'dynamic-opacity', 'Dynamic opacity', 'Panel turns opaque when a window touches it'),
-        ]));
-
-        const elements = new Adw.PreferencesGroup({
-            title: 'Elements',
-            description: 'Order, visibility and box of each panel item. Items in the right box line up after other extensions’ icons.',
-        });
-        layout.add(elements);
-
-        layout.add(group('Battery', [
-            comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
-            switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
-        ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
-        layout.add(this._chargeLimitGroup(s));
-        // Status icons (top-right system menu), one switch each.
-        const status = new Adw.PreferencesGroup({title: 'Status icons',
-            description: 'Show or hide each icon of the system menu. The Quick Settings menu itself is unchanged.'});
-        for (const [id, label, note] of INDICATORS) {
-            const row = new Adw.SwitchRow({title: label, subtitle: note});
-            const sync = () => {
-                row.active = !s.get_strv('hidden-indicators').includes(id);
-            };
-            sync();
-            s.connect('changed::hidden-indicators', sync);
-            row.connect('notify::active', () => {
-                const list = s.get_strv('hidden-indicators').filter(x => x !== id);
-                if (!row.active)
-                    list.push(id);
-                if (list.join() !== s.get_strv('hidden-indicators').join())
-                    s.set_strv('hidden-indicators', list);
-            });
-            status.add(row);
-        }
-        layout.add(status);
-        this._fillElements(elements, s);
-        s.connect('changed::layout', () => this._fillElements(elements, s));
-        window.add(layout);
-        this._addAppearancePage(window, s);
-
-        // ---- Taskbar page --------------------------------------------------
-        const taskbar = new Adw.PreferencesPage({title: 'Taskbar', icon_name: 'view-app-grid-symbolic'});
-        taskbar.add(group('Taskbar', [
-            spinRow(s, 'taskbar-icon-size', 'Icon size', 16, 64),
-            entryRow(s, 'apps-icon', 'Show Applications icon (name or image path)'),
-            switchRow(s, 'taskbar-show-favorites', 'Show pinned apps'),
-            switchRow(s, 'taskbar-isolate-workspaces', 'Isolate workspaces', 'Only show windows on the current workspace'),
-            switchRow(s, 'taskbar-previews', 'Window previews on hover'),
-            switchRow(s, 'taskbar-group-apps', 'Group windows by app', 'Off: one button per window with its title; pinned apps stay as launchers'),
-            switchRow(s, 'taskbar-labels', 'Show window titles', 'Next to running app icons'),
-            switchRow(s, 'taskbar-tooltips', 'App name tooltips'),
-            switchRow(s, 'taskbar-hotkeys', 'Super+1…9 hotkeys', 'Activate taskbar apps; Ctrl+Super+N opens a new window'),
-        ]));
-        taskbar.add(group('Running indicators', [
-            comboRow(s, 'taskbar-indicator-style', 'Style', ['DASHES', 'DOTS', 'SQUARES', 'LINE', 'NONE'],
-                ['Dashes', 'Dots', 'Squares', 'Line', 'None']),
-            comboRow(s, 'taskbar-indicator-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
-            entryRow(s, 'taskbar-indicator-color', 'Color (CSS, e.g. #4f8cff; empty = system accent)'),
-        ]));
-        taskbar.add(group('Mouse', [
-            comboRow(s, 'taskbar-click-action', 'Click', ['CYCLE', 'MINIMIZE', 'PREVIEW'],
-                ['Raise, minimize, cycle windows', 'Raise or minimize all', 'Show window previews']),
-            comboRow(s, 'taskbar-middle-click', 'Middle click', ['NEW_WINDOW', 'MINIMIZE', 'QUIT'],
-                ['New window', 'Minimize', 'Quit']),
-            comboRow(s, 'taskbar-scroll-action', 'Scroll on icon', ['CYCLE', 'WORKSPACE', 'NOTHING'],
-                ['Cycle windows', 'Switch workspace', 'Nothing']),
-            switchRow(s, 'taskbar-preview-close-middle', 'Middle-click a preview closes the window'),
-        ], 'Right-click an icon for the app menu (pin / unpin, windows, quit).'));
-        taskbar.add(group(_('Search and Task View'), [
-            switchRow(s, 'windows-extras-in-fusion', _('Search and Task View buttons'), _('Right after the start button, with rounded hover tiles')),
-            comboRow(s, 'windows-search', _('Search'), ['BOX', 'ICON', 'HIDDEN'], [_('Search box'), _('Icon only'), _('Hidden')]),
-            switchRow(s, 'windows-task-view', _('Task View button'), _('Opens all windows and workspaces')),
-            switchRow(s, 'windows-blur', _('Blur'), _('Blur behind the taskbar while these buttons are shown')),
-        ]));
-        window.add(taskbar);
-        this._addDesktopPage(window, s);
-
-        // ---- Start Menu + Menu Button pages (lib/prefsMenu.js) ------------
-        addMenuPages(window, s, this);
-
-        // ---- Widgets page --------------------------------------------------
-        const widgets = new Adw.PreferencesPage({title: 'Widgets', icon_name: 'applications-utilities-symbolic'});
-        widgets.add(group('Duplicates', [
-            switchRow(s, 'avoid-duplicates', 'Hide widgets other extensions already show',
-                'e.g. Fusion\u2019s system monitor hides while GNOME\u2019s System Monitor extension is on'),
-        ]));
-        widgets.add(group('System monitor', [
-            switchRow(s, 'sysmon-cpu', 'CPU usage'),
-            switchRow(s, 'sysmon-ram', 'Memory usage'),
-            switchRow(s, 'sysmon-net', 'Network speed'),
-            switchRow(s, 'sysmon-temp', 'CPU temperature'),
-            spinRow(s, 'sysmon-interval', 'Refresh interval', 1, 10, 1, 'Seconds'),
-        ]));
-        widgets.add(group('Clock', [
-            switchRow(s, 'clock-custom', 'Custom format'),
-            entryRow(s, 'clock-format', 'Format (strftime, \\n = new line)'),
-        ], 'Examples: %H:%M   ·   %I:%M %p\\n%d/%m/%Y   ·   %a %d %b  %H:%M'));
-        widgets.add(group('Media controls', [
-            switchRow(s, 'media-visible', 'Show media controls', 'Previous / play-pause / next for the playing app'),
-            spinRow(s, 'media-title-length', 'Title length', 0, 60, 1, 'Characters of the song title, 0 = buttons only'),
-            switchRow(s, 'media-audio-fallback', 'Apps without media controls',
-                'Show any app playing sound (e.g. the Opera snap) with its title, a mute button and click-to-show; play/pause needs the app\'s own support'),
-        ], 'Move them on the Layout page (default: left, after the start menu).'));
-        widgets.add(group('Clipboard history', [
-            spinRow(s, 'clipboard-size', 'Entries to keep', 5, 200),
-            switchRow(s, 'clipboard-super-v', 'Super+V opens history', 'Super+M still opens the notification list'),
-            switchRow(s, 'clipboard-auto-paste', 'Paste on select',
-                'Off by default. Choosing an entry also pastes it by sending Ctrl+V to the focused window through a virtual keyboard'),
-            switchRow(s, 'clipboard-persist', 'Remember after restart', 'Stored unencrypted in ~/.cache/fusion-desk'),
-        ]));
-        widgets.add(group('Quick Settings', [
-            switchRow(s, 'caffeine-visible', 'Caffeine toggle', 'Keeps the screen awake and blocks suspend'),
-        ]));
-        this._addPipGroups(widgets, window, s);
-        window.add(widgets);
-
-        // ---- About page ----------------------------------------------------
-        const about = new Adw.PreferencesPage({title: 'About', icon_name: 'help-about-symbolic'});
-        const head = new Adw.PreferencesGroup();
-        const box = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 6, halign: Gtk.Align.CENTER, margin_bottom: 12});
-        box.append(new Gtk.Label({label: 'Fusion Desk', css_classes: ['title-1']}));
-        const v = this.metadata['version-name'] ?? this.metadata.version;
-        const version = v ? `Version ${v} · ` : '';
-        box.append(new Gtk.Label({label: `${version}by Md Hafijur Rahman`, css_classes: ['dim-label']}));
-        box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
-        head.add(box);
-        about.add(head);
-        const link = (title, subtitle, uri) => {
-            const row = new Adw.ActionRow({title, subtitle, activatable: true});
-            row.add_suffix(new Gtk.Image({icon_name: 'external-link-symbolic'}));
-            row.connect('activated', () => new Gtk.UriLauncher({uri}).launch(window, null, null));
-            return row;
-        };
-        about.add(group('Design inspiration', [
-            link('Dash to Panel', 'Jason DeRose, Charles Gagnon and contributors · GPL-2.0', 'https://github.com/home-sweet-gnome/dash-to-panel'),
-            link('ArcMenu', 'Andrew Zaech, LinxGem33 and contributors · GPL-2.0', 'https://gitlab.com/arcmenu/ArcMenu'),
-            link('Vitals / Resource Monitor', 'Panel system readouts', 'https://github.com/corecoding/Vitals'),
-            link('Clipboard History', 'SUPERCILEX and contributors', 'https://github.com/SUPERCILEX/gnome-clipboard-history'),
-            link('Caffeine', 'eonpatapon and contributors', 'https://github.com/eonpatapon/gnome-shell-extension-caffeine'),
-            link('Date Menu Formatter', 'Marcin Jakubowski', 'https://github.com/marcinjakubowski/date-menu-formatter'),
-        ], 'Written from scratch; no code from these projects is included. Thank you to their authors.'));
-        about.add(group('License', [
-            new Adw.ActionRow({title: 'GNU General Public License v2.0 or later',
-                subtitle: 'Free software: you may share and change it under the GPL. It comes with no warranty.'}),
-            new Adw.ActionRow({title: 'Trademarks',
-                subtitle: 'Product names belong to their owners. Fusion Desk is not affiliated with Microsoft, KDE, Linux Mint, Apple or the authors above.'}),
-        ]));
-        window.add(about);
-    }
-
-    /** Style presets, colours, glass and themes. */
-    _addAppearancePage(window, s) {
-        const page = new Adw.PreferencesPage({title: _('Appearance'), icon_name: 'preferences-desktop-appearance-symbolic'});
-
-        // One-click presets: they only switch the settings on these pages.
-        const presetRow = new Adw.ActionRow({
-            title: _('Style'),
-            subtitle: _('Classic: taskbar only. Studio: app launcher, control centre, desktop organizer, floating taskbar. Workbench: search and Task View buttons. Centered: start button, search and apps in the middle, control centre on the left (moves the start button).'),
-        });
-        const presetBox = new Gtk.Box({spacing: 6, valign: Gtk.Align.CENTER});
-        const presetButtons = PRESETS.map(([id, label]) => {
-            const b = new Gtk.Button({label: _(label)});
-            b.connect('clicked', () => applyPreset(s, id));
-            presetBox.append(b);
-            return [id, b];
-        });
-        const syncPresets = () => presetButtons.forEach(([id, b]) => {
-            if (s.get_string('desktop-mode') === id)
-                b.add_css_class('suggested-action');
-            else
-                b.remove_css_class('suggested-action');
-        });
-        syncPresets();
-        s.connect('changed::desktop-mode', syncPresets);
-        presetRow.add_suffix(presetBox);
-        // Glass, colours and wallpaper back to the shipped look.
-        const LOOK_KEYS = ['panel-theme', 'glass-effect', 'glass-material', 'glass-style', 'glass-opacity', 'glass-rim',
-            'glass-glare', 'glass-shadow', 'glass-light-follows', 'accent-gradient', 'accent-gradient-style',
-            'accent-gradient-strength', 'icons-follow-accent', 'tray-app-icons', 'wallpaper-blur', 'wallpaper-blur-strength',
-            'deepin-opacity', 'deepin-blur', 'deepin-gloss'];
-        const lookRow = new Adw.ActionRow({title: _('Default look'),
-            subtitle: _('Frosted glass, aurora gradient and wallpaper blur; your layout and features stay')});
-        const lookButton = new Gtk.Button({label: _('Reset look'), valign: Gtk.Align.CENTER});
-        lookButton.connect('clicked', () => LOOK_KEYS.forEach(k => s.reset(k)));
-        lookRow.add_suffix(lookButton);
-        page.add(group(_('Style presets'), [presetRow, lookRow], _('Pick one as a starting point, then change anything below or on the Desktop page.')));
-
-        const glassRows = [
-            comboRow(s, 'glass-material', _('Material'), ['GLASS', 'GLOSS'], [_('Clear glass (subtle shine)'), _('Gloss (strong shine, bevel)')]),
-            comboRow(s, 'glass-style', _('Glass style'), ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO'],
-                [_('Clear'), _('Frosted'), _('Gel'), _('Tinted'), _('Smoke'), _('Halo')]),
-            spinRow(s, 'glass-opacity', _('Opacity'), 10, 100, 5, _('Menus, start menu, control centre and launcher; below 100 they blur what is behind. The taskbar keeps its own')),
-            switchRow(s, 'glass-rim', _('Rim highlight'), _('Thin light edge; a sharp bevel with gloss')),
-            switchRow(s, 'glass-glare', _('Corner glare'), _('Light reflections in the corners')),
-            switchRow(s, 'glass-shadow', _('Soft shadow'), _('Diffused shadow for depth')),
-            switchRow(s, 'glass-light-follows', _('Light follows pointer'), _('A soft light spot moves with the pointer')),
-        ];
-        const syncGlass = () => {
-            const on = s.get_string('glass-effect') !== 'OFF';
-            glassRows.forEach(r => r.set_sensitive(on));
-        };
-        s.connect('changed::glass-effect', syncGlass);
-        syncGlass();
-        page.add(group(_('Glass'), [
-            comboRow(s, 'glass-effect', _('Glass effect'), ['OFF', 'SOFT', 'STRONG'], [_('Off'), _('Soft'), _('Strong')]),
-            ...glassRows,
-        ], _('Taskbar, menus, start menu, control centre and launcher. Lower the opacity to see the blurred desktop through them; 100 is solid.')));
-
-        const blurScale = new Gtk.Scale({
-            adjustment: new Gtk.Adjustment({lower: 5, upper: 100, step_increment: 5, page_increment: 10}),
-            draw_value: true, digits: 0, hexpand: true, valign: Gtk.Align.CENTER, width_request: 200,
-        });
-        s.bind('wallpaper-blur-strength', blurScale.adjustment, 'value', Gio.SettingsBindFlags.DEFAULT);
-        const blurStrength = new Adw.ActionRow({title: _('Strength')});
-        blurStrength.add_suffix(blurScale);
-        s.bind('wallpaper-blur', blurStrength, 'sensitive', Gio.SettingsBindFlags.GET);
-        page.add(group(_('Wallpaper'), [
-            switchRow(s, 'wallpaper-blur', _('Blur wallpaper'), _('While windows are open; sharp when the desktop is empty')),
-            blurStrength,
-        ]));
-
-        page.add(group(_('Colours'), [
-            comboRow(s, 'panel-theme', _('Taskbar colours'), ['AUTO', 'DARK', 'LIGHT'], [_('Follow system style'), _('Dark'), _('Light')]),
-            switchRow(s, 'accent-gradient', _('Accent gradient'), _('Taskbar, start menu, launcher and control centre fade from the system accent colour')),
-            comboRow(s, 'accent-gradient-style', _('Gradient'), ['CORNER', 'TOP', 'SIDE', 'CENTER', 'AURORA', 'SUNSET', 'OCEAN', 'BERRY'],
-                [_('From the corner'), _('From the top'), _('From the side'), _('Glow in the middle'),
-                    _('Aurora (accent + shifted hue)'), _('Sunset (accent + warm orange)'), _('Ocean (accent + teal)'), _('Berry (accent + pink)')]),
-            spinRow(s, 'accent-gradient-strength', _('Gradient strength'), 10, 100, 5, _('Percent')),
-            switchRow(s, 'icons-follow-accent', _('Accent-coloured icons'), _('Start button, Show Applications and status icons take the system accent colour')),
-            comboRow(s, 'tray-app-icons', _('App tray icons'), ['MATCH', 'ORIGINAL'], [_('Plain icons like status icons'), _('Original colours')]),
-            switchRow(s, 'deepin-floating-taskbar', _('Floating taskbar'), _('Rounded, with a gap from the screen edges; layout and widgets stay the same')),
-        ]));
-
-        const icons = listThemes('icons');
-        const cursors = listThemes('cursors');
-        page.add(group(_('System accent and themes'), [
-            comboRow(s, 'deepin-accent', _('Accent colour'), ['', 'blue', 'teal', 'green', 'yellow', 'orange', 'pink', 'purple', 'slate'],
-                [_('Keep mine'), _('Blue'), _('Teal'), _('Green'), _('Yellow'), _('Orange'), _('Pink'), _('Purple'), _('Grey')]),
-            comboRow(s, 'deepin-icon-theme', _('Icon theme'), ['', ...icons], [_('Keep mine'), ...icons]),
-            comboRow(s, 'deepin-cursor-theme', _('Cursor theme'), ['', ...cursors], [_('Keep mine'), ...cursors]),
-        ], _('Fusion Desk switches GNOME to these while it runs; yours come back when you pick "Keep mine" or turn the extension off. A glossy icon theme suggestion is in the README.')));
-        window.add(page);
-    }
-
-    /** App launcher, control centre and desktop organizer. */
-    _addDesktopPage(window, s) {
-        const page = new Adw.PreferencesPage({title: _('Desktop'), icon_name: 'user-desktop-symbolic'});
-        page.add(group(_('App launcher'), [
-            comboRow(s, 'deepin-start', _('Launcher'), ['FUSION', 'BOTH', 'DEEPIN'],
-                [_('Off (start menu only)'), _('Start menu + launcher button'), _('Start button opens the launcher')]),
-            comboRow(s, 'deepin-launcher-mode', _('Style'), ['FULLSCREEN', 'WINDOWED'], [_('Fullscreen grid with categories'), _('Small window')]),
-            switchRow(s, 'deepin-super-key', _('Super key opens the launcher'), _('Off: Super keeps opening the start menu')),
-            entryRow(s, 'deepin-launcher-icon', _('Launcher button icon (name or image path, empty = built-in)')),
-        ], _('Blurred app grid with categories and search, or a small window with a category / A–Z list and favourites.')));
-
-        page.add(group(_('Control centre'), [
-            switchRow(s, 'deepin-control-button', _('Control centre'), _('Side panel with quick actions, media player, system meters, Settings shortcuts, notifications and a calendar')),
-            comboRow(s, 'deepin-control-position', _('Button'), ['START', 'LEFT', 'TRAY', 'CLOCK'],
-                [_('After the start button (opens on the left)'), _('At the left edge (opens on the left)'), _('In the tray (opens on the right)'), _('On the clock (opens on the right)')]),
-        ]));
-
-        const cols = [['places', _('Computer (Home, Trash, drives)')], ['folders', _('Folders')], ['documents', _('Documents')], ['pictures', _('Pictures')],
-            ['videos', _('Videos')], ['music', _('Music')], ['apps', _('Apps')], ['others', _('Others')]];
-        const organize = new Adw.ExpanderRow({title: _('Collections'), subtitle: _('Which file types get their own collection')});
-        for (const [id, title] of cols) {
-            const row = new Adw.SwitchRow({title});
-            row.active = s.get_strv('deepin-organizer-collections').includes(id);
-            row.connect('notify::active', () => {
-                const list = s.get_strv('deepin-organizer-collections').filter(c => c !== id);
-                if (row.active)
-                    list.push(id);
-                s.set_strv('deepin-organizer-collections', list);
-            });
-            organize.add_row(row);
-        }
-        const reset = new Adw.ActionRow({title: _('Organize again'), subtitle: _('Put every collection back into the default columns')});
-        const resetButton = new Gtk.Button({label: _('Organize'), valign: Gtk.Align.CENTER});
-        resetButton.connect('clicked', () => s.set_string('deepin-organizer-geometry', '{}'));
-        reset.add_suffix(resetButton);
-        page.add(group(_('Organize desktop'), [
-            switchRow(s, 'deepin-organizer', _('Organize desktop'),
-                _('Files in your Desktop folder sorted into collections. Alt+O hides or shows them; right-click the desktop for more.')),
-            comboRow(s, 'deepin-organizer-size', _('Collection size'), ['SMALL', 'MEDIUM', 'LARGE'], [_('Small'), _('Medium'), _('Large')]),
-            organize,
-            reset,
-        ], _('Works with the Desktop Icons extension: its icons are hidden while the collections show, and come back with Alt+O.')));
-
-        page.add(group(_('Launcher, control centre and collections look'), [
-            comboRow(s, 'deepin-theme', _('Colours'), ['AUTO', 'LIGHT', 'DARK'], [_('Follow system style'), _('Light'), _('Dark')]),
-            switchRow(s, 'deepin-blur', _('Blur'), _('Blur behind them')),
-            spinRow(s, 'deepin-opacity', _('Opacity'), 25, 100, 5, _('Percent, while the Glass effect is off')),
-            switchRow(s, 'deepin-gloss', _('Glossy'), _('Lighter top and bright edge, also with Glass effect off')),
-        ]));
-
-        window.add(page);
-    }
-
-    /** Picture-in-picture and always-on-top apps (Widgets page). */
-    _addPipGroups(page, window, s) {
+    /** Picture-in-picture and always-on-top apps. */
+    _addOnTopGroups(page, window, s) {
         // Extra titles: a comma-separated list stored as a string array.
-        const pipTitles = new Adw.EntryRow({title: _('Other picture-in-picture titles (comma-separated)'), show_apply_button: true});
+        const pipTitles = new Adw.EntryRow({title: 'Other picture-in-picture titles (comma-separated)', show_apply_button: true});
         pipTitles.text = s.get_strv('pip-extra-titles').join(', ');
         pipTitles.connect('apply', () => s.set_strv('pip-extra-titles',
             pipTitles.text.split(',').map(t => t.trim()).filter(Boolean)));
-        page.add(group(_('Picture-in-picture'), [
-            switchRow(s, 'pip-on-top', _('Always on top'), _('Picture-in-picture windows of every app stay above other windows')),
-            switchRow(s, 'pip-all-workspaces', _('On every workspace'), _('They follow you when you switch workspaces')),
-            pipTitles,
-        ], _('Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.')));
+        page.add(group('Picture-in-picture', [
+            switchRow(s, 'pip-on-top', 'Always on top', 'Picture-in-picture windows of every app stay above other windows'),
+            ...dependsOn(s, ['pip-on-top'], () => s.get_boolean('pip-on-top'), [
+                switchRow(s, 'pip-all-workspaces', 'On every workspace', 'They follow you when you switch workspaces'),
+                pipTitles,
+            ]),
+        ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture". Add other titles for apps that name it differently.'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
         const onTop = new Adw.PreferencesGroup({
-            title: _('Always on top apps'),
-            description: _('Windows of these apps always stay above other windows. Also: right-click an app on the taskbar → Always on top.'),
+            title: 'Always on top apps',
+            description: 'Windows of these apps always stay above other windows. Also: right-click an app on the taskbar → Always on top.',
         });
         const addApp = new Gtk.Button({icon_name: 'list-add-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-            tooltip_text: _('Add an app')});
+            tooltip_text: 'Add an app'});
         addApp.connect('clicked', () => chooseApp(window, id => {
             const ids = s.get_strv('ontop-apps');
             if (!ids.includes(id))
@@ -488,18 +432,18 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             onTopRows.forEach(r => onTop.remove(r));
             onTopRows = s.get_strv('ontop-apps').map(id => {
                 const info = appInfo(id);
-                const row = new Adw.ActionRow({title: info?.get_display_name() ?? id, subtitle: info ? '' : _('Not installed')});
+                const row = new Adw.ActionRow({title: info?.get_display_name() ?? id, subtitle: info ? '' : 'Not installed'});
                 if (info?.get_icon())
                     row.add_prefix(new Gtk.Image({gicon: info.get_icon(), pixel_size: 32}));
                 const del = new Gtk.Button({icon_name: 'user-trash-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-                    tooltip_text: _('Remove')});
+                    tooltip_text: 'Remove'});
                 del.connect('clicked', () => s.set_strv('ontop-apps', s.get_strv('ontop-apps').filter(x => x !== id)));
                 row.add_suffix(del);
                 onTop.add(row);
                 return row;
             });
             if (!onTopRows.length) {
-                const empty = new Adw.ActionRow({title: _('No apps yet'), subtitle: _('Use + to add one')});
+                const empty = new Adw.ActionRow({title: 'No apps yet', subtitle: 'Use + to add one'});
                 onTop.add(empty);
                 onTopRows = [empty];
             }
@@ -508,6 +452,40 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const onTopId = s.connect('changed::ontop-apps', fillOnTop);
         page.connect('destroy', () => s.disconnect(onTopId));
         page.add(onTop);
+    }
+
+    _addAboutPage(window) {
+        const page = new Adw.PreferencesPage({title: 'About', icon_name: 'help-about-symbolic'});
+        const head = new Adw.PreferencesGroup();
+        const box = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 6, halign: Gtk.Align.CENTER, margin_bottom: 12});
+        box.append(new Gtk.Label({label: 'Fusion Desk', css_classes: ['title-1']}));
+        const v = this.metadata['version-name'] ?? this.metadata.version;
+        const version = v ? `Version ${v} · ` : '';
+        box.append(new Gtk.Label({label: `${version}by Md Hafijur Rahman`, css_classes: ['dim-label']}));
+        box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
+        head.add(box);
+        page.add(head);
+        const link = (title, subtitle, uri) => {
+            const row = new Adw.ActionRow({title, subtitle, activatable: true});
+            row.add_suffix(new Gtk.Image({icon_name: 'external-link-symbolic'}));
+            row.connect('activated', () => new Gtk.UriLauncher({uri}).launch(window, null, null));
+            return row;
+        };
+        page.add(group('Design inspiration', [
+            link('Dash to Panel', 'Jason DeRose, Charles Gagnon and contributors · GPL-2.0', 'https://github.com/home-sweet-gnome/dash-to-panel'),
+            link('ArcMenu', 'Andrew Zaech, LinxGem33 and contributors · GPL-2.0', 'https://gitlab.com/arcmenu/ArcMenu'),
+            link('Vitals / Resource Monitor', 'Panel system readouts', 'https://github.com/corecoding/Vitals'),
+            link('Clipboard History', 'SUPERCILEX and contributors', 'https://github.com/SUPERCILEX/gnome-clipboard-history'),
+            link('Caffeine', 'eonpatapon and contributors', 'https://github.com/eonpatapon/gnome-shell-extension-caffeine'),
+            link('Date Menu Formatter', 'Marcin Jakubowski', 'https://github.com/marcinjakubowski/date-menu-formatter'),
+        ], 'Written from scratch; no code from these projects is included. Thank you to their authors.'));
+        page.add(group('License', [
+            new Adw.ActionRow({title: 'GNU General Public License v2.0 or later',
+                subtitle: 'Free software: you may share and change it under the GPL. It comes with no warranty.'}),
+            new Adw.ActionRow({title: 'Trademarks',
+                subtitle: 'Product names belong to their owners. Fusion Desk is not affiliated with Microsoft, KDE, Linux Mint, Apple or the authors above.'}),
+        ]));
+        window.add(page);
     }
 
     _fillElements(groupWidget, s) {

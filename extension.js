@@ -38,7 +38,7 @@ import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButto
 const MODULES = {
     // Menu content settings apply live inside MenuHost; these rebuild the button/shortcuts.
     menu: {cls: StartMenu, visible: 'menu-visible',
-        keys: ['menu-icon', 'menu-label', 'menu-super-', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-super-key', 'deepin-start', 'icons-follow-accent']},
+        keys: ['menu-icon', 'menu-label', 'super-key', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-start', 'icons-follow-accent']},
     apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon', 'icons-follow-accent']},
     taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor']},
     title: {cls: WindowTitle, visible: 'title-visible', keys: []},
@@ -99,7 +99,7 @@ const CONFLICTS = {
     'dash-to-panel@jderose9.github.com': 'Dash to Panel',
 };
 
-const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'pill-', 'hide-overview-dash', 'windows-blur', 'deepin-blur', 'deepin-gloss', 'deepin-floating-taskbar', 'accent-gradient', 'accent-gradient-', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-'];
+const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'pill-', 'hide-overview-dash', 'deepin-floating-taskbar', 'accent-gradient', 'accent-gradient-', 'icons-follow-accent', 'windows-extras-in-fusion', 'glass-'];
 
 export default class FusionDeskExtension extends Extension {
     enable() {

@@ -127,10 +127,8 @@
 
     <key name="apps-icon" type="s"><default>'fusion:fusion-apps.png'</default><summary>Show Applications button icon (icon name or image path)</summary></key>
     <key name="avoid-duplicates" type="b"><default>true</default><summary>Hide Fusion widgets that another enabled extension already provides</summary></key>
-    <key name="imported-settings" type="b"><default>false</default><summary>Icons were imported from Dash to Panel / ArcMenu</summary></key>
 
     <!-- Start menu -->
-    <key name="menu-super-key" type="b"><default>true</default><summary>Super key opens the start menu</summary></key>
     <key name="menu-icon" type="s"><default>'fusion:fusion-start.png'</default><summary>Start button icon name</summary></key>
     <key name="menu-label" type="s"><default>'Apps'</default><summary>Optional text next to the start button icon</summary></key>
     <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
@@ -169,7 +167,10 @@
     <key name="menu-search-commands" type="b"><default>true</default><summary>Run commands typed as >command</summary></key>
     <key name="menu-max-results" type="i"><range min="5" max="100"/><default>30</default><summary>Maximum app results</summary></key>
     <key name="menu-tooltips" type="b"><default>true</default><summary>Tooltips on icon buttons</summary></key>
-    <key name="menu-super-action" type="s"><default>'MENU'</default><summary>Super key opens: MENU or RUNNER</summary></key>
+    <key name="super-key" type="s">
+      <choices><choice value="MENU"/><choice value="RUNNER"/><choice value="LAUNCHER"/><choice value="OVERVIEW"/></choices>
+      <default>'MENU'</default><summary>Super key opens: start menu, runner, app launcher (when on, else the start menu) or the Activities overview</summary>
+    </key>
     <key name="menu-hotkey" type="s"><default>''</default><summary>Extra shortcut for the menu (e.g. &lt;Super&gt;space)</summary></key>
     <key name="menu-runner-hotkey" type="s"><default>'&lt;Super&gt;r'</default><summary>Shortcut for the runner (Spotlight-style search)</summary></key>
     <key name="menu-button-style" type="s"><default>'ICON'</default><summary>Start button: ICON, TEXT or ICON_TEXT</summary></key>
@@ -184,7 +185,6 @@
     <key name="menu-border-color" type="s"><default>'rgb(60,60,60)'</default><summary>Menu border colour</summary></key>
     <key name="menu-border-width" type="i"><range min="0" max="6"/><default>1</default><summary>Menu border width</summary></key>
     <key name="menu-radius" type="i"><range min="0" max="40"/><default>14</default><summary>Menu corner radius</summary></key>
-    <key name="menu-imported-arcmenu" type="b"><default>false</default><summary>ArcMenu settings were imported once</summary></key>
     <key name="notes" type="s"><default>''</default><summary>Quick notes text</summary></key>
 
     <!-- System monitor -->
@@ -220,7 +220,6 @@
       <default>'BOX'</default><summary>Search button after the start button: box, icon only or hidden</summary>
     </key>
     <key name="windows-task-view" type="b"><default>true</default><summary>Task View button after the start button (opens the overview)</summary></key>
-    <key name="windows-blur" type="b"><default>true</default><summary>Blur behind the taskbar while the search and Task View buttons are shown</summary></key>
     <key name="deepin-features-enabled" type="b"><default>false</default><summary>Old setting (before version 12): features used outside the old desktop modes</summary></key>
     <key name="deepin-features" type="as">
       <default>['launcher', 'control', 'organizer']</default>
@@ -241,13 +240,10 @@
       <choices><choice value="FULLSCREEN"/><choice value="WINDOWED"/></choices>
       <default>'FULLSCREEN'</default><summary>App launcher: fullscreen grid or small window</summary>
     </key>
-    <key name="deepin-super-key" type="b"><default>true</default><summary>Super opens the app launcher (when the launcher is on)</summary></key>
     <key name="deepin-theme" type="s">
       <choices><choice value="AUTO"/><choice value="LIGHT"/><choice value="DARK"/></choices>
       <default>'AUTO'</default><summary>Launcher, control centre and collections colours: follow the system style, light or dark</summary>
     </key>
-    <key name="deepin-blur" type="b"><default>true</default><summary>Blur behind the launcher, control centre and collections</summary></key>
-    <key name="deepin-gloss" type="b"><default>true</default><summary>Glossy look on the launcher, control centre and collections (also with Glass effect off)</summary></key>
     <key name="deepin-icon-theme" type="s"><default>''</default><summary>Icon theme Fusion Desk switches to (empty = keep the system theme; yours comes back when cleared or when the extension is off)</summary></key>
     <key name="deepin-cursor-theme" type="s"><default>''</default><summary>Cursor theme Fusion Desk switches to (empty = keep the system theme)</summary></key>
     <key name="deepin-floating-taskbar" type="b"><default>false</default><summary>Floating taskbar: rounded, with a gap from the screen edges; layout and widgets stay the same</summary></key>
@@ -268,7 +264,6 @@
       <default>'START'</default><summary>Control centre button: after the start button or at the left edge of the taskbar (panel opens on the left), in the tray, or on the clock (clicking the clock opens it)</summary>
     </key>
     <key name="deepin-launcher-icon" type="s"><default>''</default><summary>Launcher button icon: theme icon name or image path (empty = built-in)</summary></key>
-    <key name="deepin-opacity" type="i"><range min="25" max="100"/><default>50</default><summary>Launcher, control centre and collections opacity in percent</summary></key>
 
   </schema>
 </schemalist>
