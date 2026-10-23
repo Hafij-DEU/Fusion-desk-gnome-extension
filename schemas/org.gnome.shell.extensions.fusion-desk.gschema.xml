@@ -136,7 +136,7 @@
     <key name="menu-show-recent" type="b"><default>true</default><summary>Show recent files category</summary></key>
     <key name="menu-hover-categories" type="b"><default>false</default><summary>Switch categories on hover</summary></key>
     <key name="menu-web-search" type="s"><default>'https://duckduckgo.com/?q=%s'</default><summary>Web search URL (%s = query)</summary></key>
-    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, dashboard, galaxy, windows, fusion, mint, grid, plasma, runner</summary></key>
+    <key name="menu-layout" type="s"><default>'windows'</default><summary>Start menu layout: eleven, windows, fusion, mint, grid, plasma, runner</summary></key>
     <key name="menu-width" type="i"><range min="0" max="2400"/><default>0</default><summary>Menu width in px (0 = layout default)</summary></key>
     <key name="menu-height" type="i"><range min="0" max="2000"/><default>700</default><summary>Menu height in px (0 = layout default)</summary></key>
     <key name="menu-gap" type="i"><range min="-1" max="40"/><default>0</default><summary>Space in px between the menu and the screen edge / panel (-1 = theme default, 0 = none)</summary></key>
@@ -155,31 +155,6 @@
       <choices><choice value="MIXED"/><choice value="APPS"/><choice value="FILES"/></choices>
       <default>'MIXED'</default><summary>Recommended section (Modern layout): apps and files, apps only, or files only</summary>
     </key>
-    <key name="menu-dash-background" type="s">
-      <choices><choice value="NONE"/><choice value="COSMIC"/><choice value="SPACE"/><choice value="WALLPAPER"/><choice value="IMAGE"/></choices>
-      <default>'SPACE'</default><summary>Dashboard layout background: NONE (plain menu surface), COSMIC (space scene drawn in code, animated), SPACE (built-in sky and planet pictures with moving stars between), WALLPAPER (the desktop wallpaper) or IMAGE (menu-dash-image)</summary>
-    </key>
-    <key name="menu-dash-sections" type="as"><default>['pinned', 'clock', 'weather', 'greeting', 'continue', 'capture', 'downloads', 'tools', 'recent', 'calendar', 'note', 'storage']</default><summary>Parts shown on the Dashboard layout (ids from lib/menu/dashItems.js)</summary></key>
-    <key name="menu-dash-pinned-rows" type="i"><range min="1" max="4"/><default>3</default><summary>Dashboard layout: rows of pinned apps per page</summary></key>
-    <key name="menu-dash-pinned-columns" type="i"><range min="3" max="10"/><default>6</default><summary>Dashboard layout: columns of pinned apps</summary></key>
-    <key name="menu-dash-clock" type="s">
-      <choices><choice value="12H"/><choice value="24H"/><choice value="SYSTEM"/></choices>
-      <default>'12H'</default><summary>Dashboard layout clock: 12-hour, 24-hour or the system clock format</summary>
-    </key>
-    <key name="menu-weather-unit" type="s">
-      <choices><choice value="C"/><choice value="F"/><choice value="SYSTEM"/></choices>
-      <default>'C'</default><summary>Dashboard weather temperature: Celsius, Fahrenheit or the locale's unit</summary>
-    </key>
-    <key name="menu-pinned-files" type="as"><default>[]</default><summary>Recent files pinned on the Dashboard (URIs, shown first)</summary></key>
-    <key name="menu-dash-scale" type="i"><range min="60" max="100"/><default>82</default><summary>Dashboard and Galaxy layouts: size in percent (everything shrinks together)</summary></key>
-    <key name="menu-galaxy-columns" type="i"><range min="2" max="8"/><default>4</default><summary>Galaxy layout: pinned tiles per row</summary></key>
-    <key name="menu-galaxy-icon-size" type="i"><range min="16" max="128"/><default>44</default><summary>Galaxy layout: pinned tile icon size in px</summary></key>
-    <key name="menu-galaxy-text-size" type="i"><range min="50" max="200"/><default>100</default><summary>Galaxy layout: pinned tile name size in percent</summary></key>
-    <key name="menu-galaxy-tile-width" type="i"><range min="0" max="400"/><default>0</default><summary>Galaxy layout: pinned tile width in px (0 = share the row)</summary></key>
-    <key name="menu-galaxy-tile-height" type="i"><range min="60" max="400"/><default>124</default><summary>Galaxy layout: pinned tile height in px</summary></key>
-    <key name="menu-dash-image" type="s"><default>''</default><summary>Dashboard layout background image path (for IMAGE)</summary></key>
-    <key name="menu-weather-city" type="s"><default>''</default><summary>Dashboard weather city as typed (empty = no weather card)</summary></key>
-    <key name="menu-weather-location" type="av"><default>[]</default><summary>Dashboard weather location found for menu-weather-city (serialized GWeather location)</summary></key>
     <key name="menu-recent-apps" type="as"><default>[]</default><summary>Recently opened apps, newest first (kept by the extension)</summary></key>
     <key name="menu-app-hours" type="as"><default>[]</default><summary>App launches per hour of day as "id|c0,…,c23" (for "usually now" suggestions)</summary></key>
     <key name="menu-known-apps" type="as"><default>[]</default><summary>Installed apps already seen (to spot newly installed ones)</summary></key>
@@ -210,7 +185,6 @@
     <key name="menu-border-width" type="i"><range min="0" max="6"/><default>1</default><summary>Menu border width</summary></key>
     <key name="menu-radius" type="i"><range min="0" max="40"/><default>14</default><summary>Menu corner radius</summary></key>
     <key name="menu-imported-arcmenu" type="b"><default>false</default><summary>ArcMenu settings were imported once</summary></key>
-    <key name="menu-routine" type="as"><default>[]</default><summary>Galaxy layout Today card: own events and routines, one JSON object each {id, title, time "HH:MM", date "YYYY-MM-DD", repeat once|daily|weekdays}</summary></key>
     <key name="notes" type="s"><default>''</default><summary>Quick notes text</summary></key>
 
     <!-- System monitor -->

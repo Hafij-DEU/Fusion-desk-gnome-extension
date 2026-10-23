@@ -170,6 +170,9 @@ export default class FusionDeskExtension extends Extension {
         this._running = true;
         // Older versions only had these features inside "desktop modes".
         migrateDesktopModes(this._settings);
+        // The Dashboard and Galaxy menu layouts are gone: back to the default one.
+        if (['dashboard', 'galaxy'].includes(this._settings.get_string('menu-layout')))
+            this._settings.reset('menu-layout');
         this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
         // App launcher, control centre, desktop organizer and the theme
         // switches (lib/deepin/); each part follows its own setting.
