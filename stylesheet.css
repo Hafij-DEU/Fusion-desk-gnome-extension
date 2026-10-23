@@ -947,7 +947,15 @@
 .fusion-deepin-dark .fusion-deepin-cc-meter-head { color: #ffffff; }
 
 /* ---- Hidden icons arrow ------------------------------------------------- */
-.fusion-overflow-grid { spacing: 4px; padding: 4px 8px; }
+/* Tray icons are drawn for the (always dark) taskbar, often white: keep them on a dark strip. */
+.fusion-overflow-grid {
+    spacing: 4px;
+    padding: 6px;
+    margin: 4px 8px;
+    border-radius: 12px;
+    background-color: rgba(22, 22, 26, 0.92);
+}
+.fusion-overflow-grid .panel-button, .fusion-overflow-grid .system-status-icon { color: #f2f2f4; }
 .fusion-overflow-row { spacing: 4px; }
 .fusion-overflow-cell {
     min-width: 36px;
