@@ -34,6 +34,10 @@
     <!-- Panel -->
     <key name="panel-position" type="s"><default>'BOTTOM'</default><summary>Panel position (TOP or BOTTOM)</summary></key>
     <key name="panel-style" type="s"><default>'PILLS'</default><summary>Panel item style: PILLS (rounded groups for tray, clock and system monitor) or FLAT</summary></key>
+    <key name="pill-margin" type="i"><range min="0" max="20"/><default>7</default><summary>Pills: space above and below each pill in px (the clock uses 4 px less)</summary></key>
+    <key name="pill-gap" type="i"><range min="0" max="24"/><default>3</default><summary>Pills: space on each side of a pill in px</summary></key>
+    <key name="pill-padding" type="i"><range min="0" max="30"/><default>11</default><summary>Pills: inner space at the pill's ends in px</summary></key>
+    <key name="pill-spacing" type="i"><range min="0" max="30"/><default>11</default><summary>Pills: space between the icons inside a pill in px</summary></key>
     <key name="panel-height" type="i"><range min="24" max="96"/><default>48</default><summary>Panel height in px</summary></key>
     <key name="battery-style" type="s">
       <choices><choice value="COLOR"/><choice value="GNOME"/></choices>
@@ -167,6 +171,7 @@
       <default>'C'</default><summary>Dashboard weather temperature: Celsius, Fahrenheit or the locale's unit</summary>
     </key>
     <key name="menu-pinned-files" type="as"><default>[]</default><summary>Recent files pinned on the Dashboard (URIs, shown first)</summary></key>
+    <key name="menu-dash-scale" type="i"><range min="60" max="100"/><default>82</default><summary>Dashboard and Galaxy layouts: size in percent (everything shrinks together)</summary></key>
     <key name="menu-dash-image" type="s"><default>''</default><summary>Dashboard layout background image path (for IMAGE)</summary></key>
     <key name="menu-weather-city" type="s"><default>''</default><summary>Dashboard weather city as typed (empty = no weather card)</summary></key>
     <key name="menu-weather-location" type="av"><default>[]</default><summary>Dashboard weather location found for menu-weather-city (serialized GWeather location)</summary></key>

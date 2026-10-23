@@ -151,6 +151,12 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'multi-monitor', 'Panels on all monitors', 'Each extra monitor gets a start button and a taskbar with its own windows'),
             switchRow(s, 'hide-overview-dash', 'Hide overview dash', 'The taskbar replaces the dash in Activities'),
         ]));
+        layout.add(group('Pills', [
+            spinRow(s, 'pill-margin', 'Space above and below', 0, 20, 1, 'Pixels between each pill and the panel edge (the clock uses 4 less)'),
+            spinRow(s, 'pill-gap', 'Space beside each pill', 0, 24, 1, 'Pixels on each side, so twice this between two pills'),
+            spinRow(s, 'pill-padding', 'Inner padding', 0, 30, 1, 'Pixels at the pill\u2019s rounded ends'),
+            spinRow(s, 'pill-spacing', 'Icon spacing', 0, 30, 1, 'Pixels between the icons inside the tray and system monitor pills'),
+        ], 'For the Pills style: system tray, clock and system monitor.'));
         layout.add(group('Auto-hide', [
             switchRow(s, 'intellihide', 'Intellihide', 'Hide the panel when a window overlaps it; push the pointer against the screen edge to reveal'),
             comboRow(s, 'intellihide-mode', 'Hide for', ['ALL', 'FOCUSED', 'MAXIMIZED'],
@@ -267,6 +273,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         widgets.add(group('Quick Settings', [
             switchRow(s, 'caffeine-visible', 'Caffeine toggle', 'Keeps the screen awake and blocks suspend'),
         ]));
+        this._addPipGroups(widgets, window, s);
         window.add(widgets);
 
         // ---- About page ----------------------------------------------------
@@ -447,6 +454,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'deepin-gloss', _('Glossy'), _('Lighter top and bright edge, also with Glass effect off')),
         ]));
 
+        window.add(page);
+    }
+
+    /** Picture-in-picture and always-on-top apps (Widgets page). */
+    _addPipGroups(page, window, s) {
         // Extra titles: a comma-separated list stored as a string array.
         const pipTitles = new Adw.EntryRow({title: _('Other picture-in-picture titles (comma-separated)'), show_apply_button: true});
         pipTitles.text = s.get_strv('pip-extra-titles').join(', ');
@@ -496,7 +508,6 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const onTopId = s.connect('changed::ontop-apps', fillOnTop);
         page.connect('destroy', () => s.disconnect(onTopId));
         page.add(onTop);
-        window.add(page);
     }
 
     _fillElements(groupWidget, s) {

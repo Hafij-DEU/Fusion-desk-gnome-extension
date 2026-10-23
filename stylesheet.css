@@ -1729,3 +1729,49 @@
 .fusion-sm-galaxy-widget-button:hover .fusion-sm-galaxy-widget,
 .fusion-sm-galaxy-widget-button:focus .fusion-sm-galaxy-widget { border-color: rgba(230, 236, 255, 0.95); }
 .fusion-sm-galaxy-storage-hint { color: rgba(255, 255, 255, 0.8); }
+
+/* Galaxy: Today, Quick note and the storage pill as in the design */
+.fusion-sm-galaxy .fusion-sm-galaxy-widget { padding: 14px 16px; spacing: 8px; }
+.fusion-sm-galaxy-widget-head { spacing: 10px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-widget-emoji { font-size: 1.4em; }
+.fusion-sm-galaxy .fusion-sm-galaxy-widget-title { font-size: 1.25em; font-weight: bold; }
+.fusion-sm-galaxy-widget-sub { font-size: 0.9em; }
+.fusion-sm-galaxy-day-nav { padding: 6px; border-radius: 99px; border: 1px solid rgba(255, 255, 255, 0.30); background-color: rgba(255, 255, 255, 0.08); }
+.fusion-sm-galaxy-events { spacing: 6px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-event {
+    spacing: 10px; padding: 6px 10px; border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.fusion-sm-galaxy-event-dot { width: 10px; height: 10px; border-radius: 99px; }
+.fusion-sm-galaxy .fusion-sm-galaxy-event-time { font-weight: bold; min-width: 52px; }
+.fusion-sm-galaxy-event-name { font-weight: bold; }
+.fusion-sm-galaxy-open { padding: 6px 10px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.22); background-color: rgba(255, 255, 255, 0.06); }
+.fusion-sm-galaxy-open:hover, .fusion-sm-galaxy-open:focus { background-color: rgba(255, 255, 255, 0.16); }
+.fusion-sm-galaxy-open-box { spacing: 10px; }
+.fusion-sm-galaxy-open-label { font-weight: 600; }
+.fusion-sm-notes.fusion-sm-galaxy-note { min-height: 0; padding: 10px 12px; }
+.fusion-sm-galaxy-note-status { spacing: 6px; }
+.fusion-sm-galaxy-storage-pill {
+    padding: 6px 14px; border-radius: 16px; margin-right: 10px;
+    background-gradient-direction: vertical;
+    background-gradient-start: rgba(70, 80, 170, 0.42);
+    background-gradient-end: rgba(30, 36, 110, 0.48);
+    border: 1px solid rgba(190, 200, 255, 0.50);
+}
+.fusion-sm-galaxy-storage-pill:hover, .fusion-sm-galaxy-storage-pill:focus { border-color: rgba(230, 236, 255, 0.95); }
+.fusion-sm-galaxy-storage-pill-box { spacing: 10px; }
+.fusion-sm-galaxy-pill-title { font-size: 0.85em; }
+.fusion-sm-galaxy-pill-free { font-weight: bold; font-size: 1.05em; }
+.fusion-sm-galaxy-pill-right { spacing: 4px; padding-left: 6px; }
+.fusion-sm-galaxy-pill-used { font-size: 0.78em; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-storage-pill StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-widget-sub,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-open StLabel,
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event StLabel { color: #ffffff; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-event .fusion-sm-item-desc { color: rgba(220, 225, 255, 0.80); }
+.fusion-sm-galaxy .fusion-sm-galaxy-storage-pill .fusion-hub-bar-fill { background-gradient-direction: horizontal; background-gradient-start: #4fb7ff; background-gradient-end: #2f7bff; }
+.fusion-sm-galaxy .fusion-sm-galaxy-storage-pill .fusion-hub-bar { background-color: rgba(0, 0, 30, 0.45); }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note,
+.fusion-start-menu.fusion-themed .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note { color: #ffffff; caret-color: #ffffff; font-size: 1em; }
+.fusion-start-menu .fusion-sm.fusion-sm-galaxy .fusion-sm-galaxy-note StLabel { color: rgba(225, 230, 255, 0.75); }
+.fusion-sm-galaxy .fusion-sm-galaxy-event { padding: 8px 10px; }
