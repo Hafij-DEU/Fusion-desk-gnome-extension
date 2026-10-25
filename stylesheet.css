@@ -49,7 +49,6 @@
     transition-duration: 120ms;
 }
 .fusion-task-button:hover { background-color: rgba(255, 255, 255, 0.10); }
-.fusion-task-button:active,
 .fusion-task-button:focus { background-color: rgba(255, 255, 255, 0.16); }
 .fusion-task-button:active { background-color: rgba(255, 255, 255, 0.08); }
 .fusion-task-row { spacing: 6px; }
@@ -205,25 +204,15 @@
     border-radius: 18px 0 0 18px;
 }
 .fusion-sm-rail-item { padding: 10px 12px; }
+.fusion-sm-rail-item:checked { background-color: st-transparentize(-st-accent-color, 0.22); }
 .fusion-sm-rail-label { font-size: 0.92em; }
-.fusion-sm-rail-power { spacing: 2px; padding-bottom: 4px; }
 .fusion-sm-extras { spacing: 1px; padding: 2px 4px; }
-.fusion-sm-win-apps { width: 290px; padding: 12px 6px 12px 12px; spacing: 8px; }
+.fusion-sm-win-apps { width: 290px; padding: 12px 6px 12px 12px; spacing: 8px; border-right: 1px solid rgba(127, 127, 127, 0.22); }
 .fusion-sm-win-tiles { padding: 12px 14px 12px 6px; spacing: 6px; }
-.fusion-sm-win-apps { border-right: 1px solid rgba(127, 127, 127, 0.22); }
 .fusion-sm-windows .fusion-sm-item { padding: 7px 10px; }
 .fusion-sm-windows .fusion-sm-heading { font-size: 1em; color: inherit; }
 .fusion-sm-windows .fusion-sm-letter { font-size: 0.95em; color: inherit; padding: 12px 10px 4px; }
-.fusion-sm-wintile { width: 92px; padding: 12px 4px 10px; }
 .fusion-sm-wintile .fusion-sm-tile-label { max-width: 88px; font-size: 0.92em; }
-.fusion-sm-livetile {
-    width: 112px;
-    height: 104px;
-    border-radius: 12px;
-    margin: 2px;
-    background-color: st-transparentize(-st-accent-color, 0.16);
-}
-.fusion-sm-livetile:hover, .fusion-sm-livetile:focus { background-color: st-transparentize(-st-accent-color, 0.30); }
 
 /* Mint */
 .fusion-sm-mint-top { spacing: 10px; }
@@ -303,7 +292,6 @@
 .fusion-hub-bar { height: 6px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.22); }
 .fusion-hub-bar-fill { height: 6px; border-radius: 99px; background-color: -st-accent-color; }
 .fusion-hub-bar-fill.full { background-color: #e5484d; }
-.fusion-sm-rail-item:checked { background-color: st-transparentize(-st-accent-color, 0.22); }
 
 /* Overlays */
 .fusion-sm-popover {
@@ -450,9 +438,7 @@
 #panel.fusion-panel.fusion-pills .panel-button.fusion-tray,
 #panel.fusion-panel.fusion-pills .panel-button.clock-display,
 #panel.fusion-panel.fusion-pills .panel-button.fusion-sysmon {
-    margin: 7px 3px;
-    -natural-hpadding: 11px;
-    -minimum-hpadding: 7px;
+    /* Margin, padding and inner spacing come from the Pills settings (lib/panelLayout.js). */
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.07);
     background-color: rgba(255, 255, 255, 0.07);
@@ -473,11 +459,6 @@
     background-color: st-transparentize(-st-accent-color, 0.28);
     border-color: st-transparentize(-st-accent-color, 0.45);
 }
-/* The clock is often two lines: less vertical margin so it is not clipped. */
-#panel.fusion-panel.fusion-pills .panel-button.clock-display { margin: 3px 3px; }
-/* Room between the tray icons inside the pill. */
-#panel.fusion-panel.fusion-pills .fusion-tray .panel-status-indicators-box { spacing: 11px; }
-#panel.fusion-panel.fusion-pills .fusion-sysmon-box { spacing: 9px; }
 /* Other buttons keep a round hover that matches the pills. */
 #panel.fusion-panel.fusion-pills .panel-button { border-radius: 12px; }
 
@@ -495,17 +476,13 @@
 .fusion-flyout-item { spacing: 10px; }
 .fusion-flyout .popup-menu-content { min-width: 280px; }
 
-/* ==== Deepin mode ========================================================= */
+/* ==== Launcher, control centre, desktop files ============================== */
 /* Clean-room Deepin-style look: rounded, translucent, blurred surfaces.
    Backgrounds come from code (opacity setting); these set text and accents. */
-.fusion-deepin-dark { color: #f2f2f4; }
-.fusion-deepin-light { color: #1f1f23; }
+.fusion-dark { color: #f2f2f4; }
+.fusion-light { color: #1f1f23; }
 
-/* ---- Taskbar theming in Deepin mode (layout stays the user's) ------------- */
-#panel.fusion-deepin-look .fusion-task-button,
-#panel.fusion-deepin-look .panel-button { border-radius: 10px; }
-#panel.fusion-deepin-look .fusion-task-dot.focused { background-color: -st-accent-color; }
-.fusion-deepin-panel-launcher {
+.fusion-panel-launcher {
     margin: 0 4px;
     border-radius: 12px;
     color: #ffffff;
@@ -515,14 +492,14 @@
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
     transition-duration: 120ms;
 }
-.fusion-deepin-panel-launcher:hover { background-gradient-start: st-lighten(-st-accent-color, 24%); }
-.fusion-deepin-panel-launcher-custom,
-.fusion-deepin-panel-launcher-custom:hover { background-gradient-direction: none; background-color: transparent; box-shadow: none; }
+.fusion-panel-launcher:hover { background-gradient-start: st-lighten(-st-accent-color, 24%); }
+.fusion-panel-launcher-custom,
+.fusion-panel-launcher-custom:hover { background-gradient-direction: none; background-color: transparent; box-shadow: none; }
 
 /* ---- Launcher: fullscreen -------------------------------------------------- */
-.fusion-deepin-launcher-full-bg { background-color: rgba(0, 15, 39, 0.45); }
-.fusion-deepin-full-header { padding: 36px 40px 24px 40px; }
-.fusion-deepin-search {
+.fusion-launcher-full-bg { background-color: rgba(0, 15, 39, 0.45); }
+.fusion-full-header { padding: 36px 40px 24px 40px; }
+.fusion-search {
     border: none;
     border-radius: 10px;
     padding: 7px 12px;
@@ -531,129 +508,109 @@
     selection-background-color: -st-accent-color;
     selected-color: -st-accent-fg-color;
 }
-.fusion-deepin-search:focus { box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.4); }
-.fusion-deepin-search-full { width: 320px; background-color: rgba(255, 255, 255, 0.15); color: #ffffff; caret-color: #ffffff; }
-.fusion-deepin-search-full StLabel.hint-text { color: rgba(255, 255, 255, 0.6); }
-.fusion-deepin-search-icon { icon-size: 16px; padding-right: 6px; }
-.fusion-deepin-mode-button {
+.fusion-search:focus { box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.4); }
+.fusion-search-full { width: 320px; background-color: rgba(255, 255, 255, 0.15); color: #ffffff; caret-color: #ffffff; }
+.fusion-search-full StLabel.hint-text { color: rgba(255, 255, 255, 0.6); }
+.fusion-search-icon { icon-size: 16px; padding-right: 6px; }
+.fusion-mode-button {
     width: 36px; height: 36px;
     border-radius: 18px;
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.12);
 }
-.fusion-deepin-mode-button:hover { background-color: rgba(255, 255, 255, 0.22); }
-.fusion-deepin-rail { width: 200px; padding-left: 40px; spacing: 4px; }
-.fusion-deepin-rail-item {
+.fusion-mode-button:hover { background-color: rgba(255, 255, 255, 0.22); }
+.fusion-rail { width: 200px; padding-left: 40px; spacing: 4px; }
+.fusion-rail-item {
     padding: 8px 14px;
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.75);
     text-align: left;
 }
-.fusion-deepin-rail-box { spacing: 10px; }
-.fusion-deepin-rail-item:hover { background-color: rgba(255, 255, 255, 0.10); }
-.fusion-deepin-rail-item:checked { background-color: rgba(255, 255, 255, 0.20); color: #ffffff; }
-.fusion-deepin-full-scroll { padding-right: 200px; }
-.fusion-deepin-app {
+.fusion-rail-box { spacing: 10px; }
+.fusion-rail-item:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-rail-item:checked { background-color: rgba(255, 255, 255, 0.20); color: #ffffff; }
+.fusion-full-scroll { padding-right: 200px; }
+.fusion-app {
     border-radius: 18px;
     transition-duration: 100ms;
 }
-.fusion-deepin-app-box { spacing: 8px; }
-.fusion-deepin-app-label { text-align: center; }
-.fusion-deepin-launcher-full .fusion-deepin-app { color: #ffffff; }
-.fusion-deepin-launcher-full .fusion-deepin-app-label { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
-.fusion-deepin-launcher-full .fusion-deepin-app:hover { background-color: rgba(255, 255, 255, 0.10); }
-.fusion-deepin-launcher-full .fusion-deepin-app:focus { background-color: rgba(255, 255, 255, 0.20); }
-.fusion-deepin-empty { color: rgba(255, 255, 255, 0.7); font-size: 14pt; padding-top: 80px; }
+.fusion-app-box { spacing: 8px; }
+.fusion-app-label { text-align: center; }
+.fusion-launcher-full .fusion-app { color: #ffffff; }
+.fusion-launcher-full .fusion-app-label { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.fusion-launcher-full .fusion-app:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-launcher-full .fusion-app:focus { background-color: rgba(255, 255, 255, 0.20); }
+.fusion-empty { color: rgba(255, 255, 255, 0.7); font-size: 14pt; padding-top: 80px; }
 
 /* ---- Launcher: windowed ---------------------------------------------------- */
-.fusion-deepin-launcher-window {
+.fusion-launcher-window {
     border-radius: 18px;
     padding: 20px 10px 10px 16px;
     spacing: 12px;
     border: 1px solid rgba(127, 127, 127, 0.22);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
-.fusion-deepin-win-left, .fusion-deepin-win-right { spacing: 8px; }
-.fusion-deepin-win-head, .fusion-deepin-win-top, .fusion-deepin-win-bar { spacing: 8px; }
-.fusion-deepin-win-title { font-weight: bold; padding: 4px 6px; }
-.fusion-deepin-switch { background-color: rgba(127, 127, 127, 0.18); border-radius: 8px; padding: 2px; spacing: 2px; }
-.fusion-deepin-switch-item { padding: 4px 10px; border-radius: 6px; }
-.fusion-deepin-switch-item:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
-.fusion-deepin-list-header { spacing: 8px; padding: 10px 6px 4px 6px; font-weight: bold; font-size: 9pt; color: rgba(127, 127, 127, 1); }
-.fusion-deepin-list-app { padding: 5px 8px; border-radius: 8px; text-align: left; }
-.fusion-deepin-list-box { spacing: 10px; }
-.fusion-deepin-round-button {
+.fusion-win-left, .fusion-win-right { spacing: 8px; }
+.fusion-win-head, .fusion-win-top, .fusion-win-bar { spacing: 8px; }
+.fusion-win-title { font-weight: bold; padding: 4px 6px; }
+.fusion-switch { background-color: rgba(127, 127, 127, 0.18); border-radius: 8px; padding: 2px; spacing: 2px; }
+.fusion-switch-item { padding: 4px 10px; border-radius: 6px; }
+.fusion-switch-item:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-list-header { spacing: 8px; padding: 10px 6px 4px 6px; font-weight: bold; font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-list-app { padding: 5px 8px; border-radius: 8px; text-align: left; }
+.fusion-list-box { spacing: 10px; }
+.fusion-round-button {
     width: 36px; height: 36px;
     border-radius: 18px;
     background-color: rgba(127, 127, 127, 0.16);
 }
-.fusion-deepin-round-button:hover { background-color: rgba(127, 127, 127, 0.28); }
-.fusion-deepin-win-section { spacing: 6px; padding-bottom: 10px; }
-.fusion-deepin-launcher-window .fusion-deepin-app { font-size: 9pt; }
-.fusion-deepin-light .fusion-deepin-app:hover, .fusion-deepin-light .fusion-deepin-list-app:hover { background-color: rgba(0, 0, 0, 0.06); }
-.fusion-deepin-light .fusion-deepin-app:focus, .fusion-deepin-light .fusion-deepin-list-app:focus { background-color: rgba(0, 0, 0, 0.10); }
-.fusion-deepin-dark .fusion-deepin-app:hover, .fusion-deepin-dark .fusion-deepin-list-app:hover { background-color: rgba(255, 255, 255, 0.08); }
-.fusion-deepin-dark .fusion-deepin-app:focus, .fusion-deepin-dark .fusion-deepin-list-app:focus { background-color: rgba(255, 255, 255, 0.14); }
-.fusion-deepin-empty-hint { color: rgba(127, 127, 127, 1); padding: 12px; }
+.fusion-round-button:hover { background-color: rgba(127, 127, 127, 0.28); }
+.fusion-win-section { spacing: 6px; padding-bottom: 10px; }
+.fusion-launcher-window .fusion-app { font-size: 9pt; }
+.fusion-light .fusion-app:hover, .fusion-light .fusion-list-app:hover { background-color: rgba(0, 0, 0, 0.06); }
+.fusion-light .fusion-app:focus, .fusion-light .fusion-list-app:focus { background-color: rgba(0, 0, 0, 0.10); }
+.fusion-dark .fusion-app:hover, .fusion-dark .fusion-list-app:hover { background-color: rgba(255, 255, 255, 0.08); }
+.fusion-dark .fusion-app:focus, .fusion-dark .fusion-list-app:focus { background-color: rgba(255, 255, 255, 0.14); }
+.fusion-empty-hint { color: rgba(127, 127, 127, 1); padding: 12px; }
 
 /* ---- Control centre -------------------------------------------------------- */
-.fusion-deepin-cc {
+.fusion-cc {
     border-radius: 18px;
     border: 1px solid rgba(127, 127, 127, 0.22);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
 }
-.fusion-deepin-cc-box { padding: 16px; spacing: 16px; }
-.fusion-deepin-cc-header { spacing: 8px; }
-.fusion-deepin-cc-time { font-size: 26pt; font-weight: 300; }
-.fusion-deepin-cc-date { color: rgba(127, 127, 127, 1); }
-.fusion-deepin-cc-toggles, .fusion-deepin-cc-links { spacing: 8px; }
-.fusion-deepin-cc-row { spacing: 8px; }
-.fusion-deepin-cc-tile {
-    padding: 12px 6px 10px 6px;
-    border-radius: 12px;
-    background-color: rgba(127, 127, 127, 0.15);
-    transition-duration: 120ms;
-}
-.fusion-deepin-cc-tile:hover { background-color: rgba(127, 127, 127, 0.25); }
-.fusion-deepin-cc-tile:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
-.fusion-deepin-cc-tile:checked:hover { background-color: st-lighten(-st-accent-color, 8%); }
-.fusion-deepin-cc-tile-icon { padding-bottom: 6px; }
-.fusion-deepin-cc-tile-label { font-size: 9pt; }
-.fusion-deepin-cc-sliders {
-    padding: 10px 14px;
-    spacing: 10px;
-    border-radius: 12px;
-    background-color: rgba(127, 127, 127, 0.12);
-}
-.fusion-deepin-cc-slider-row { spacing: 12px; }
-.fusion-deepin-cc-notifications { spacing: 8px; }
-.fusion-deepin-cc-title { font-weight: bold; }
-.fusion-deepin-link-button { color: -st-accent-color; padding: 2px 8px; border-radius: 6px; }
-.fusion-deepin-link-button:hover { background-color: st-transparentize(-st-accent-color, 0.85); }
-.fusion-deepin-cc-note-list { spacing: 8px; }
-.fusion-deepin-cc-note {
+.fusion-cc-box { padding: 16px; spacing: 16px; }
+.fusion-cc-date { color: rgba(127, 127, 127, 1); }
+.fusion-cc-links { spacing: 8px; }
+.fusion-cc-row { spacing: 8px; }
+.fusion-cc-notifications { spacing: 8px; }
+.fusion-cc-title { font-weight: bold; }
+.fusion-link-button { color: -st-accent-color; padding: 2px 8px; border-radius: 6px; }
+.fusion-link-button:hover { background-color: st-transparentize(-st-accent-color, 0.85); }
+.fusion-cc-note-list { spacing: 8px; }
+.fusion-cc-note {
     padding: 10px;
     border-radius: 12px;
     background-color: rgba(127, 127, 127, 0.12);
     text-align: left;
 }
-.fusion-deepin-cc-note:hover { background-color: rgba(127, 127, 127, 0.20); }
-.fusion-deepin-cc-note-icon { margin-right: 10px; }
-.fusion-deepin-cc-note-title { font-weight: bold; font-size: 10pt; }
-.fusion-deepin-cc-note-body { font-size: 9pt; color: rgba(127, 127, 127, 1); }
-.fusion-deepin-note-close { padding: 4px; border-radius: 99px; }
-.fusion-deepin-note-close:hover { background-color: rgba(127, 127, 127, 0.25); }
-.fusion-deepin-cc-link { padding: 10px 2px; border-radius: 10px; }
-.fusion-deepin-cc-link:hover { background-color: rgba(127, 127, 127, 0.18); }
-.fusion-deepin-cc-link-label { font-size: 8.5pt; padding-top: 4px; }
+.fusion-cc-note:hover { background-color: rgba(127, 127, 127, 0.20); }
+.fusion-cc-note-icon { margin-right: 10px; }
+.fusion-cc-note-title { font-weight: bold; font-size: 10pt; }
+.fusion-cc-note-body { font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-note-close { padding: 4px; border-radius: 99px; }
+.fusion-note-close:hover { background-color: rgba(127, 127, 127, 0.25); }
+.fusion-cc-link { padding: 10px 2px; border-radius: 10px; }
+.fusion-cc-link:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-cc-link-label { font-size: 8.5pt; padding-top: 4px; }
 
-/* ==== Windows-like mode ===================================================== */
-/* Extra buttons and theming only; the user's layout, size and widgets stay. */
-#panel.fusion-windows .fusion-task-button,
-#panel.fusion-windows .fusion-start-button,
-#panel.fusion-windows .panel-button { border-radius: 6px; }
-#panel.fusion-windows .fusion-task-button:hover,
-#panel.fusion-windows .fusion-win-taskview:hover { background-color: rgba(255, 255, 255, 0.09); }
+/* ==== Search box and Task View buttons ======================================= */
+/* Rounded hover tiles while they are on; the user's layout, size and widgets stay. */
+#panel.fusion-search-taskview .fusion-task-button,
+#panel.fusion-search-taskview .fusion-start-button,
+#panel.fusion-search-taskview .panel-button { border-radius: 6px; }
+#panel.fusion-search-taskview .fusion-task-button:hover,
+#panel.fusion-search-taskview .fusion-win-taskview:hover { background-color: rgba(255, 255, 255, 0.09); }
 .fusion-win-taskview {
     margin: 4px 1px;
     padding: 0 10px;
@@ -674,64 +631,64 @@
 .fusion-win-search-icon { padding: 9px; }
 .fusion-win-search-box { spacing: 10px; }
 
-/* ---- Organize desktop (Deepin mode) ---------------------------------------- */
-.fusion-deepin-collection {
+/* ---- Desktop files (icons or collections) --------------------------------- */
+.fusion-collection {
     border-radius: 10px;
     border: 1px solid rgba(127, 127, 127, 0.22);
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
 }
-.fusion-deepin-collection-title {
+.fusion-collection-title {
     spacing: 8px;
     padding: 0 6px 0 12px;
     border-radius: 10px 10px 0 0;
     font-weight: bold;
     font-size: 10pt;
 }
-.fusion-deepin-collection-title:hover { background-color: rgba(127, 127, 127, 0.14); }
-.fusion-deepin-collection-more { padding: 4px; border-radius: 6px; }
-.fusion-deepin-collection-more:hover { background-color: rgba(127, 127, 127, 0.22); }
-.fusion-deepin-collection-scroll { padding: 4px 6px; }
-.fusion-deepin-desktop-file { padding: 6px 2px; border-radius: 8px; }
-.fusion-deepin-desktop-file:hover { background-color: rgba(127, 127, 127, 0.16); }
-.fusion-deepin-desktop-file:focus { background-color: st-transparentize(-st-accent-color, 0.7); }
-.fusion-deepin-desktop-file-label { font-size: 9pt; padding-top: 4px; }
+.fusion-collection-title:hover { background-color: rgba(127, 127, 127, 0.14); }
+.fusion-collection-more { padding: 4px; border-radius: 6px; }
+.fusion-collection-more:hover { background-color: rgba(127, 127, 127, 0.22); }
+.fusion-collection-scroll { padding: 4px 6px; }
+.fusion-desktop-file { padding: 6px 2px; border-radius: 8px; }
+.fusion-desktop-file:hover { background-color: rgba(127, 127, 127, 0.16); }
+.fusion-desktop-file:focus { background-color: st-transparentize(-st-accent-color, 0.7); }
+.fusion-desktop-file-label { font-size: 9pt; padding-top: 4px; }
 /* Icons style: on the wallpaper itself, so light text with a shadow. */
-.fusion-desktop-icon .fusion-deepin-desktop-file-label { color: #fff; text-align: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+.fusion-desktop-icon .fusion-desktop-file-label { color: #fff; text-align: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
 .fusion-desktop-icon:hover { background-color: rgba(255, 255, 255, 0.16); }
-.fusion-deepin-collection-grip { margin: 0 3px 3px 0; border-radius: 0 0 8px 0; border-right: 2px solid rgba(127, 127, 127, 0.5); border-bottom: 2px solid rgba(127, 127, 127, 0.5); }
+.fusion-collection-grip { margin: 0 3px 3px 0; border-radius: 0 0 8px 0; border-right: 2px solid rgba(127, 127, 127, 0.5); border-bottom: 2px solid rgba(127, 127, 127, 0.5); }
 
-/* Floating taskbar (Deepin mode option): soft shadow and a light rim. */
+/* Floating taskbar: soft shadow and a light rim. */
 #panel.fusion-panel.fusion-floating {
     border: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.30);
 }
 
-/* Deepin glossy look on the Fusion start menu (gradient comes from the menu theme). */
+/* Glossy glass look on the start menu (gradient comes from the menu theme). */
 .fusion-start-menu.fusion-sm-glossy .popup-menu-content { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.32); }
 
 /* Control centre button: wide click area; header date opens the calendar. */
-.fusion-deepin-panel-control { min-width: 44px; -natural-hpadding: 14px; -minimum-hpadding: 10px; }
-#panel .fusion-deepin-panel-control { padding: 0 14px; }
-.fusion-deepin-cc-datebutton { text-align: left; border-radius: 10px; padding: 2px 4px; }
-.fusion-deepin-cc-datebutton:hover { background-color: rgba(127, 127, 127, 0.14); }
+.fusion-panel-control { min-width: 44px; -natural-hpadding: 14px; -minimum-hpadding: 10px; }
+#panel .fusion-panel-control { padding: 0 14px; }
+.fusion-cc-datebutton { text-align: left; border-radius: 10px; padding: 2px 4px; }
+.fusion-cc-datebutton:hover { background-color: rgba(127, 127, 127, 0.14); }
 
 /* Control centre: notifications portion and month calendar at the bottom. */
-.fusion-deepin-cc-note-scroll { min-height: 70px; }
-.fusion-deepin-cc-calendar {
+.fusion-cc-note-scroll { min-height: 70px; }
+.fusion-cc-calendar {
     padding: 10px 12px 12px 12px;
     spacing: 6px;
     border-radius: 12px;
     background-color: rgba(127, 127, 127, 0.12);
 }
-.fusion-deepin-cc-cal-head { spacing: 4px; }
-.fusion-deepin-cc-cal-title { font-weight: bold; text-align: left; padding: 4px 6px; border-radius: 8px; }
-.fusion-deepin-cc-cal-title:hover, .fusion-deepin-cc-cal-arrow:hover { background-color: rgba(127, 127, 127, 0.18); }
-.fusion-deepin-cc-cal-arrow { padding: 6px; border-radius: 99px; }
-.fusion-deepin-cc-cal-grid { spacing: 2px; }
-.fusion-deepin-cc-cal-dayname { text-align: center; font-size: 8.5pt; font-weight: bold; color: rgba(127, 127, 127, 1); padding: 2px 0; }
-.fusion-deepin-cc-cal-day { text-align: center; font-size: 9.5pt; padding: 5px 0; border-radius: 99px; }
-.fusion-deepin-cc-cal-day.other-month { color: rgba(127, 127, 127, 0.75); }
-.fusion-deepin-cc-cal-day.today { background-color: -st-accent-color; color: -st-accent-fg-color; font-weight: bold; }
+.fusion-cc-cal-head { spacing: 4px; }
+.fusion-cc-cal-title { font-weight: bold; text-align: left; padding: 4px 6px; border-radius: 8px; }
+.fusion-cc-cal-title:hover, .fusion-cc-cal-arrow:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-cc-cal-arrow { padding: 6px; border-radius: 99px; }
+.fusion-cc-cal-grid { spacing: 2px; }
+.fusion-cc-cal-dayname { text-align: center; font-size: 8.5pt; font-weight: bold; color: rgba(127, 127, 127, 1); padding: 2px 0; }
+.fusion-cc-cal-day { text-align: center; font-size: 9.5pt; padding: 5px 0; border-radius: 99px; }
+.fusion-cc-cal-day.other-month { color: rgba(127, 127, 127, 0.75); }
+.fusion-cc-cal-day.today { background-color: -st-accent-color; color: -st-accent-fg-color; font-weight: bold; }
 
 /* ==== Light taskbar (follows the system style, or panel-theme LIGHT) ======== */
 #panel.fusion-panel.fusion-panel-light,
@@ -793,19 +750,18 @@
 #panel.fusion-panel.fusion-accent-icons .panel-button .system-status-icon { color: -st-accent-color; }
 #panel.fusion-panel.fusion-accent-icons.fusion-panel-light .panel-button .system-status-icon { color: st-darken(-st-accent-color, 6%); }
 
-/* ==== Glass effect (Layout → Panel → Glass effect) ========================== */
+/* ==== Glass effect (Appearance → Glass) ===================================== */
 /* Popups and menus everywhere get a bright top edge and a light rim; Fusion's
    own surfaces also get blur and a lighter top (lib/style.js). Colours stay the
    theme's own, so light and dark shell themes both work. */
 .fusion-glass-ui .popup-menu-content,
-.fusion-glass-ui .fusion-tooltip,
-.fusion-glass-ui .fusion-preview-popup { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.12); }
+.fusion-glass-ui .fusion-tooltip { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.12); }
 .fusion-glass-ui-strong .popup-menu-content,
-.fusion-glass-ui-strong .fusion-tooltip,
-.fusion-glass-ui-strong .fusion-preview-popup { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.30); border-color: rgba(255, 255, 255, 0.18); }
-.fusion-glass-ui .quick-toggle, .fusion-glass-ui-strong .quick-toggle,
-.fusion-glass-ui .fusion-deepin-cc-tile, .fusion-glass-ui-strong .fusion-deepin-cc-tile,
-.fusion-glass-ui .fusion-task-button:hover, .fusion-glass-ui-strong .fusion-task-button:hover { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.16); }
+.fusion-glass-ui-strong .fusion-tooltip { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.30); border-color: rgba(255, 255, 255, 0.18); }
+.fusion-glass-ui .quick-toggle,
+.fusion-glass-ui-strong .quick-toggle,
+.fusion-glass-ui .fusion-task-button:hover,
+.fusion-glass-ui-strong .fusion-task-button:hover { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.16); }
 
 /* Clock: GNOME also shades the inner clock label on hover / open (a second
    rounded shape inside the button). Fusion's button already shows the state. */
@@ -825,60 +781,60 @@
 .fusion-battery { width: 38px; height: 19px; color: -st-accent-color; margin: 0 2px; }
 
 /* ---- Control centre: header, media card, system meters --------------------- */
-.fusion-deepin-cc-who { spacing: 10px; }
-.fusion-deepin-cc-avatar { border-radius: 99px; }
-.fusion-deepin-cc-name { font-weight: bold; font-size: 11pt; }
-.fusion-deepin-cc-header { spacing: 6px; }
-.fusion-deepin-cc-media {
+.fusion-cc-who { spacing: 10px; }
+.fusion-cc-avatar { border-radius: 99px; }
+.fusion-cc-name { font-weight: bold; font-size: 11pt; }
+.fusion-cc-header { spacing: 6px; }
+.fusion-cc-media {
     padding: 10px;
     spacing: 8px;
     border-radius: 14px;
     background-color: rgba(127, 127, 127, 0.14);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
 }
-.fusion-deepin-cc-media-chips { spacing: 6px; }
-.fusion-deepin-cc-media-chip { padding: 3px 10px 3px 6px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.14); max-width: 150px; }
-.fusion-deepin-cc-media-chip-box { spacing: 6px; font-size: 9pt; }
-.fusion-deepin-cc-media-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
-.fusion-deepin-cc-media-row { spacing: 12px; }
-.fusion-deepin-cc-media-cover { border-radius: 10px; padding: 2px; }
-.fusion-deepin-cc-media-cover:hover { background-color: rgba(127, 127, 127, 0.18); }
-.fusion-deepin-cc-media-title { font-weight: bold; }
-.fusion-deepin-cc-media-artist { font-size: 9pt; color: rgba(127, 127, 127, 1); }
-.fusion-deepin-cc-media-controls { spacing: 6px; padding-top: 6px; }
-.fusion-deepin-cc-media-button { padding: 7px; border-radius: 99px; }
-.fusion-deepin-cc-media-button:hover { background-color: rgba(127, 127, 127, 0.20); }
-.fusion-deepin-cc-media-play { background-color: -st-accent-color; color: -st-accent-fg-color; padding: 9px; }
-.fusion-deepin-cc-media-play:hover { background-color: st-lighten(-st-accent-color, 8%); }
-.fusion-deepin-cc-meters { spacing: 8px; }
-.fusion-deepin-cc-meter {
+.fusion-cc-media-chips { spacing: 6px; }
+.fusion-cc-media-chip { padding: 3px 10px 3px 6px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.14); max-width: 150px; }
+.fusion-cc-media-chip-box { spacing: 6px; font-size: 9pt; }
+.fusion-cc-media-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-cc-media-row { spacing: 12px; }
+.fusion-cc-media-cover { border-radius: 10px; padding: 2px; }
+.fusion-cc-media-cover:hover { background-color: rgba(127, 127, 127, 0.18); }
+.fusion-cc-media-title { font-weight: bold; }
+.fusion-cc-media-artist { font-size: 9pt; color: rgba(127, 127, 127, 1); }
+.fusion-cc-media-controls { spacing: 6px; padding-top: 6px; }
+.fusion-cc-media-button { padding: 7px; border-radius: 99px; }
+.fusion-cc-media-button:hover { background-color: rgba(127, 127, 127, 0.20); }
+.fusion-cc-media-play { background-color: -st-accent-color; color: -st-accent-fg-color; padding: 9px; }
+.fusion-cc-media-play:hover { background-color: st-lighten(-st-accent-color, 8%); }
+.fusion-cc-meters { spacing: 8px; }
+.fusion-cc-meter {
     padding: 8px 10px;
     spacing: 4px;
     border-radius: 12px;
     background-color: rgba(127, 127, 127, 0.12);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
 }
-.fusion-deepin-cc-meter-head { spacing: 5px; color: rgba(127, 127, 127, 1); }
-.fusion-deepin-cc-meter-label { font-size: 8.5pt; }
-.fusion-deepin-cc-meter-value { font-weight: bold; font-size: 11pt; font-feature-settings: "tnum"; }
-.fusion-deepin-cc-meter-track { height: 4px; border-radius: 2px; background-color: rgba(127, 127, 127, 0.22); }
-.fusion-deepin-cc-meter-bar { height: 4px; border-radius: 2px; background-color: -st-accent-color; }
+.fusion-cc-meter-head { spacing: 5px; color: rgba(127, 127, 127, 1); }
+.fusion-cc-meter-label { font-size: 8.5pt; }
+.fusion-cc-meter-value { font-weight: bold; font-size: 11pt; font-feature-settings: "tnum"; }
+.fusion-cc-meter-track { height: 4px; border-radius: 2px; background-color: rgba(127, 127, 127, 0.22); }
+.fusion-cc-meter-bar { height: 4px; border-radius: 2px; background-color: -st-accent-color; }
 
 /* Laptop switches in the control centre. */
-.fusion-deepin-cc-laptop { spacing: 8px; }
-.fusion-deepin-cc-switch {
+.fusion-cc-laptop { spacing: 8px; }
+.fusion-cc-switch {
     padding: 10px 12px;
     border-radius: 12px;
     background-color: rgba(127, 127, 127, 0.14);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
     transition-duration: 120ms;
 }
-.fusion-deepin-cc-switch:hover { background-color: rgba(127, 127, 127, 0.24); }
-.fusion-deepin-cc-switch:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
-.fusion-deepin-cc-switch:busy { opacity: 0.6; }
-.fusion-deepin-cc-switch-box { spacing: 8px; font-size: 9.5pt; }
-.fusion-deepin-cc-switch-dot { width: 8px; height: 8px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.5); }
-.fusion-deepin-cc-switch:checked .fusion-deepin-cc-switch-dot { background-color: -st-accent-fg-color; }
+.fusion-cc-switch:hover { background-color: rgba(127, 127, 127, 0.24); }
+.fusion-cc-switch:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-cc-switch:busy { opacity: 0.6; }
+.fusion-cc-switch-box { spacing: 8px; font-size: 9.5pt; }
+.fusion-cc-switch-dot { width: 8px; height: 8px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.5); }
+.fusion-cc-switch:checked .fusion-cc-switch-dot { background-color: -st-accent-fg-color; }
 
 /* Standalone battery button and its menu. */
 .fusion-battery-head { padding: 10px 16px 8px 16px; }
@@ -900,29 +856,25 @@
 .fusion-battery-device-part { font-weight: normal; opacity: 0.75; }
 .fusion-battery-device-low { background-color: rgba(230, 72, 77, 0.28); }
 
-/* Secondary text on glass: the theme's text colour, slightly faded (a fixed
-   mid grey disappears on a blurred, colourful background). */
-.fusion-deepin-light .fusion-deepin-list-header, .fusion-deepin-light .fusion-deepin-empty-hint,
-.fusion-deepin-light .fusion-deepin-cc-date, .fusion-deepin-light .fusion-deepin-cc-note-body,
-.fusion-deepin-light .fusion-deepin-cc-cal-dayname, .fusion-deepin-light .fusion-deepin-cc-media-artist,
-.fusion-deepin-light .fusion-deepin-cc-meter-head { color: rgba(31, 31, 35, 0.72); }
-.fusion-deepin-dark .fusion-deepin-list-header, .fusion-deepin-dark .fusion-deepin-empty-hint,
-.fusion-deepin-dark .fusion-deepin-cc-date, .fusion-deepin-dark .fusion-deepin-cc-note-body,
-.fusion-deepin-dark .fusion-deepin-cc-cal-dayname, .fusion-deepin-dark .fusion-deepin-cc-media-artist,
-.fusion-deepin-dark .fusion-deepin-cc-meter-head { color: rgba(242, 242, 244, 0.72); }
-.fusion-deepin-light .fusion-deepin-cc-cal-day.other-month { color: rgba(31, 31, 35, 0.4); }
-.fusion-deepin-dark .fusion-deepin-cc-cal-day.other-month { color: rgba(242, 242, 244, 0.4); }
+/* Secondary text on light glass: the theme's text colour, slightly faded (a
+   fixed mid grey disappears on a blurred, colourful background). Dark: below. */
+.fusion-light .fusion-list-header, .fusion-light .fusion-empty-hint,
+.fusion-light .fusion-cc-date, .fusion-light .fusion-cc-note-body,
+.fusion-light .fusion-cc-cal-dayname, .fusion-light .fusion-cc-media-artist,
+.fusion-light .fusion-cc-meter-head { color: rgba(31, 31, 35, 0.72); }
+.fusion-light .fusion-cc-cal-day.other-month { color: rgba(31, 31, 35, 0.4); }
+.fusion-dark .fusion-cc-cal-day.other-month { color: rgba(242, 242, 244, 0.4); }
 /* Cards carry most of the text: a more solid backing keeps it readable
    over busy wallpapers without dimming the glass around them. */
-.fusion-deepin-light .fusion-deepin-cc-note, .fusion-deepin-light .fusion-deepin-cc-calendar,
-.fusion-deepin-light .fusion-deepin-cc-media, .fusion-deepin-light .fusion-deepin-cc-meter,
-.fusion-deepin-light .fusion-deepin-cc-switch { background-color: rgba(255, 255, 255, 0.55); }
-.fusion-deepin-light .fusion-deepin-cc-note:hover, .fusion-deepin-light .fusion-deepin-cc-switch:hover { background-color: rgba(255, 255, 255, 0.75); }
-.fusion-deepin-dark .fusion-deepin-cc-note, .fusion-deepin-dark .fusion-deepin-cc-calendar,
-.fusion-deepin-dark .fusion-deepin-cc-media, .fusion-deepin-dark .fusion-deepin-cc-meter,
-.fusion-deepin-dark .fusion-deepin-cc-switch { background-color: rgba(0, 0, 0, 0.28); }
-.fusion-deepin-dark .fusion-deepin-cc-note:hover, .fusion-deepin-dark .fusion-deepin-cc-switch:hover { background-color: rgba(255, 255, 255, 0.10); }
-.fusion-deepin-light .fusion-deepin-cc-switch:checked, .fusion-deepin-dark .fusion-deepin-cc-switch:checked { background-color: -st-accent-color; }
+.fusion-light .fusion-cc-note, .fusion-light .fusion-cc-calendar,
+.fusion-light .fusion-cc-media, .fusion-light .fusion-cc-meter,
+.fusion-light .fusion-cc-switch { background-color: rgba(255, 255, 255, 0.55); }
+.fusion-light .fusion-cc-note:hover, .fusion-light .fusion-cc-switch:hover { background-color: rgba(255, 255, 255, 0.75); }
+.fusion-dark .fusion-cc-note, .fusion-dark .fusion-cc-calendar,
+.fusion-dark .fusion-cc-media, .fusion-dark .fusion-cc-meter,
+.fusion-dark .fusion-cc-switch { background-color: rgba(0, 0, 0, 0.28); }
+.fusion-dark .fusion-cc-note:hover, .fusion-dark .fusion-cc-switch:hover { background-color: rgba(255, 255, 255, 0.10); }
+.fusion-light .fusion-cc-switch:checked, .fusion-dark .fusion-cc-switch:checked { background-color: -st-accent-color; }
 
 /* Glass menus: full white text when dark, full black when light (GNOME
    dims section headings and non-clickable rows, which vanish on glass). */
@@ -934,10 +886,10 @@
 .fusion-menu-light .popup-menu-item.popup-separator-menu-item,
 .fusion-menu-light .popup-menu-item.popup-inactive-menu-item { color: #1f1f23; }
 /* Dark control centre, launcher and collections: secondary text in white. */
-.fusion-deepin-dark .fusion-deepin-list-header, .fusion-deepin-dark .fusion-deepin-empty-hint,
-.fusion-deepin-dark .fusion-deepin-cc-date, .fusion-deepin-dark .fusion-deepin-cc-note-body,
-.fusion-deepin-dark .fusion-deepin-cc-cal-dayname, .fusion-deepin-dark .fusion-deepin-cc-media-artist,
-.fusion-deepin-dark .fusion-deepin-cc-meter-head { color: #ffffff; }
+.fusion-dark .fusion-list-header, .fusion-dark .fusion-empty-hint,
+.fusion-dark .fusion-cc-date, .fusion-dark .fusion-cc-note-body,
+.fusion-dark .fusion-cc-cal-dayname, .fusion-dark .fusion-cc-media-artist,
+.fusion-dark .fusion-cc-meter-head { color: #ffffff; }
 
 /* ---- Hidden icons arrow ------------------------------------------------- */
 .fusion-overflow-grid { spacing: 4px; padding: 4px 8px; }

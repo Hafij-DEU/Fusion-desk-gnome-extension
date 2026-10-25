@@ -5,12 +5,13 @@ import Gtk from 'gi://Gtk';
 import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import {ELEMENT_NAMES, parseLayout} from './lib/layoutModel.js';
-import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js';
-import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
+import {addMenuPage, appListGroup, menuThemePage} from './lib/prefsMenu.js';
+import {comboRow, dependsOn, dependsOnSwitch, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
 import {shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
-import {laptopDevice, readSwitch, writeSwitch} from './lib/deepin/laptop.js';
+import {laptopDevice, readSwitch, writeSwitch} from './lib/desktop/laptop.js';
+import {helperInstalled} from './lib/chargeLimit.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -98,7 +99,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ]), 'For the Pills style: system tray, clock and system monitor.'));
         page.add(group('Auto-hide', [
             switchRow(s, 'intellihide', 'Intellihide', 'Hide the panel when a window overlaps it; push the pointer against the screen edge to reveal'),
-            ...dependsOn(s, ['intellihide'], () => s.get_boolean('intellihide'), [
+            ...dependsOnSwitch(s, 'intellihide', [
                 comboRow(s, 'intellihide-mode', 'Hide for', ['ALL', 'FOCUSED', 'MAXIMIZED'],
                     ['Any window', 'Focused window', 'Maximized windows']),
             ]),
@@ -170,7 +171,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         page.add(group('Accent gradient', [
             switchRow(s, 'accent-gradient', 'Accent gradient', 'Taskbar, start menu, launcher and control centre fade from the system accent colour'),
-            ...dependsOn(s, ['accent-gradient'], () => s.get_boolean('accent-gradient'), [
+            ...dependsOnSwitch(s, 'accent-gradient', [
                 comboRow(s, 'accent-gradient-style', 'Gradient', ['CORNER', 'TOP', 'SIDE', 'CENTER', 'AURORA', 'SUNSET', 'OCEAN', 'BERRY'],
                     ['From the corner', 'From the top', 'From the side', 'Glow in the middle',
                         'Aurora (accent + shifted hue)', 'Sunset (accent + warm orange)', 'Ocean (accent + teal)', 'Berry (accent + pink)']),
@@ -180,12 +181,12 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         page.add(group('Wallpaper', [
             switchRow(s, 'wallpaper-blur', 'Blur wallpaper', 'While windows are open; sharp when the desktop is empty'),
-            ...dependsOn(s, ['wallpaper-blur'], () => s.get_boolean('wallpaper-blur'), [
+            ...dependsOnSwitch(s, 'wallpaper-blur', [
                 spinRow(s, 'wallpaper-blur-strength', 'Strength', 5, 100, 5, 'Percent'),
             ]),
             switchRow(s, 'overview-blur', 'Blur the overview',
                 'Blurred wallpaper behind Activities and the app grid, frosted app folders'),
-            ...dependsOn(s, ['overview-blur'], () => s.get_boolean('overview-blur'), [
+            ...dependsOnSwitch(s, 'overview-blur', [
                 spinRow(s, 'overview-blur-strength', 'Overview strength', 10, 100, 5, 'Percent'),
             ]),
         ]));
@@ -237,7 +238,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ], 'Right-click an icon for the app menu (pin / unpin, windows, always on top, quit).'));
         page.add(group('Search and Task View', [
             switchRow(s, 'windows-extras-in-fusion', 'Search and Task View buttons', 'Right after the start button, with rounded hover tiles'),
-            ...dependsOn(s, ['windows-extras-in-fusion'], () => s.get_boolean('windows-extras-in-fusion'), [
+            ...dependsOnSwitch(s, 'windows-extras-in-fusion', [
                 comboRow(s, 'windows-search', 'Search', ['BOX', 'ICON', 'HIDDEN'], ['Search box', 'Icon only', 'Hidden']),
                 switchRow(s, 'windows-task-view', 'Task View button', 'Opens all windows and workspaces'),
             ]),
@@ -259,7 +260,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         page.add(group('Control centre', [
             switchRow(s, 'deepin-control-button', 'Control centre', 'Side panel with quick actions, media player, system meters, Settings shortcuts, notifications and a calendar'),
-            ...dependsOn(s, ['deepin-control-button'], () => s.get_boolean('deepin-control-button'), [
+            ...dependsOnSwitch(s, 'deepin-control-button', [
                 comboRow(s, 'deepin-control-position', 'Button', ['START', 'LEFT', 'TRAY', 'CLOCK'],
                     ['After the start button (opens on the left)', 'At the left edge (opens on the left)', 'In the tray (opens on the right)', 'On the clock (opens on the right)']),
             ]),
@@ -291,7 +292,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             withShortcut(switchRow(s, 'deepin-organizer', 'Show desktop files',
                 'Files in your Desktop folder on the desktop. Alt+O hides or shows them; right-click the desktop for more.'),
             s, () => ['Alt', 'O']),
-            ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [
+            ...dependsOnSwitch(s, 'deepin-organizer', [
                 comboRow(s, 'deepin-organizer-style', 'Style', ['ICONS', 'COLLECTIONS'],
                     ['Icons (drag each one where you like)', 'Collections (sorted into boxes)']),
             ]),
@@ -299,7 +300,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 comboRow(s, 'deepin-organizer-size', 'Collection size', ['SMALL', 'MEDIUM', 'LARGE'], ['Small', 'Medium', 'Large']),
                 organize,
             ]),
-            ...dependsOn(s, ['deepin-organizer'], () => s.get_boolean('deepin-organizer'), [reset]),
+            ...dependsOnSwitch(s, 'deepin-organizer', [reset]),
             switchRow(s, 'add-to-desktop', 'Add to Desktop in app menus',
                 'Right-click an app in the app grid, dash, taskbar or start menu to put its launcher on the desktop'),
         ], 'Replaces the Desktop Icons extension: its icons are hidden while Fusion shows your files, and come back with Alt+O.'));
@@ -318,11 +319,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ]));
         page.add(group('Clock', [
             switchRow(s, 'clock-custom', 'Custom format'),
-            ...dependsOn(s, ['clock-custom'], () => s.get_boolean('clock-custom'), [
+            ...dependsOnSwitch(s, 'clock-custom', [
                 entryRow(s, 'clock-format', 'Format (strftime, \\n = new line)'),
             ]),
         ], 'Examples: %H:%M   ·   %I:%M %p\\n%d/%m/%Y   ·   %a %d %b  %H:%M'));
-        page.add(group('Media controls', dependsOn(s, ['media-visible'], () => s.get_boolean('media-visible'), [
+        page.add(group('Media controls', dependsOnSwitch(s, 'media-visible', [
             spinRow(s, 'media-title-length', 'Title length', 0, 60, 1, 'Characters of the song title, 0 = buttons only'),
             switchRow(s, 'media-audio-fallback', 'Apps without media controls',
                 'Show any app playing sound (e.g. the Opera snap) with its title, a mute button and click-to-show; play/pause needs the app\'s own support'),
@@ -348,10 +349,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
     /** Battery, charging, status icons, keep awake and windows that stay on top. */
     _addSystemPage(window, s) {
         const page = new Adw.PreferencesPage({title: 'System', icon_name: 'battery-good-symbolic'});
+        const usbCharging = this._usbChargingRow();
         page.add(group('Battery', [
             comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
             switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
-            ...[this._usbChargingRow()].filter(Boolean),
+            ...(usbCharging ? [usbCharging] : []),
         ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
         page.add(this._chargeLimitGroup(s));
         page.add(group('Keep awake', [
@@ -421,14 +423,11 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
     /** Charge limit: switch, level and the one-time helper setup (asks for the password once). */
     _chargeLimitGroup(s) {
-        const HELPER = '/usr/local/libexec/fusion-desk-charge';
-        const POLICY = '/usr/share/polkit-1/actions/io.github.hafij-deu.fusion-desk.charge.policy';
-        const installed = () => GLib.file_test(HELPER, GLib.FileTest.EXISTS) && GLib.file_test(POLICY, GLib.FileTest.EXISTS);
         const setupRow = new Adw.ActionRow({title: 'One-time setup'});
         const button = new Gtk.Button({valign: Gtk.Align.CENTER});
         setupRow.add_suffix(button);
         const sync = () => {
-            const ok = installed();
+            const ok = helperInstalled();
             setupRow.subtitle = ok
                 ? 'Done: Fusion Desk can change the charging mode without asking for your password'
                 : 'Installs a small helper so Fusion Desk can change the charging mode without a password (asks for it once)';
@@ -440,7 +439,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         };
         button.connect('clicked', () => {
             const dir = GLib.build_filenamev([this.path, 'lib', 'charge']);
-            const args = installed() ? ['remove'] : ['install', dir];
+            const args = helperInstalled() ? ['remove'] : ['install', dir];
             button.sensitive = false;
             try {
                 const proc = Gio.Subprocess.new(['pkexec', '/bin/sh', GLib.build_filenamev([dir, 'setup.sh']), ...args], Gio.SubprocessFlags.NONE);
@@ -448,7 +447,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                     button.sensitive = true;
                     sync();
                     // Tells the running extension to start (or stop) using the helper.
-                    s.set_boolean('charge-helper-ready', installed());
+                    s.set_boolean('charge-helper-ready', helperInstalled());
                 });
             } catch (e) {
                 button.sensitive = true;
@@ -457,7 +456,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         sync();
         return group('Charge limit', [
             switchRow(s, 'charge-limit', 'Stop charging at a level', 'Keeps the battery healthier when the laptop is mostly plugged in'),
-            ...dependsOn(s, ['charge-limit'], () => s.get_boolean('charge-limit'), [
+            ...dependsOnSwitch(s, 'charge-limit', [
                 spinRow(s, 'charge-limit-percent', 'Level', 60, 100, 5, 'Percent'),
             ]),
             setupRow,
@@ -468,46 +467,13 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
     _addWindowBlurGroup(page, window, s) {
         page.add(group('Blurred app windows', [
             switchRow(s, 'window-blur', 'Blur behind app windows', 'The apps below turn see-through, with the desktop blurred behind them'),
-            ...dependsOn(s, ['window-blur'], () => s.get_boolean('window-blur'), [
+            ...dependsOnSwitch(s, 'window-blur', [
                 spinRow(s, 'window-blur-opacity', 'Window opacity', 50, 100, 5, 'Percent; lower shows more of the blur'),
                 spinRow(s, 'window-blur-strength', 'Blur strength', 10, 100, 5, 'Percent'),
             ]),
         ], 'Full-screen windows stay solid. Off while Blur my Shell is on.'));
-        const apps = new Adw.PreferencesGroup({title: 'Apps with blurred windows'});
-        const add = new Gtk.Button({icon_name: 'list-add-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-            tooltip_text: 'Add an app'});
-        add.connect('clicked', () => chooseApp(window, id => {
-            const ids = s.get_strv('window-blur-apps');
-            if (!ids.includes(id))
-                s.set_strv('window-blur-apps', [...ids, id]);
-        }));
-        apps.set_header_suffix(add);
-        let rows = [];
-        const fill = () => {
-            rows.forEach(r => apps.remove(r));
-            // The defaults list several terminals; only the installed ones are shown.
-            rows = s.get_strv('window-blur-apps').filter(id => appInfo(id)).map(id => {
-                const info = appInfo(id);
-                const row = new Adw.ActionRow({title: info.get_display_name()});
-                if (info?.get_icon())
-                    row.add_prefix(new Gtk.Image({gicon: info.get_icon(), pixel_size: 32}));
-                const del = new Gtk.Button({icon_name: 'user-trash-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-                    tooltip_text: 'Remove'});
-                del.connect('clicked', () => s.set_strv('window-blur-apps', s.get_strv('window-blur-apps').filter(x => x !== id)));
-                row.add_suffix(del);
-                apps.add(row);
-                return row;
-            });
-            if (!rows.length) {
-                const empty = new Adw.ActionRow({title: 'No apps yet', subtitle: 'Use + to add one'});
-                apps.add(empty);
-                rows = [empty];
-            }
-        };
-        fill();
-        const id = s.connect('changed::window-blur-apps', fill);
-        page.connect('destroy', () => s.disconnect(id));
-        page.add(apps);
+        // The defaults list several terminals; only the installed ones are shown.
+        page.add(appListGroup(window, s, 'window-blur-apps', {title: 'Apps with blurred windows', hideMissing: true}));
     }
 
     /** Picture-in-picture and always-on-top apps. */
@@ -519,50 +485,17 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             pipTitles.text.split(',').map(t => t.trim()).filter(Boolean)));
         page.add(group('Picture-in-picture', [
             switchRow(s, 'pip-on-top', 'Always on top', 'Picture-in-picture windows of every app stay above other windows'),
-            ...dependsOn(s, ['pip-on-top'], () => s.get_boolean('pip-on-top'), [
+            ...dependsOnSwitch(s, 'pip-on-top', [
                 switchRow(s, 'pip-all-workspaces', 'On every workspace', 'They follow you when you switch workspaces'),
                 pipTitles,
             ]),
         ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture", or ends in "— Picture in picture", "- PiP" or "- Mini player". Add other titles for apps that name it differently, or press Alt+Enter on any window.'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
-        const onTop = new Adw.PreferencesGroup({
+        page.add(appListGroup(window, s, 'ontop-apps', {
             title: 'Always on top apps',
             description: 'Windows of these apps always stay above other windows. Also: right-click an app on the taskbar → Always on top.',
-        });
-        const addApp = new Gtk.Button({icon_name: 'list-add-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-            tooltip_text: 'Add an app'});
-        addApp.connect('clicked', () => chooseApp(window, id => {
-            const ids = s.get_strv('ontop-apps');
-            if (!ids.includes(id))
-                s.set_strv('ontop-apps', [...ids, id]);
         }));
-        onTop.set_header_suffix(addApp);
-        let onTopRows = [];
-        const fillOnTop = () => {
-            onTopRows.forEach(r => onTop.remove(r));
-            onTopRows = s.get_strv('ontop-apps').map(id => {
-                const info = appInfo(id);
-                const row = new Adw.ActionRow({title: info?.get_display_name() ?? id, subtitle: info ? '' : 'Not installed'});
-                if (info?.get_icon())
-                    row.add_prefix(new Gtk.Image({gicon: info.get_icon(), pixel_size: 32}));
-                const del = new Gtk.Button({icon_name: 'user-trash-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
-                    tooltip_text: 'Remove'});
-                del.connect('clicked', () => s.set_strv('ontop-apps', s.get_strv('ontop-apps').filter(x => x !== id)));
-                row.add_suffix(del);
-                onTop.add(row);
-                return row;
-            });
-            if (!onTopRows.length) {
-                const empty = new Adw.ActionRow({title: 'No apps yet', subtitle: 'Use + to add one'});
-                onTop.add(empty);
-                onTopRows = [empty];
-            }
-        };
-        fillOnTop();
-        const onTopId = s.connect('changed::ontop-apps', fillOnTop);
-        page.connect('destroy', () => s.disconnect(onTopId));
-        page.add(onTop);
     }
 
     /** Save all settings as "my setup" and bring them back with one click. */
@@ -581,7 +514,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         saveRow.add_suffix(save);
         saveRow.activatable_widget = save;
 
-        const toast = text => window.add_toast?.(new Adw.Toast({title: text, timeout: 3}));
+        const toast = text => window.add_toast(new Adw.Toast({title: text, timeout: 3}));
         const sync = () => {
             const data = readSnapshot();
             restore.sensitive = !!data;

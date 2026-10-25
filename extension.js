@@ -1,5 +1,4 @@
 // Fusion Desk - all-in-one panel, taskbar and start menu for GNOME Shell.
-import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -31,12 +30,11 @@ import {AddToDesktopMenus} from './lib/addToDesktop.js';
 import {Tweaks} from './lib/tweaks.js';
 import {WindowBlur} from './lib/windowBlur.js';
 import {ChargeLimit} from './lib/chargeLimit.js';
-import {DeepinMode} from './lib/deepin/index.js';
+import {DesktopFeatures} from './lib/desktop/index.js';
 import {watchSystemStyle} from './lib/style.js';
 import {cleanupGlass} from './lib/glass.js';
-import {migrateDesktopModes} from './lib/presets.js';
-import {TaskView, WindowsSearch} from './lib/windowsMode.js';
-import {DeepinControlButton, DeepinLauncherButton} from './lib/deepin/panelButtons.js';
+import {TaskView, SearchButton} from './lib/searchTaskView.js';
+import {ControlCentreButton, LauncherButton} from './lib/desktop/panelButtons.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
 const MODULES = {
@@ -57,11 +55,11 @@ const MODULES = {
     // Other apps' tray icons behind a "show hidden icons" arrow (pins apply live).
     overflow: {cls: TrayOverflow, visible: 'overflow-visible', keys: ['panel-position']},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
-    // Extra buttons of the Windows-like and Deepin modes (see extraElements()).
-    winsearch: {cls: WindowsSearch, visible: null, windowsExtra: true, keys: ['windows-search', 'windows-extras-in-fusion']},
-    taskview: {cls: TaskView, visible: 'windows-task-view', windowsExtra: true, keys: ['windows-extras-in-fusion']},
-    dlauncher: {cls: DeepinLauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
-    dcontrol: {cls: DeepinControlButton, visible: null, feature: 'control', keys: ['deepin-control-button', 'deepin-control-position']},
+    // Buttons of optional features, placed around the start button (see extraElements()).
+    winsearch: {cls: SearchButton, visible: null, searchTaskView: true, keys: ['windows-search', 'windows-extras-in-fusion']},
+    taskview: {cls: TaskView, visible: 'windows-task-view', searchTaskView: true, keys: ['windows-extras-in-fusion']},
+    dlauncher: {cls: LauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
+    dcontrol: {cls: ControlCentreButton, visible: null, feature: 'control', keys: ['deepin-control-button', 'deepin-control-position']},
     // Not placed in the layout.
     clock: {cls: Clock, visible: null, keys: ['clock-']},
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
@@ -83,7 +81,7 @@ const MODULES = {
     chargelimit: {cls: ChargeLimit, visible: 'charge-limit', keys: ['charge-limit-percent', 'charge-helper-ready']},
     // Coloured battery with the percentage inside (in GNOME's status area).
     battery: {cls: Battery, visible: null, keys: ['battery-style', 'battery-standalone', 'hidden-indicators']},
-    // Hides chosen built-in status icons (after caffeine so its icon exists).
+    // Hides chosen built-in status icons.
     indicators: {cls: Indicators, visible: null, keys: ['hidden-indicators']},
     autohide: {cls: AutoHide, visible: null,
         keys: ['intellihide', 'intellihide-mode', 'dynamic-opacity', 'panel-position', 'panel-height', 'panel-opacity']},
@@ -125,7 +123,8 @@ export default class FusionDeskExtension extends Extension {
         this._running = false;
 
         const extensionsChanged = () => {
-            if (this._syncConflict() && this._running) {
+            // True only while running (it starts Fusion Desk when nothing conflicts).
+            if (this._syncConflict()) {
                 Object.keys(DUPLICATES).forEach(n => this._pending.add(n));
                 this._onChanged('@duplicates');
             }
@@ -184,20 +183,15 @@ export default class FusionDeskExtension extends Extension {
 
     _start() {
         this._running = true;
-        // Older versions only had these features inside "desktop modes".
-        migrateDesktopModes(this._settings);
-        // The Dashboard and Galaxy menu layouts are gone: back to the default one.
-        if (['dashboard', 'galaxy'].includes(this._settings.get_string('menu-layout')))
-            this._settings.reset('menu-layout');
         this._settings.connectObject('changed', (_s, key) => this._onSettingChanged(key), this);
         // App launcher, control centre, desktop organizer and the theme
-        // switches (lib/deepin/); each part follows its own setting.
+        // switches (lib/desktop/); each part follows its own setting.
         try {
-            this._deepin = new DeepinMode(this);
+            this._features = new DesktopFeatures(this);
         } catch (e) {
             console.error('Fusion Desk: launcher / control centre failed', e);
-            this._deepin?.destroy();
-            this._deepin = null;
+            this._features?.destroy();
+            this._features = null;
         }
         this._startFusion();
     }
@@ -217,11 +211,9 @@ export default class FusionDeskExtension extends Extension {
     _stop() {
         this._running = false;
         this._settings.disconnectObject(this);
-        for (const id of ['_idleId']) {
-            if (this[id])
-                GLib.source_remove(this[id]);
-            this[id] = 0;
-        }
+        if (this._idleId)
+            GLib.source_remove(this._idleId);
+        this._idleId = 0;
         this._unwatchStyle?.();
         this._unwatchStyle = null;
         if (this._modules) {
@@ -233,13 +225,13 @@ export default class FusionDeskExtension extends Extension {
         this._layout = null;
         this._modules = null;
         this._pending = null;
-        this._deepin?.destroy();
-        this._deepin = null;
+        this._features?.destroy();
+        this._features = null;
         cleanupGlass();
     }
 
     _onSettingChanged(key) {
-        this._deepin?.onSettingChanged(key);
+        this._features?.onSettingChanged(key);
         this._onChanged(key);
     }
 
@@ -272,13 +264,13 @@ export default class FusionDeskExtension extends Extension {
         this._layout?.setBackground(alpha, extra);
     }
 
-    /** App launcher, control centre and desktop organizer (lib/deepin/). */
-    get deepin() {
-        return this._deepin ?? null;
+    /** App launcher, control centre and desktop organizer (lib/desktop/). */
+    get features() {
+        return this._features ?? null;
     }
 
     /** Search and Task View buttons after the start button. */
-    get windowsExtras() {
+    get searchTaskViewOn() {
         return this._settings.get_boolean('windows-extras-in-fusion');
     }
 
@@ -286,7 +278,7 @@ export default class FusionDeskExtension extends Extension {
      * Whether an optional feature is on. Each has its own setting (presets in
      * lib/presets.js only write these settings).
      */
-    deepinFeature(id) {
+    featureOn(id) {
         const s = this._settings;
         switch (id) {
         case 'launcher':
@@ -304,24 +296,27 @@ export default class FusionDeskExtension extends Extension {
     }
 
     /** The start button itself opens the app launcher (one start button). */
-    get deepinStartButton() {
-        return this.deepinFeature('launcher') && this._settings.get_string('deepin-start') === 'DEEPIN';
+    get launcherOnStartButton() {
+        return this.featureOn('launcher') && this._settings.get_string('deepin-start') === 'DEEPIN';
     }
 
-    /** Mode buttons placed around the user's layout: right after the start menu and before the system menu. */
+    /**
+     * Extra buttons placed around the user's layout: after the start menu, at the
+     * left edge, before the system menu (tray) and after it (standalone battery).
+     */
     extraElements() {
         const afterMenu = [];
         const beforeQuick = [];
         const leftEdge = [];
         // Standalone battery right after the system menu.
         const afterQuick = this._settings.get_boolean('battery-standalone') ? ['battery'] : [];
-        if (this.windowsExtras)
+        if (this.searchTaskViewOn)
             afterMenu.push('winsearch', 'taskview');
-        if (this.deepinFeature('launcher') && !this.deepinStartButton)
+        if (this.featureOn('launcher') && !this.launcherOnStartButton)
             afterMenu.push('dlauncher');
         // The control centre button follows the start button, sits at the left edge
         // or in the tray (on the clock it has no button of its own).
-        if (this.deepinFeature('control')) {
+        if (this.featureOn('control')) {
             const where = this._settings.get_string('deepin-control-position');
             if (where === 'START')
                 afterMenu.push('dcontrol');
@@ -357,9 +352,9 @@ export default class FusionDeskExtension extends Extension {
 
     _build(name) {
         const def = MODULES[name];
-        if (def.feature && !this.deepinFeature(def.feature))
+        if (def.feature && !this.featureOn(def.feature))
             return;
-        if (def.windowsExtra && !this.windowsExtras)
+        if (def.searchTaskView && !this.searchTaskViewOn)
             return;
         if (def.visible && !this.settings.get_boolean(def.visible))
             return;
@@ -382,7 +377,7 @@ export default class FusionDeskExtension extends Extension {
     }
 
     _onChanged(key) {
-        // Deepin mode writes its saved-theme keys while starting, before the modules exist.
+        // The desktop features write their saved-theme keys while starting, before the modules exist.
         if (!this._pending)
             return;
         const matches = prefix => key === prefix || (prefix.endsWith('-') && key.startsWith(prefix));

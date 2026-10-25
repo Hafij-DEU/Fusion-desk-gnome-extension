@@ -74,7 +74,6 @@
       <default>'AUTO'</default><summary>Taskbar colours: follow the system light / dark style, always dark or always light</summary>
     </key>
     <key name="icons-follow-accent" type="b"><default>true</default><summary>Paint the start button and Show Applications icons in the system accent colour</summary></key>
-    <key name="features-migrated" type="b"><default>false</default><summary>Internal: settings moved from the old desktop modes</summary></key>
     <key name="glass-effect" type="s">
       <choices><choice value="OFF"/><choice value="SOFT"/><choice value="STRONG"/></choices>
       <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, launcher and control centre): blur, lighter top, bright top edge</summary>
@@ -224,23 +223,19 @@
     <key name="caffeine-duration" type="i"><range min="0" max="1440"/><default>0</default><summary>Caffeine duration in minutes (0 = until turned off)</summary></key>
     <key name="caffeine-until" type="x"><default>0</default><summary>Unix time when the current Caffeine timer ends (0 = none)</summary></key>
 
-    <!-- Desktop mode: Fusion panel or Deepin-style environment -->
+    <!-- Style presets (Appearance). Keys named deepin-* and windows-* are historical
+         names of ordinary features; renaming them would reset users' settings. -->
     <key name="desktop-mode" type="s">
       <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/><choice value="centered"/></choices>
       <default>'fusion'</default><summary>Last applied style preset (fusion = Classic, deepin = Studio, windows = Workbench, centered = Centered)</summary>
     </key>
-    <!-- Windows-like mode: extra buttons and theming for the Fusion taskbar -->
+    <!-- Search box and Task View buttons -->
     <key name="windows-search" type="s">
       <choices><choice value="BOX"/><choice value="ICON"/><choice value="HIDDEN"/></choices>
       <default>'BOX'</default><summary>Search button after the start button: box, icon only or hidden</summary>
     </key>
     <key name="windows-task-view" type="b"><default>true</default><summary>Task View button after the start button (opens the overview)</summary></key>
-    <key name="deepin-features-enabled" type="b"><default>false</default><summary>Old setting (before version 12): features used outside the old desktop modes</summary></key>
-    <key name="deepin-features" type="as">
-      <default>['launcher', 'control', 'organizer']</default>
-      <summary>Old setting (before version 12): which features were used outside the old desktop modes</summary>
-    </key>
-    <key name="deepin-organizer" type="b"><default>false</default><summary>Organize desktop: desktop files sorted into collections; Alt+O shows or hides them</summary></key>
+    <key name="deepin-organizer" type="b"><default>false</default><summary>Show the files of the Desktop folder on the desktop (as icons or sorted into collections); Alt+O shows or hides them</summary></key>
     <key name="deepin-organizer-collections" type="as">
       <default>['places', 'folders', 'documents', 'pictures', 'videos', 'music', 'apps', 'others']</default>
       <summary>Collections used to organize the desktop</summary>
