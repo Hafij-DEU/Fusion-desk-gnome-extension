@@ -194,16 +194,6 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         const cursors = listThemes('cursors');
         this._addWindowBlurGroup(page, window, s);
 
-        page.add(group('Window effects', [
-            comboRow(s, 'window-effect', 'Effect', ['NONE', 'FIRE', 'DISSOLVE', 'GLIDE'],
-                ['GNOME default', 'Fire (burns away, rises from flames)', 'Dissolve (crumbles into noise)', 'Glide (slides and fades)']),
-            ...dependsOn(s, ['window-effect'], () => s.get_string('window-effect') !== 'NONE', [
-                switchRow(s, 'window-effect-open', 'When a window opens'),
-                switchRow(s, 'window-effect-close', 'When a window closes'),
-                spinRow(s, 'window-effect-duration', 'Length', 200, 2500, 100, 'Milliseconds'),
-            ]),
-        ], 'Normal app windows only; dialogs and menus keep GNOME\'s animations. Off while Burn My Windows is on.'));
-
         page.add(group('System accent and themes', [
             comboRow(s, 'deepin-accent', 'Accent colour', ['', 'blue', 'teal', 'green', 'yellow', 'orange', 'pink', 'purple', 'slate'],
                 ['Keep mine', 'Blue', 'Teal', 'Green', 'Yellow', 'Orange', 'Pink', 'Purple', 'Grey']),

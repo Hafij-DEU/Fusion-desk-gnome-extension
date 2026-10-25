@@ -143,7 +143,6 @@ Click a section to expand it.
 - **Wallpaper blur** while windows are open, sharp again on an empty desktop.
 - **Overview blur**: a blurred wallpaper behind Activities and the app grid, and frosted app folders. One switch and a strength slider (Appearance → Wallpaper).
 - **Blurred app windows**: chosen apps (your terminal by default) turn see-through with the desktop blurred behind them. Opacity, strength and the app list are in Appearance → Blurred app windows.
-- **Window effects** when windows open and close: **Fire** (burns away from the bottom up, rises from the flames when it opens), **Dissolve** or **Glide**, with an adjustable length (Appearance → Window effects).
 - Light / dark taskbar that follows the system style. Optional accent colour, icon and cursor theme while Fusion Desk runs.
 
 </details>
@@ -270,7 +269,7 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | **ArcMenu** | Turn it off; both want the Super key. Import its setup in **Start Menu → Import from ArcMenu**. |
 | **System monitor, Caffeine, Clipboard History, Date Menu Formatter** | Fine to keep. Fusion Desk hides its own duplicate. |
 | **Desktop Icons (DING)** | Not needed with **Show desktop files** on (Desktop page); its icons hide while Fusion shows yours. |
-| **Blur my Shell, Add to Desktop, Burn My Windows, Just Perfection** | Not needed for what Fusion Desk covers: overview blur, Add to Desktop, window effects and the Behaviour options. If they stay on, Fusion Desk turns its own copy off. |
+| **Blur my Shell, Add to Desktop, Just Perfection** | Not needed for what Fusion Desk covers: overview and window blur, Add to Desktop and the Behaviour options. If they stay on, Fusion Desk turns its own copy off. |
 | **Fuzzy app search, Web search provider** | Fine to keep; they work in the Activities search. Fusion Desk's start menu has both built in. |
 
 ## Charge limit
