@@ -9,7 +9,8 @@ import {addMenuPage, appInfo, chooseApp, menuThemePage} from './lib/prefsMenu.js
 import {comboRow, dependsOn, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
-import {accelKeys, shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
+import {shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
+import {laptopDevice, readSwitch, writeSwitch} from './lib/deepin/laptop.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -191,6 +192,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
 
         const icons = listThemes('icons');
         const cursors = listThemes('cursors');
+        this._addWindowBlurGroup(page, window, s);
+
         page.add(group('Window effects', [
             comboRow(s, 'window-effect', 'Effect', ['NONE', 'FIRE', 'DISSOLVE', 'GLIDE'],
                 ['GNOME default', 'Fire (burns away, rises from flames)', 'Dissolve (crumbles into noise)', 'Glide (slides and fades)']),
@@ -358,6 +361,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(group('Battery', [
             comboRow(s, 'battery-style', 'Battery look', ['COLOR', 'GNOME'], ['Coloured, percentage inside', 'GNOME icon']),
             switchRow(s, 'battery-standalone', 'Own battery button', 'Next to the system menu; click for time left, power draw, health, power mode and charging mode'),
+            ...[this._usbChargingRow()].filter(Boolean),
         ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
         page.add(this._chargeLimitGroup(s));
         page.add(group('Keep awake', [
@@ -392,6 +396,37 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'tweak-animation-speed', 'Animation speed', ['FAST', 'NORMAL', 'SLOW'], ['Faster', 'Normal', 'Slower']),
         ], 'Off while Just Perfection is on, which has the same options.'));
         window.add(page);
+    }
+
+    /**
+     * The laptop's "always-on USB" switch: the USB-A port stays powered while
+     * the laptop sleeps or is off. Null when the laptop has no such switch.
+     */
+    _usbChargingRow() {
+        const device = laptopDevice();
+        if (!device || readSwitch(device, 'usb_charging') === null)
+            return null;
+        const note = 'Keeps the USB port powered while the laptop sleeps or is shut down, so a phone keeps charging (asks for your password). How fast it charges is fixed by the port itself.';
+        const row = new Adw.SwitchRow({title: 'Charge phones while asleep or off', subtitle: note});
+        row.active = readSwitch(device, 'usb_charging');
+        let syncing = false;
+        row.connect('notify::active', () => {
+            if (syncing)
+                return;
+            const want = row.active;
+            row.sensitive = false;
+            writeSwitch(device, 'usb_charging', want, (_ok, rejected) => {
+                row.sensitive = true;
+                const now = readSwitch(device, 'usb_charging');
+                if (now !== want) {
+                    syncing = true;
+                    row.active = !!now;
+                    syncing = false;
+                }
+                row.subtitle = rejected ? 'This laptop\'s firmware does not accept this switch' : note;
+            });
+        });
+        return row;
     }
 
     /** Charge limit: switch, level and the one-time helper setup (asks for the password once). */
@@ -439,6 +474,52 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         ], 'Laptops with an adjustable limit get it set directly. Others charge normally up to the level, then switch to battery protection, so it cannot go below the laptop\'s own protection level (often 60 or 80%).');
     }
 
+    /** Blurred, see-through windows: switch, look and the app list. */
+    _addWindowBlurGroup(page, window, s) {
+        page.add(group('Blurred app windows', [
+            switchRow(s, 'window-blur', 'Blur behind app windows', 'The apps below turn see-through, with the desktop blurred behind them'),
+            ...dependsOn(s, ['window-blur'], () => s.get_boolean('window-blur'), [
+                spinRow(s, 'window-blur-opacity', 'Window opacity', 50, 100, 5, 'Percent; lower shows more of the blur'),
+                spinRow(s, 'window-blur-strength', 'Blur strength', 10, 100, 5, 'Percent'),
+            ]),
+        ], 'Full-screen windows stay solid. Off while Blur my Shell is on.'));
+        const apps = new Adw.PreferencesGroup({title: 'Apps with blurred windows'});
+        const add = new Gtk.Button({icon_name: 'list-add-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
+            tooltip_text: 'Add an app'});
+        add.connect('clicked', () => chooseApp(window, id => {
+            const ids = s.get_strv('window-blur-apps');
+            if (!ids.includes(id))
+                s.set_strv('window-blur-apps', [...ids, id]);
+        }));
+        apps.set_header_suffix(add);
+        let rows = [];
+        const fill = () => {
+            rows.forEach(r => apps.remove(r));
+            // The defaults list several terminals; only the installed ones are shown.
+            rows = s.get_strv('window-blur-apps').filter(id => appInfo(id)).map(id => {
+                const info = appInfo(id);
+                const row = new Adw.ActionRow({title: info.get_display_name()});
+                if (info?.get_icon())
+                    row.add_prefix(new Gtk.Image({gicon: info.get_icon(), pixel_size: 32}));
+                const del = new Gtk.Button({icon_name: 'user-trash-symbolic', valign: Gtk.Align.CENTER, css_classes: ['flat'],
+                    tooltip_text: 'Remove'});
+                del.connect('clicked', () => s.set_strv('window-blur-apps', s.get_strv('window-blur-apps').filter(x => x !== id)));
+                row.add_suffix(del);
+                apps.add(row);
+                return row;
+            });
+            if (!rows.length) {
+                const empty = new Adw.ActionRow({title: 'No apps yet', subtitle: 'Use + to add one'});
+                apps.add(empty);
+                rows = [empty];
+            }
+        };
+        fill();
+        const id = s.connect('changed::window-blur-apps', fill);
+        page.connect('destroy', () => s.disconnect(id));
+        page.add(apps);
+    }
+
     /** Picture-in-picture and always-on-top apps. */
     _addOnTopGroups(page, window, s) {
         // Extra titles: a comma-separated list stored as a string array.
@@ -453,11 +534,6 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 pipTitles,
             ]),
         ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture", or ends in "— Picture in picture", "- PiP" or "- Mini player". Add other titles for apps that name it differently, or press Alt+Enter on any window.'));
-
-        page.add(group('Always on top shortcut', [
-            withShortcut(entryRow(s, 'ontop-hotkey', 'Shortcut (e.g. <Alt>Return, empty = off)'),
-                s, () => accelKeys(s.get_string('ontop-hotkey')), ['ontop-hotkey']),
-        ], 'Keeps the focused window above all others; press it again to let it go. Works on any window, including picture-in-picture.'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
         const onTop = new Adw.PreferencesGroup({

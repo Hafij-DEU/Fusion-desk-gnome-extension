@@ -142,6 +142,7 @@ Click a section to expand it.
 - **Accent-coloured icons**: plain white / black tray icons take the accent colour, colourful ones keep theirs.
 - **Wallpaper blur** while windows are open, sharp again on an empty desktop.
 - **Overview blur**: a blurred wallpaper behind Activities and the app grid, and frosted app folders. One switch and a strength slider (Appearance → Wallpaper).
+- **Blurred app windows**: chosen apps (your terminal by default) turn see-through with the desktop blurred behind them. Opacity, strength and the app list are in Appearance → Blurred app windows.
 - **Window effects** when windows open and close: **Fire** (burns away from the bottom up, rises from the flames when it opens), **Dissolve** or **Glide**, with an adjustable length (Appearance → Window effects).
 - Light / dark taskbar that follows the system style. Optional accent colour, icon and cursor theme while Fusion Desk runs.
 
@@ -156,6 +157,7 @@ Click a section to expand it.
   - **connected devices' batteries** (earbuds show left / right / case when the system reports them)
   - power mode and charging modes
 - **Charge limit** (default 90%) stops charging at the level you choose. [How it works ↓](#charge-limit)
+- **Charge phones while asleep or off** (laptops with an always-on USB port, e.g. IdeaPads): the USB port stays powered while the laptop sleeps or is shut down. How fast a phone charges is fixed by the port's hardware; no software can raise it.
 
 </details>
 
@@ -200,7 +202,7 @@ Click a section to expand it.
 | <kbd>Super</kbd>+<kbd>R</kbd> | Runner (quick search) | Start Menu → Keyboard |
 | <kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | Open or focus the nth taskbar app | Taskbar |
 | <kbd>Ctrl</kbd>+<kbd>Super</kbd>+<kbd>1</kbd>…<kbd>9</kbd> | New window of the nth taskbar app | Taskbar |
-| <kbd>Alt</kbd>+<kbd>Enter</kbd> | Keep the focused window always on top, or let it go | System |
+| <kbd>Alt</kbd>+<kbd>Enter</kbd> | Keep the focused window always on top, or let it go | Any window |
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
 | <kbd>Ctrl</kbd>+<kbd>V</kbd> | Sent for you when you pick a clipboard entry (Paste on select) | Widgets |
 | <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show the desktop icons or collections | Desktop |

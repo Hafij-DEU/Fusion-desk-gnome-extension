@@ -29,10 +29,14 @@
     <key name="desktop-icon-positions" type="s"><default>'{}'</default><summary>Grid cell of each desktop icon (Icons style), as JSON {name: [column, row]}</summary></key>
     <key name="overview-blur" type="b"><default>true</default><summary>Blurred wallpaper behind the Activities overview and app grid, frosted app folders</summary></key>
     <key name="overview-blur-strength" type="i"><range min="10" max="100"/><default>50</default><summary>Overview blur strength in percent</summary></key>
+    <key name="window-blur" type="b"><default>true</default><summary>Blurred, see-through windows for the apps in window-blur-apps</summary></key>
+    <key name="window-blur-apps" type="as"><default>['org.gnome.Ptyxis.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Console.desktop']</default><summary>Apps (desktop ids) whose windows are blurred and see-through</summary></key>
+    <key name="window-blur-opacity" type="i"><range min="50" max="100"/><default>85</default><summary>Opacity of blurred windows in percent</summary></key>
+    <key name="window-blur-strength" type="i"><range min="10" max="100"/><default>50</default><summary>Blur strength behind blurred windows in percent</summary></key>
     <key name="window-effect" type="s"><default>'NONE'</default><summary>Window open / close effect: NONE (GNOME's own), FIRE, DISSOLVE or GLIDE</summary></key>
     <key name="window-effect-open" type="b"><default>true</default><summary>Play the window effect when a window opens</summary></key>
     <key name="window-effect-close" type="b"><default>true</default><summary>Play the window effect when a window closes</summary></key>
-    <key name="window-effect-duration" type="i"><range min="200" max="2500"/><default>900</default><summary>Window effect length in milliseconds (opening takes three quarters of it)</summary></key>
+    <key name="window-effect-duration" type="i"><range min="200" max="2500"/><default>1400</default><summary>Window effect length in milliseconds (opening takes three quarters of it)</summary></key>
     <key name="tweak-focus-attention" type="b"><default>false</default><summary>Bring apps that ask for attention to the front instead of showing an "is ready" notification</summary></key>
     <key name="tweak-workspace-popup" type="b"><default>true</default><summary>Show the workspace switcher popup when switching workspaces</summary></key>
     <key name="tweak-animation-speed" type="s"><default>'NORMAL'</default><summary>Speed of every shell animation: FAST, NORMAL or SLOW</summary></key>
