@@ -560,8 +560,10 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         box.append(new Gtk.Label({label: 'Fusion Desk', css_classes: ['title-1']}));
         const v = this.metadata['version-name'] ?? this.metadata.version;
         const version = v ? `Version ${v} · ` : '';
-        box.append(new Gtk.Label({label: `${version}by Md Hafijur Rahman`, css_classes: ['dim-label']}));
-        box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'Project page'}));
+        box.append(new Gtk.Label({label: `${version}Developed by Md. Hafijur Rahman`, css_classes: ['dim-label']}));
+        box.append(new Gtk.LinkButton({uri: this.metadata.url ?? 'https://github.com/Hafij-DEU', label: 'GitHub'}));
+        box.append(new Gtk.Label({label: 'This app was generated with AI. Developer support may not be available.',
+            css_classes: ['dim-label'], wrap: true, justify: Gtk.Justification.CENTER}));
         head.add(box);
         page.add(head);
         page.add(shortcutsGroup(s));
