@@ -1,0 +1,99 @@
+#!/bin/sh
+# Fusion Desk swap helper, run as root through pkexec (asks for the password
+# every time). It only resizes zram and the swap file:
+#   fusion-desk-swap zram <percent of RAM 0..150> <lz4|zstd|lzo-rle>   (0 = zram off)
+#   fusion-desk-swap file <GB 1..64>
+# Exit codes: 2 bad arguments, 3 not enough free disk space, 4 not enough
+# free memory to take back what is swapped out, 5 file system without
+# fallocate swap files (btrfs), 6 zram-tools is not installed.
+set -eu
+
+CONF=/etc/default/zramswap
+# Kept free: RAM while a swap device turns off, disk after the swap file grows (KiB).
+RAM_MARGIN=524288
+DISK_MARGIN=2097152
+
+number() {
+    case "${1:-}" in
+    ''|*[!0-9]*) exit 2 ;;
+    esac
+}
+
+meminfo() {
+    awk -v k="$1:" '$1 == k {print $2}' /proc/meminfo
+}
+
+# Turning swap devices off moves what they hold back into RAM or onto the
+# other swap devices; refuse when that would not fit.
+fits_without() { # awk test picking the devices that turn off
+    awk -v avail="$(meminfo MemAvailable)" -v margin="$RAM_MARGIN" "
+        NR > 1 && ($1) { used += \$4; next }
+        NR > 1 { free += \$3 - \$4 }
+        END { exit !(used + margin < avail + free) }" /proc/swaps
+}
+
+# Set KEY=VALUE in the zram config, replacing the active line or adding one.
+set_conf() {
+    if grep -q "^$1=" "$CONF"; then
+        sed -i "s/^$1=.*/$1=$2/" "$CONF"
+    else
+        printf '%s=%s\n' "$1" "$2" >> "$CONF"
+    fi
+}
+
+case "${1:-}" in
+zram)
+    number "${2:-}"
+    [ "$2" -le 150 ] || exit 2
+    case "${3:-}" in
+    lz4|zstd|lzo-rle) ;;
+    *) exit 2 ;;
+    esac
+    [ -f "$CONF" ] && [ -x /usr/sbin/zramswap ] || exit 6
+    fits_without '$1 ~ /^\/dev\/zram/' || exit 4
+    set_conf PERCENT "$2"
+    set_conf ALGO "$3"
+    if [ "$2" -eq 0 ]; then
+        systemctl disable --now zramswap.service
+    else
+        systemctl enable zramswap.service
+        systemctl restart zramswap.service
+    fi
+    ;;
+file)
+    number "${2:-}"
+    [ "$2" -ge 1 ] && [ "$2" -le 64 ] || exit 2
+    # The active swap file, else the one in fstab, else Ubuntu's default.
+    path=$(awk 'NR > 1 && $2 == "file" {print $1; exit}' /proc/swaps)
+    [ -n "$path" ] || path=$(awk '$3 == "swap" && $1 ~ /^\// && $1 !~ /^\/dev\// {print $1; exit}' /etc/fstab)
+    [ -n "$path" ] || path=/swap.img
+    dir=$(dirname "$path")
+    [ "$(stat -f -c %T "$dir")" != btrfs ] || exit 5
+    want=$(($2 * 1048576))
+    have=0
+    [ -f "$path" ] && have=$(($(stat -c %s "$path") / 1024))
+    free=$(df -Pk "$dir" | awk 'NR == 2 {print $4}')
+    [ $((free + have - want)) -ge "$DISK_MARGIN" ] || exit 3
+    active=$(awk -v p="$path" 'NR > 1 && $1 == p' /proc/swaps)
+    if [ -n "$active" ]; then
+        fits_without "\$1 == \"$path\"" || exit 4
+        swapoff "$path"
+    fi
+    rm -f "$path"
+    make() {
+        fallocate -l "$1" "$path" && chmod 600 "$path" && mkswap "$path" > /dev/null
+    }
+    if ! make "${2}G"; then
+        # Put the old size back so the system is not left without swap.
+        rm -f "$path"
+        [ "$have" -gt 0 ] && make "${have}K" && swapon "$path"
+        exit 1
+    fi
+    swapon "$path"
+    grep -qs "^$path[[:space:]]" /etc/fstab || printf '%s\tnone\tswap\tsw\t0\t0\n' "$path" >> /etc/fstab
+    ;;
+*)
+    exit 2
+    ;;
+esac
+exit 0
