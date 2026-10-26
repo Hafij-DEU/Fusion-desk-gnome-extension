@@ -401,6 +401,7 @@ Fusion Desk is an independent project written from scratch by **Md Hafijur Rahma
 - [Clipboard History](https://github.com/SUPERCILEX/gnome-clipboard-history) and [Clipboard Indicator](https://github.com/Tudmotu/gnome-shell-extension-clipboard-indicator): clipboard menu.
 - [Caffeine](https://github.com/eonpatapon/gnome-shell-extension-caffeine): keep-awake toggle and timer.
 - [Date Menu Formatter](https://github.com/marcinjakubowski/date-menu-formatter): custom clock format.
+- [Blur my Shell](https://github.com/aunetx/blur-my-shell), [Add to Desktop](https://github.com/tommimon/add-to-desktop), [Desktop Icons NG](https://gitlab.com/rastersoft/desktop-icons-ng) and [Fuzzy App Search](https://gitlab.com/Czarlie/gnome-fuzzy-app-search): ideas for overview blur, Add to Desktop, desktop icons and fuzzy search. Written separately for Fusion Desk; no code was copied.
 - [Deepin Desktop Environment](https://github.com/linuxdeepin) (GPL-3.0): ideas for the app launcher, control centre, desktop organizer and glossy look. These were reimplemented from observed behaviour (see [docs/deepin-inventory.md](docs/deepin-inventory.md)). No Deepin code, icons, wallpapers or translations are included.
 - [GNOME Shell](https://gitlab.gnome.org/GNOME/gnome-shell) (GPL-2.0-or-later): the platform and its extension APIs.
 
@@ -408,6 +409,8 @@ Icons are from the GNOME / Adwaita theme. The CPU, RAM, temperature, arrow and C
 
 ## License and trademarks
 
-Fusion Desk is free software under the **GPL-2.0-or-later** licence (see [LICENSE](LICENSE)).
+Fusion Desk is free software under the **GPL-2.0-or-later** licence (see [LICENSE](LICENSE)). Copyright © 2026 Md. Hafijur Rahman. The code is original: it does not contain code from Dash to Panel or ArcMenu (checked against the project history and file headers), so it stays under GPL-2.0-or-later. Both projects are credited above.
+
+This app was generated with AI. Developer support may not be available.
 
 All product names are the property of their owners. Microsoft Windows, deepin, KDE Plasma, Linux Mint, macOS / Spotlight and other names are trademarks of their respective owners. Fusion Desk is not affiliated with or endorsed by them, and its features use neutral names. Do not ship a start-button icon that copies another company's logo.

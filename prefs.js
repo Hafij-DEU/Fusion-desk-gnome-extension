@@ -580,6 +580,10 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             link('Clipboard History', 'SUPERCILEX and contributors', 'https://github.com/SUPERCILEX/gnome-clipboard-history'),
             link('Caffeine', 'eonpatapon and contributors', 'https://github.com/eonpatapon/gnome-shell-extension-caffeine'),
             link('Date Menu Formatter', 'Marcin Jakubowski', 'https://github.com/marcinjakubowski/date-menu-formatter'),
+            link('Blur my Shell', 'aunetx and contributors', 'https://github.com/aunetx/blur-my-shell'),
+            link('Add to Desktop', 'tommimon and contributors', 'https://github.com/tommimon/add-to-desktop'),
+            link('Desktop Icons NG', 'Sergio Costas and contributors', 'https://gitlab.com/rastersoft/desktop-icons-ng'),
+            link('Fuzzy App Search', 'Czarlie and contributors', 'https://gitlab.com/Czarlie/gnome-fuzzy-app-search'),
         ], 'Written from scratch; no code from these projects is included. Thank you to their authors.'));
         page.add(group('License', [
             new Adw.ActionRow({title: 'GNU General Public License v2.0 or later',
