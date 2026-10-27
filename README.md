@@ -157,6 +157,7 @@ Click a section to expand it.
   - power mode and charging modes
 - **Charge limit** (default 90%) stops charging at the level you choose. [How it works ↓](#charge-limit)
 - **Charge phones while asleep or off** (laptops with an always-on USB port, e.g. IdeaPads): the USB port stays powered while the laptop sleeps or is shut down. How fast a phone charges is fixed by the port's hardware; no software can raise it.
+- **Swap and zram:** set the zram size and compression and the swap file size, and turn zswap on or off (for when zram is off; with both on, memory is compressed twice). Applying asks for your password. **Install and remove** lists the terminal commands to install or remove zram-tools, the swap file and Fusion's zswap setting, each with a copy button.
 
 </details>
 
@@ -249,6 +250,7 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | Move the panel, change its height, opacity or make it float | **Panel** → Panel |
 | Reorder or hide panel items | **Panel** → Elements |
 | Show the battery as its own button, set a charge limit | **System** → Battery / Charge limit |
+| Change zram, the swap file or zswap | **System** → Swap and zram |
 | Pick a preset, glass style, material or opacity | **Appearance** → Style presets / Glass |
 | Change colours, the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Accent gradient / Wallpaper |
 | Add the search box and Task View | **Taskbar** → Search and Task View |

@@ -1,14 +1,20 @@
 #!/bin/sh
 # Fusion Desk swap helper, run as root through pkexec (asks for the password
-# every time). It only resizes zram and the swap file:
+# every time). It only resizes zram and the swap file and turns zswap on or off:
 #   fusion-desk-swap zram <percent of RAM 0..150> <lz4|zstd|lzo-rle>   (0 = zram off)
 #   fusion-desk-swap file <GB 1..64>
+#   fusion-desk-swap zswap <1|0>
 # Exit codes: 2 bad arguments, 3 not enough free disk space, 4 not enough
 # free memory to take back what is swapped out, 5 file system without
-# fallocate swap files (btrfs), 6 zram-tools is not installed.
+# fallocate swap files (btrfs), 6 zram-tools is not installed, 7 the
+# kernel has no zswap.
 set -eu
 
 CONF=/etc/default/zramswap
+ZSWAP=/sys/module/zswap/parameters
+# Keeps zswap on after a restart (systemd-tmpfiles writes it early at boot);
+# zswap off deletes it, so the kernel's own default comes back.
+ZSWAP_BOOT=/etc/tmpfiles.d/fusion-desk-zswap.conf
 # Kept free: RAM while a swap device turns off, disk after the swap file grows (KiB).
 RAM_MARGIN=524288
 DISK_MARGIN=2097152
@@ -91,6 +97,26 @@ file)
     fi
     swapon "$path"
     grep -qs "^$path[[:space:]]" /etc/fstab || printf '%s\tnone\tswap\tsw\t0\t0\n' "$path" >> /etc/fstab
+    ;;
+zswap)
+    [ -w "$ZSWAP/enabled" ] || exit 7
+    case "${2:-}" in
+    1)
+        # zstd packs the most; keep the kernel's compressor when it has no zstd.
+        echo zstd > "$ZSWAP/compressor" 2> /dev/null || true
+        echo 1 > "$ZSWAP/enabled"
+        {
+            echo '# Written by Fusion Desk (System > Swap and zram). Delete to undo.'
+            echo "w $ZSWAP/compressor - - - - $(cat "$ZSWAP/compressor")"
+            echo "w $ZSWAP/enabled - - - - 1"
+        } > "$ZSWAP_BOOT"
+        ;;
+    0)
+        echo 0 > "$ZSWAP/enabled"
+        rm -f "$ZSWAP_BOOT"
+        ;;
+    *) exit 2 ;;
+    esac
     ;;
 *)
     exit 2
