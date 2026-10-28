@@ -10,6 +10,7 @@ import {StartMenu} from './lib/startMenu.js';
 import {AppsButton, Taskbar} from './lib/taskbar.js';
 import {TrayOverflow} from './lib/trayOverflow.js';
 import {PipOnTop} from './lib/pip.js';
+import {RegionPip} from './lib/regionPip.js';
 import {WindowTitle} from './lib/windowTitle.js';
 import {Workspaces} from './lib/workspaces.js';
 import {MediaControls} from './lib/media.js';
@@ -65,6 +66,8 @@ const MODULES = {
     caffeine: {cls: Caffeine, visible: 'caffeine-visible', keys: []},
     // Picture-in-picture windows and chosen apps stay on top (options apply live).
     pip: {cls: PipOnTop, visible: null, keys: ['ontop-hotkey']},
+    // Super+Alt+P: picture-in-picture of a screen area (lib/linux-pip).
+    regionpip: {cls: RegionPip, visible: null, keys: ['region-pip-hotkey']},
     // Other apps' tray icons in the status-icon colour.
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Wallpaper blurs while windows are open on its monitor.

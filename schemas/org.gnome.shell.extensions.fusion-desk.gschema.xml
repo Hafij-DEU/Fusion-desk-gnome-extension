@@ -38,6 +38,10 @@
     <key name="tweak-animation-speed" type="s"><default>'NORMAL'</default><summary>Speed of every shell animation: FAST, NORMAL or SLOW</summary></key>
     <key name="add-to-desktop" type="b"><default>true</default><summary>"Add to Desktop" in app menus (app grid, dash, taskbar, start menu)</summary></key>
     <key name="ontop-hotkey" type="s"><default>'&lt;Alt&gt;Return'</default><summary>Shortcut that keeps the focused window always on top, or lets it go (empty = off)</summary></key>
+    <key name="region-pip-hotkey" type="s"><default>'&lt;Super&gt;&lt;Alt&gt;p'</default><summary>Shortcut that starts a picture-in-picture of a screen area (empty = off)</summary></key>
+    <key name="region-pip-fps" type="i"><range min="1" max="120"/><default>30</default><summary>Frames per second of the screen area picture-in-picture</summary></key>
+    <key name="region-pip-size" type="i"><range min="10" max="100"/><default>60</default><summary>Largest starting size of the screen area picture-in-picture, in % of the screen</summary></key>
+    <key name="region-pip-cursor" type="b"><default>true</default><summary>Show the mouse pointer in the screen area picture-in-picture</summary></key>
     <key name="ontop-apps" type="as"><default>[]</default><summary>Apps (desktop ids) whose windows always stay above other windows</summary></key>
     <key name="pip-extra-titles" type="as"><default>[]</default><summary>Extra window titles that count as picture-in-picture (exact title, any case)</summary></key>
     <key name="overflow-visible" type="b"><default>true</default><summary>Show other apps' tray icons behind a "show hidden icons" arrow</summary></key>

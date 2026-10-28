@@ -1,0 +1,707 @@
+#!/usr/bin/env bash
+# linux-pip — turn any screen region into a floating, always-on-top
+# Picture-in-Picture window.
+#
+#   1. Drag a rectangle (or click a window) with slop / xrectsel.
+#   2. The region is captured (30 fps by default) and piped into a borderless,
+#      always-on-top, resizable mpv window.
+#   3. Closing mpv stops the capture and removes all temp files.
+#
+# Backends (picked automatically):
+#   x11      ffmpeg x11grab -> mpv                  (X11 sessions)
+#   wayland  GNOME/KDE screen-share portal -> PipeWire -> GStreamer -> mpv;
+#            the region is picked over a frozen screenshot of the source
+#
+# Usage:  linux-pip [--x11 | --wayland] [--choose] [--fps N] [--size PCT]
+#                   [--no-cursor] [--managed[=KEY]] [--install-deps] [-h|--help]
+#
+#   --choose     Wayland: ask for the screen again (the last choice is
+#                remembered, so the sharing dialog normally shows only once)
+#   --fps N      frames per second, 1-120 (default 30)
+#   --size PCT   largest starting window size, % of the screen (default 60)
+#   --no-cursor  leave the mouse pointer out of the picture
+#   --managed[=KEY]  a desktop shell keeps the window on top (Fusion Desk):
+#                T only tells that KEY (its always-on-top shortcut) lets it go
+#
+# In the PiP window (move the mouse over it for the full-screen and close
+# buttons in the top-right corner):
+#   left-drag             move           double-click / F / F11  full screen
+#   mouse wheel / + / -   resize         Esc   leave full screen, else close
+#   0                     original size  Q / Ctrl+W               close
+#   T                     always on top on/off
+#   H / ? / F1            show the shortcuts in the window
+
+set -euo pipefail
+
+readonly APP=linux-pip
+# App id for the screen-sharing portal, which remembers the chosen screen only
+# for apps it can name (from a .desktop file of that name, see register_app).
+readonly APP_ID=io.github.hafij_deu.LinuxPip
+readonly X11_PKGS=(slop ffmpeg mpv)
+readonly WL_PKGS=(slop mpv python3-gi gir1.2-gstreamer-1.0 gstreamer1.0-pipewire
+                  gstreamer1.0-plugins-base gstreamer1.0-plugins-good x11-xserver-utils)
+
+die()  { printf '%s: error: %s\n' "$APP" "$*" >&2; exit 1; }
+warn() { printf '%s: warning: %s\n' "$APP" "$*" >&2; }
+
+usage() {
+    sed -n '2,34s/^# \{0,1\}//p' "$0"
+}
+
+# ---------------------------------------------------------------- arguments
+backend=""
+action=run
+choose=0
+fps=30
+size=60
+cursor=1
+managed=0
+ontop_key=
+while (( $# )); do
+    case $1 in
+        -h|--help)      usage; exit 0 ;;
+        --install-deps) action=install ;;
+        --choose)       choose=1 ;;
+        --fps)          shift; fps=${1:-}
+                        [[ $fps =~ ^[0-9]+$ ]] && (( fps >= 1 && fps <= 120 )) || die "--fps wants 1-120." ;;
+        --size)         shift; size=${1:-}
+                        [[ $size =~ ^[0-9]+$ ]] && (( size >= 10 && size <= 100 )) || die "--size wants 10-100." ;;
+        --no-cursor)    cursor=0 ;;
+        --managed|--managed=*)
+                        managed=1; [[ $1 == *=* ]] && ontop_key=${1#*=}
+                        [[ $ontop_key =~ ^[A-Za-z0-9+]*$ ]] || die "--managed=KEY: letters, digits and + only." ;;
+        --x11)          backend=x11 ;;
+        --wayland)      backend=wayland ;;
+        *)              usage >&2; exit 2 ;;
+    esac
+    shift
+done
+if [[ -z $backend ]]; then
+    if [[ -n ${WAYLAND_DISPLAY:-} ]]; then backend=wayland; else backend=x11; fi
+fi
+
+if [[ $backend == wayland ]]; then pkgs=("${WL_PKGS[@]}"); else pkgs=("${X11_PKGS[@]}"); fi
+install_cmd="sudo apt-get update && sudo apt-get install -y ${pkgs[*]}"
+
+install_deps() {
+    command -v apt-get >/dev/null 2>&1 || die "apt-get not found; install ${pkgs[*]} with your package manager."
+    echo "Running: $install_cmd"
+    sudo apt-get update && sudo apt-get install -y "${pkgs[@]}"
+}
+
+if [[ $action == install ]]; then
+    install_deps
+    exit 0
+fi
+
+# ------------------------------------------------------------- dependencies
+selector=""
+if   command -v slop     >/dev/null 2>&1; then selector=slop
+elif command -v xrectsel >/dev/null 2>&1; then selector=xrectsel
+fi
+
+missing=()
+[[ -n $selector ]]                || missing+=("slop (or xrectsel)")
+command -v mpv >/dev/null 2>&1    || missing+=(mpv)
+if [[ $backend == x11 ]]; then
+    command -v ffmpeg >/dev/null 2>&1 || missing+=(ffmpeg)
+else
+    command -v xrandr >/dev/null 2>&1 || missing+=("xrandr (x11-xserver-utils)")
+    gst_missing=$(python3 - 2>/dev/null <<'PY'
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gio, Gst
+Gst.init(None)
+need = ("pipewiresrc", "videocrop", "videoscale", "videorate", "videoconvert", "queue", "y4menc", "pngenc", "fdsink")
+print(" ".join(e for e in need if not Gst.ElementFactory.find(e)))
+PY
+    ) || gst_missing="python3-gi/GStreamer bindings"
+    [[ -z $gst_missing ]] || missing+=("GStreamer: $gst_missing")
+fi
+
+if (( ${#missing[@]} )); then
+    {
+        echo "$APP: error: missing required program(s) for the $backend backend:"
+        printf '    - %s\n' "${missing[@]}"
+        echo
+        echo "Install them with:"
+        echo "    $install_cmd"
+        echo "or run:"
+        echo "    $0 --install-deps"
+    } >&2
+    if [[ -t 0 && -t 2 ]] && command -v apt-get >/dev/null 2>&1; then
+        read -r -p "Install now? [y/N] " reply
+        if [[ $reply =~ ^[Yy]$ ]]; then
+            install_deps
+            exec "$0" "--$backend"
+        fi
+    fi
+    exit 1
+fi
+
+[[ -n ${DISPLAY:-} ]] || die "DISPLAY is not set; slop needs an X11 (or XWayland) display."
+
+if [[ $backend == x11 && -n ${WAYLAND_DISPLAY:-} ]]; then
+    warn "X11 backend on a Wayland session: x11grab only sees XWayland windows;"
+    warn "native Wayland apps will appear black. Drop --x11 to use the portal."
+fi
+
+# ------------------------------------------------------------------ helpers
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/$APP.XXXXXX")
+pids=()
+
+cleanup() {
+    trap - EXIT INT TERM HUP
+    local pid
+    for pid in "${pids[@]}"; do
+        kill -TERM "$pid" 2>/dev/null || true
+    done
+    for pid in "${pids[@]}"; do
+        for _ in {1..20}; do
+            kill -0 "$pid" 2>/dev/null || break
+            sleep 0.1
+        done
+        kill -KILL "$pid" 2>/dev/null || true
+        wait "$pid" 2>/dev/null || true
+    done
+    rm -rf "$tmpdir"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+# On Wayland, run mpv through XWayland: GNOME/mutter ignores --ontop for
+# native Wayland windows but honours it for X11 ones.
+xenv=()
+[[ -n ${WAYLAND_DISPLAY:-} ]] && xenv=(env -u WAYLAND_DISPLAY)
+
+# Every key/mouse binding of the PiP window (mpv's own defaults are off, so
+# keys like Space or the arrows cannot stall or seek the live stream).
+cat >"$tmpdir/input.conf" <<'EOF'
+WHEEL_UP      add current-window-scale  0.05
+WHEEL_DOWN    add current-window-scale -0.05
++             add current-window-scale  0.1
+=             add current-window-scale  0.1
+KP_ADD        add current-window-scale  0.1
+-             add current-window-scale -0.1
+KP_SUBTRACT   add current-window-scale -0.1
+0             set current-window-scale  1
+MBTN_LEFT_DBL cycle fullscreen
+f             cycle fullscreen
+F11           cycle fullscreen
+ESC           script-binding pip_ui/escape
+q             quit
+Q             quit
+Ctrl+w        quit
+CLOSE_WIN     quit
+h             script-binding pip_ui/help
+?             script-binding pip_ui/help
+F1            script-binding pip_ui/help
+EOF
+if (( managed )); then
+    echo "t show-text \"The desktop keeps it on top${ontop_key:+: $ontop_key lets it go}\"" >>"$tmpdir/input.conf"
+else
+    echo 't cycle ontop ; show-text "Always on top: ${ontop}"' >>"$tmpdir/input.conf"
+fi
+
+# Window controls drawn on the video: full-screen and close buttons in the
+# top-right corner while the mouse moves over the window, and the shortcut list.
+cat >"$tmpdir/pip_ui.lua" <<'LUA'
+local HIDE_AFTER = 1.5  -- seconds without mouse movement
+local HELP = {
+    {"Double-click, F, F11", "Full screen on/off"},
+    {"Esc", "Leave full screen, else close"},
+    {"Q, Ctrl+W", "Close"},
+    {"Wheel, +, -", "Bigger / smaller"},
+    {"0", "Original size"},
+    mp.get_opt("pip_ui-managed") and {mp.get_opt("pip_ui-managed"), "Always on top on/off"}
+        or {"T", "Always on top on/off"},
+    {"Left-drag", "Move the window"},
+    {"H, ?, F1", "Show / hide this list"},
+}
+
+local ui = mp.create_osd_overlay("ass-events")
+local help = mp.create_osd_overlay("ass-events")
+local w, h = 0, 0
+local shown, hovered, help_on = false, nil, false
+local btn = {}
+
+local function inside(b, x, y)
+    return b and x >= b[1] and x <= b[3] and y >= b[2] and y <= b[4]
+end
+
+local function fmt(...)
+    return (string.format(...))
+end
+
+-- One filled ASS drawing: colour/alpha as BGR/alpha hex.
+local function shape(color, alpha, path)
+    return fmt("{\\an7\\pos(0,0)\\bord0\\shad0\\1c&H%s&\\1a&H%s&\\p1}%s{\\p0}", color, alpha, path)
+end
+
+local function circle(cx, cy, r)
+    local k = r * 0.5523
+    return fmt("m %.1f %.1f b %.1f %.1f %.1f %.1f %.1f %.1f b %.1f %.1f %.1f %.1f %.1f %.1f "
+        .. "b %.1f %.1f %.1f %.1f %.1f %.1f b %.1f %.1f %.1f %.1f %.1f %.1f",
+        cx, cy - r,
+        cx + k, cy - r, cx + r, cy - k, cx + r, cy,
+        cx + r, cy + k, cx + k, cy + r, cx, cy + r,
+        cx - k, cy + r, cx - r, cy + k, cx - r, cy,
+        cx - r, cy - k, cx - k, cy - r, cx, cy - r)
+end
+
+-- A stroke of thickness t from (x1, y1) to (x2, y2), as a quad.
+local function stroke(x1, y1, x2, y2, t)
+    local dx, dy = x2 - x1, y2 - y1
+    local len = math.sqrt(dx * dx + dy * dy)
+    local nx, ny = -dy / len * t / 2, dx / len * t / 2
+    return fmt("m %.1f %.1f l %.1f %.1f %.1f %.1f %.1f %.1f",
+        x1 + nx, y1 + ny, x2 + nx, y2 + ny, x2 - nx, y2 - ny, x1 - nx, y1 - ny)
+end
+
+local function layout()
+    local s = math.max(24, math.min(44, math.floor(math.min(w, h) * 0.16)))
+    local pad = math.floor(s * 0.35)
+    btn.close = {w - pad - s, pad, w - pad, pad + s}
+    local x1 = btn.close[1] - math.floor(pad * 0.6)
+    btn.full = {x1 - s, pad, x1, pad + s}
+end
+
+local function render()
+    if not shown or w == 0 then
+        ui:remove()
+        mp.set_mouse_area(0, 0, 0, 0, "pip-ui")
+        return
+    end
+    local ev = {}
+    for _, name in ipairs({"full", "close"}) do
+        local b = btn[name]
+        local s = b[3] - b[1]
+        local cx, cy, q = b[1] + s / 2, b[2] + s / 2, s * 0.2
+        local t = math.max(2, s * 0.08)
+        if hovered == name then
+            ev[#ev + 1] = shape(name == "close" and "4D48E5" or "505050", "10", circle(cx, cy, s / 2))
+        else
+            ev[#ev + 1] = shape("000000", "50", circle(cx, cy, s / 2))
+        end
+        if name == "close" then
+            ev[#ev + 1] = shape("FFFFFF", "00", stroke(cx - q, cy - q, cx + q, cy + q, t))
+            ev[#ev + 1] = shape("FFFFFF", "00", stroke(cx - q, cy + q, cx + q, cy - q, t))
+        else
+            -- Corner brackets: pointing out (enter) or in (leave full screen).
+            local fs = mp.get_property_bool("fullscreen")
+            local a = q * 0.8
+            for _, sx in ipairs({-1, 1}) do
+                for _, sy in ipairs({-1, 1}) do
+                    local ex, ey, dx, dy
+                    if fs then
+                        ex, ey, dx, dy = cx + sx * q * 0.25, cy + sy * q * 0.25, sx, sy
+                    else
+                        ex, ey, dx, dy = cx + sx * q, cy + sy * q, -sx, -sy
+                    end
+                    ev[#ev + 1] = shape("FFFFFF", "00", stroke(ex - dx * t / 2, ey, ex + dx * a, ey, t))
+                    ev[#ev + 1] = shape("FFFFFF", "00", stroke(ex, ey, ex, ey + dy * a, t))
+                end
+            end
+        end
+    end
+    ui.res_x, ui.res_y = w, h
+    ui.data = table.concat(ev, "\n")
+    ui:update()
+    mp.set_mouse_area(btn.full[1], btn.full[2], btn.close[3], btn.close[4], "pip-ui")
+end
+
+local function render_help()
+    if not help_on or w == 0 then
+        help:remove()
+        return
+    end
+    local fs = math.max(10, math.min(22, math.floor(h / (#HELP + 2))))
+    local rows = {}
+    for _, r in ipairs(HELP) do
+        rows[#rows + 1] = fmt("{\\b1}%s{\\b0}  %s", r[1], r[2])
+    end
+    help.res_x, help.res_y = w, h
+    help.data = fmt("{\\an7\\pos(%d,%d)\\fs%d\\bord2\\shad0\\3c&H000000&\\1c&HFFFFFF&}%s",
+        math.floor(fs * 0.6), math.floor(fs * 0.5), fs, table.concat(rows, "\\N"))
+    help:update()
+end
+
+local hide_timer = mp.add_timeout(HIDE_AFTER, function()
+    if not hovered then
+        shown = false
+        render()
+    end
+end)
+hide_timer:kill()
+
+mp.observe_property("osd-dimensions", "native", function(_, d)
+    if not d or d.w == 0 then return end
+    w, h = d.w, d.h
+    layout()
+    render()
+    render_help()
+end)
+
+mp.observe_property("fullscreen", "bool", function() render() end)
+
+mp.observe_property("mouse-pos", "native", function(_, pos)
+    if not pos or w == 0 then return end
+    if pos.hover == false then
+        shown, hovered = false, nil
+        render()
+        return
+    end
+    hovered = (inside(btn.close, pos.x, pos.y) and "close") or (inside(btn.full, pos.x, pos.y) and "full") or nil
+    shown = true
+    render()
+    hide_timer:kill()
+    hide_timer:resume()
+end)
+
+-- Clicks on the buttons (fired on release). Outside the buttons the left
+-- button still drags the window.
+local function click()
+    local pos = mp.get_property_native("mouse-pos")
+    if inside(btn.close, pos.x, pos.y) then
+        mp.command("quit")
+    elseif inside(btn.full, pos.x, pos.y) then
+        mp.command("cycle fullscreen")
+    end
+end
+mp.set_key_bindings({{"mbtn_left", click}, {"mbtn_left_dbl", function() end}}, "pip-ui", "force")
+mp.enable_key_bindings("pip-ui", "allow-hide-cursor")
+mp.set_mouse_area(0, 0, 0, 0, "pip-ui")
+
+mp.add_key_binding(nil, "escape", function()
+    if mp.get_property_bool("fullscreen") then
+        mp.set_property_bool("fullscreen", false)
+    else
+        mp.command("quit")
+    end
+end)
+mp.add_key_binding(nil, "help", function()
+    help_on = not help_on
+    render_help()
+end)
+LUA
+
+# The title marks it as picture-in-picture for window managers and shell
+# extensions that keep such windows on top (e.g. Fusion Desk).
+mpv_args=(
+    --title="Screen area - Picture in picture" --x11-name="$APP" --wayland-app-id="$APP"
+    --no-border --ontop --window-dragging=yes
+    --autofit-larger="${size}%x${size}%" --keepaspect-window=yes
+    --force-window=immediate --keep-open=no --idle=no
+    --profile=low-latency --untimed --no-cache --aid=no --sid=no
+    --osc=no --osd-level=1 --no-terminal --cursor-autohide=1500
+    --load-scripts=no --script="$tmpdir/pip_ui.lua"
+    --no-input-default-bindings --input-conf="$tmpdir/input.conf"
+)
+(( managed )) && [[ $ontop_key ]] && mpv_args+=("--script-opts=pip_ui-managed=$ontop_key")
+
+# Sets x y w h from an interactive slop/xrectsel selection.
+select_region() {
+    local geom
+    echo "Drag a rectangle over the area to capture (click a window to grab it, Esc to cancel)..."
+    if [[ $selector == slop ]]; then
+        geom=$(slop --highlight --color=0.3,0.6,1,0.25 --bordersize=2 -f '%x %y %w %h') || return 1
+    else
+        geom=$(xrectsel '%x %y %w %h') || return 1
+    fi
+    read -r x y w h <<<"$geom"
+    [[ $x =~ ^-?[0-9]+$ && $y =~ ^-?[0-9]+$ && $w =~ ^[0-9]+$ && $h =~ ^[0-9]+$ ]] \
+        || die "could not parse selection: '$geom'"
+}
+
+# Waits until a file exists, failing if the given process dies first.
+wait_for_file() {
+    local file=$1 pid=$2
+    until [[ -e $file ]]; do
+        if ! kill -0 "$pid" 2>/dev/null; then
+            wait "$pid" 2>/dev/null || true
+            exit 1
+        fi
+        sleep 0.1
+    done
+}
+
+# ------------------------------------------------------------- x11 backend
+run_x11() {
+    select_region || { echo "Selection cancelled."; exit 1; }
+    (( x < 0 )) && x=0
+    (( y < 0 )) && y=0
+    # yuv420p needs even dimensions.
+    w=$(( w / 2 * 2 ))
+    h=$(( h / 2 * 2 ))
+    (( w >= 16 && h >= 16 )) || die "selection too small (${w}x${h}); drag a larger area."
+
+    echo "Capturing ${w}x${h} at +${x},${y} (${fps} fps). Close the PiP window to stop."
+
+    local fifo=$tmpdir/stream.nut
+    mkfifo "$fifo"
+
+    # Raw frames in a NUT container: no encoding cost, minimal latency.
+    ffmpeg -hide_banner -loglevel error -nostdin \
+        -f x11grab -draw_mouse "$cursor" -framerate "$fps" \
+        -video_size "${w}x${h}" -i "${DISPLAY}+${x},${y}" \
+        -pix_fmt yuv420p -c:v rawvideo -f nut pipe:1 \
+        >"$fifo" 2>"$tmpdir/ffmpeg.log" &
+    pids+=("$!")
+
+    local rc=0
+    "${xenv[@]}" mpv "${mpv_args[@]}" --geometry="${w}x${h}" \
+        --demuxer-lavf-format=nut --demuxer-lavf-probesize=32 \
+        "$fifo" || rc=$?
+
+    if (( rc != 0 )) && [[ -s $tmpdir/ffmpeg.log ]]; then
+        echo "$APP: ffmpeg reported:" >&2
+        tail -n 5 "$tmpdir/ffmpeg.log" >&2
+    fi
+    return "$rc"
+}
+
+# --------------------------------------------------------- wayland backend
+# Python helper: opens an xdg-desktop-portal ScreenCast session, saves one
+# frame to shot.png, reads the selection on stdin, then streams the cropped
+# region as y4m into the stream.y4m fifo until the reader goes away.
+WL_HELPER=$(cat <<'PY'
+import os, secrets, signal, struct, sys, time
+import gi
+gi.require_version("Gst", "1.0")
+from gi.repository import Gio, GLib, Gst
+
+tmpdir, fps, token_file, choose, cursor, app_id = (
+    sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4] == "1", sys.argv[5] == "1", sys.argv[6])
+# Die at once on Ctrl+C or kill: tearing down a playing pipeline can hang.
+for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+    signal.signal(sig, signal.SIG_DFL)
+PORTAL, OBJ = "org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop"
+IFACE = "org.freedesktop.portal.ScreenCast"
+V = GLib.Variant
+
+def fail(msg):
+    print(f"linux-pip: error: {msg}", file=sys.stderr, flush=True)
+    os._exit(1)  # skip pipeline teardown, which can hang after a PipeWire error
+
+def publish(name, text):
+    path = os.path.join(tmpdir, name)
+    with open(path + ".tmp", "w") as f:
+        f.write(text)
+    os.rename(path + ".tmp", path)
+
+Gst.init(None)
+bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+sender = bus.get_unique_name()[1:].replace(".", "_")
+
+# Name this app to the portal (before any other portal call), so it can keep
+# a restore token. The .desktop file may be brand new: give it a moment.
+for attempt in range(10):
+    try:
+        bus.call_sync(PORTAL, OBJ, "org.freedesktop.host.portal.Registry", "Register",
+                      V("(sa{sv})", (app_id, {})), None, Gio.DBusCallFlags.NONE, -1, None)
+        break
+    except GLib.Error as e:
+        if "App info not found" not in e.message or attempt == 9:
+            break  # older portal: works, only without remembering the screen
+        time.sleep(0.3)
+
+def request(method, sig, args, options):
+    token = "linuxpip" + secrets.token_hex(6)
+    loop, result = GLib.MainLoop(), {}
+    def on_response(_conn, _sender, _path, _iface, _signal, params):
+        result["code"], result["data"] = params.unpack()
+        loop.quit()
+    sub = bus.signal_subscribe(PORTAL, "org.freedesktop.portal.Request", "Response",
+                               f"{OBJ}/request/{sender}/{token}", None,
+                               Gio.DBusSignalFlags.NONE, on_response)
+    options = dict(options, handle_token=V("s", token))
+    bus.call_sync(PORTAL, OBJ, IFACE, method, V(f"({sig}a{{sv}})", (*args, options)),
+                  None, Gio.DBusCallFlags.NONE, -1, None)
+    loop.run()
+    bus.signal_unsubscribe(sub)
+    if result["code"] == 1:
+        fail("screen sharing was cancelled.")
+    if result["code"] != 0:
+        fail(f"portal {method} failed (code {result['code']}).")
+    return result["data"]
+
+def pipewire_fd():
+    res, fds = bus.call_with_unix_fd_list_sync(
+        PORTAL, OBJ, IFACE, "OpenPipeWireRemote", V("(oa{sv})", (session, {})),
+        GLib.VariantType("(h)"), Gio.DBusCallFlags.NONE, -1, None, None)
+    return fds.get(res.unpack()[0])
+
+def run(desc, timeout_s=None):
+    pipe = Gst.parse_launch(desc)
+    pipe.set_state(Gst.State.PLAYING)
+    timeout = Gst.CLOCK_TIME_NONE if timeout_s is None else timeout_s * Gst.SECOND
+    msg = pipe.get_bus().timed_pop_filtered(timeout, Gst.MessageType.EOS | Gst.MessageType.ERROR)
+    if msg and msg.type == Gst.MessageType.EOS:
+        pipe.set_state(Gst.State.NULL)
+    return msg
+
+def portal_prop(name):
+    return bus.call_sync(
+        PORTAL, OBJ, "org.freedesktop.DBus.Properties", "Get",
+        V("(ss)", (IFACE, name)), GLib.VariantType("(v)"),
+        Gio.DBusCallFlags.NONE, -1, None).unpack()[0]
+
+try:
+    cursor_modes = portal_prop("AvailableCursorModes")
+    version = portal_prop("version")
+except GLib.Error as e:
+    fail(f"ScreenCast portal unavailable: {e.message}")
+
+session = request("CreateSession", "", (),
+                  {"session_handle_token": V("s", "linuxpip" + secrets.token_hex(6))})["session_handle"]
+sources = {"types": V("u", 1 | 2), "multiple": V("b", False)}  # monitor | window
+if cursor and cursor_modes & 2:
+    sources["cursor_mode"] = V("u", 2)  # cursor drawn into the frames
+elif not cursor and cursor_modes & 1:
+    sources["cursor_mode"] = V("u", 1)  # hidden
+if version >= 4:
+    # Remember the chosen screen, so the dialog shows only the first time.
+    sources["persist_mode"] = V("u", 2)
+    if not choose and os.path.exists(token_file):
+        with open(token_file) as f:
+            token = f.read().strip()
+        if token:
+            sources["restore_token"] = V("s", token)
+request("SelectSources", "o", (session,), sources)
+started = request("Start", "os", (session, ""), {})
+if started.get("restore_token"):
+    os.makedirs(os.path.dirname(token_file), exist_ok=True)
+    fd = os.open(token_file + ".tmp", os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        f.write(started["restore_token"] + "\n")
+    os.rename(token_file + ".tmp", token_file)
+streams = started.get("streams") or []
+if not streams:
+    fail("the portal returned no stream.")
+node = streams[0][0]
+def source(props):
+    # path= takes the portal's node id (target-object wants an object serial).
+    return (f"pipewiresrc fd={pipewire_fd()} path={node} always-copy=true "
+            f"{props} ! video/x-raw")
+
+# Frozen screenshot for picking the region (third frame, to skip warm-up).
+shot = os.path.join(tmpdir, "shot.png")
+msg = run(f"{source('keepalive-time=100 num-buffers=3')} ! videoconvert ! pngenc ! multifilesink location={shot}", 10)
+if msg is None or msg.type != Gst.MessageType.EOS or not os.path.exists(shot):
+    detail = f": {msg.parse_error()[0].message}" if msg else ""
+    fail(f"no frames received from PipeWire{detail}.")
+with open(shot, "rb") as f:
+    iw, ih = struct.unpack(">II", f.read(24)[16:24])
+publish("ready", f"{iw} {ih}\n")
+
+# Selection on the frozen screenshot, in X screen coordinates, plus the
+# monitor it was shown on (fullscreen, aspect-fit, centred).
+line = sys.stdin.readline().split()
+if len(line) != 8:
+    sys.exit(0)
+sx, sy, sw, sh, mx, my, mw, mh = map(int, line)
+scale = min(mw / iw, mh / ih)
+ox, oy = mx + (mw - iw * scale) / 2, my + (mh - ih * scale) / 2
+clamp = lambda v, hi: max(0, min(hi, v))
+x0, y0 = clamp(int((sx - ox) / scale), iw), clamp(int((sy - oy) / scale), ih)
+x1, y1 = clamp(int((sx + sw - ox) / scale), iw), clamp(int((sy + sh - oy) / scale), ih)
+w, h = (x1 - x0) // 2 * 2, (y1 - y0) // 2 * 2  # I420 needs even sizes
+if w < 16 or h < 16:
+    fail(f"selection too small ({max(w, 0)}x{max(h, 0)}); drag a larger area.")
+print(f"Capturing {w}x{h} at +{x0},{y0} of a {iw}x{ih} source ({fps} fps). "
+      "Close the PiP window to stop.", flush=True)
+publish("crop", f"{w} {h}\n")
+
+out = os.open(os.path.join(tmpdir, "stream.y4m"), os.O_WRONLY)  # waits for mpv
+# The leaky queue drops frames while mpv is not reading (hidden, resizing,
+# busy): otherwise the capture stalls, and videorate then fills the gap with
+# seconds of old frames, which mpv shows as a frozen or stale picture.
+# A shared window can change size: scaling it back to the size of the
+# screenshot keeps the crop on the same part of it (a no-op for screens).
+msg = run(f"{source('keepalive-time=1000')} ! videoscale add-borders=true "
+          f"! video/x-raw,width={iw},height={ih},pixel-aspect-ratio=1/1 "
+          f"! videocrop left={x0} top={y0} right={iw - x0 - w} bottom={ih - y0 - h} "
+          f"! videorate ! videoconvert ! video/x-raw,format=I420,framerate={fps}/1 "
+          f"! queue leaky=downstream max-size-buffers=2 max-size-bytes=0 max-size-time=0 "
+          f"! y4menc ! fdsink name=out fd={out} sync=false")
+if msg and msg.type == Gst.MessageType.ERROR and msg.src.get_name() != "out":
+    fail(f"capture stopped: {msg.parse_error()[0].message}")
+os._exit(0)
+PY
+)
+
+# A hidden .desktop file for APP_ID: the portal names apps by one.
+register_app() {
+    local dir=${XDG_DATA_HOME:-$HOME/.local/share}/applications self
+    self=$(readlink -f "$0")
+    local want
+    want=$(printf '%s\n' "[Desktop Entry]" "Type=Application" \
+        "Name=Screen area picture-in-picture" \
+        "Comment=Show part of the screen in a small window that stays on top" \
+        "Exec=bash \"$self\"" "Icon=view-restore-symbolic" "NoDisplay=true" "Terminal=false")
+    [[ -f $dir/$APP_ID.desktop && $(<"$dir/$APP_ID.desktop") == "$want" ]] && return
+    mkdir -p "$dir" && printf '%s\n' "$want" >"$dir/$APP_ID.desktop" \
+        || warn "could not write $dir/$APP_ID.desktop; the screen choice will not be remembered."
+}
+
+run_wayland() {
+    register_app
+    mkfifo "$tmpdir/ctl" "$tmpdir/stream.y4m"
+    exec 3<>"$tmpdir/ctl"
+
+    local token_file=${XDG_STATE_HOME:-$HOME/.local/state}/$APP/restore-token
+    if (( choose )) || [[ ! -s $token_file ]]; then
+        echo "Choose a screen or window in the screen-sharing dialog..."
+    else
+        echo "Using the last shared screen (run with --choose to pick another)..."
+    fi
+    python3 -c "$WL_HELPER" "$tmpdir" "$fps" "$token_file" "$choose" "$cursor" "$APP_ID" <&3 &
+    local helper_pid=$!
+    pids+=("$helper_pid")
+    wait_for_file "$tmpdir/ready" "$helper_pid"
+
+    # Show the frozen frame fullscreen as an X11 window so slop can draw on it.
+    "${xenv[@]}" mpv --fs --ontop --no-border --osc=no --osd-level=0 --no-terminal \
+        --title="$APP picker" --x11-name="$APP" --cursor-autohide=no \
+        --image-display-duration=inf --keep-open=yes --no-input-default-bindings \
+        "$tmpdir/shot.png" &
+    local picker_pid=$!
+    pids+=("$picker_pid")
+    sleep 0.8
+
+    if ! select_region; then
+        echo "Selection cancelled."
+        exit 1
+    fi
+    kill "$picker_pid" 2>/dev/null || true
+
+    # Monitor holding the centre of the selection (the picker was shown there).
+    local mon mx my mw mh
+    mon=$(xrandr --listmonitors | awk -v cx=$(( x + w / 2 )) -v cy=$(( y + h / 2 )) '
+        NR > 1 {
+            g = $3; gsub(/\/[0-9]+/, "", g); split(g, a, /[x+]/)
+            if (!first) first = a[3] " " a[4] " " a[1] " " a[2]
+            if (cx >= a[3] && cx < a[3] + a[1] && cy >= a[4] && cy < a[4] + a[2]) {
+                print a[3], a[4], a[1], a[2]; found = 1; exit
+            }
+        }
+        END { if (!found && first) print first }')
+    read -r mx my mw mh <<<"$mon"
+    [[ -n ${mh:-} ]] || die "could not read the monitor layout from xrandr."
+
+    printf '%s\n' "$x $y $w $h $mx $my $mw $mh" >&3
+    wait_for_file "$tmpdir/crop" "$helper_pid"
+
+    local rc=0
+    "${xenv[@]}" mpv "${mpv_args[@]}" --demuxer-lavf-format=yuv4mpegpipe \
+        "$tmpdir/stream.y4m" || rc=$?
+    return "$rc"
+}
+
+if [[ $backend == wayland ]]; then
+    run_wayland
+else
+    run_x11
+fi

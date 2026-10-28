@@ -9,7 +9,7 @@ import {addMenuPage, appListGroup, menuThemePage} from './lib/prefsMenu.js';
 import {comboRow, dependsOn, dependsOnSwitch, entryRow, group, navRow, spinRow, switchRow} from './lib/prefsRows.js';
 import {INDICATORS} from './lib/indicatorList.js';
 import {PRESETS, applyPreset} from './lib/presets.js';
-import {shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
+import {accelKeys, shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
 import {laptopDevice, readSwitch, writeSwitch} from './lib/desktop/laptop.js';
 import {helperInstalled} from './lib/chargeLimit.js';
 import {swapGroup} from './lib/prefsSwap.js';
@@ -492,6 +492,33 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 pipTitles,
             ]),
         ], 'Automatic: works with browsers (Firefox, Chrome, Brave, Edge, Opera, LibreWolf), Telegram and any app whose small video window is titled "Picture-in-Picture", or ends in "— Picture in picture", "- PiP" or "- Mini player". Add other titles for apps that name it differently, or press Alt+Enter on any window.'));
+
+        // Region PiP (lib/regionPip.js): the portal's restore token skips the screen-sharing dialog.
+        const token = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_state_dir(), 'linux-pip', 'restore-token']));
+        const askRow = new Adw.ActionRow({title: 'Ask which screen to share again',
+            subtitle: 'The screen-sharing dialog is shown once, then the same screen is used'});
+        const ask = new Gtk.Button({label: 'Ask again', valign: Gtk.Align.CENTER});
+        const syncAsk = () => {
+            ask.sensitive = token.query_exists(null);
+        };
+        ask.connect('clicked', () => {
+            try {
+                token.delete(null);
+            } catch (e) {
+                console.warn(`Fusion Desk: could not remove ${token.get_path()}: ${e.message}`);
+            }
+            syncAsk();
+        });
+        syncAsk();
+        askRow.add_suffix(ask);
+        page.add(group('Picture-in-picture of a screen area', [
+            withShortcut(entryRow(s, 'region-pip-hotkey', 'Shortcut (empty = off)'), s,
+                () => accelKeys(s.get_string('region-pip-hotkey')), ['region-pip-hotkey']),
+            spinRow(s, 'region-pip-fps', 'Frames per second', 1, 120, 5, 'Fewer use less power'),
+            spinRow(s, 'region-pip-size', 'Largest starting size (% of the screen)', 10, 100, 5),
+            switchRow(s, 'region-pip-cursor', 'Show the mouse pointer'),
+            askRow,
+        ], 'Drag a rectangle over any part of the screen and watch it live in a small window that stays on top like the other picture-in-picture windows. Also in the panel\'s right-click menu. In that window: double-click, F or F11 full screen · Esc leaves full screen, then closes · Q or Ctrl+W closes · wheel, + and − resize, 0 resets · the always-on-top shortcut (Alt+Enter) lets it go · H shows every key. Needs mpv and slop (sudo apt install mpv slop).'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
         page.add(appListGroup(window, s, 'ontop-apps', {
