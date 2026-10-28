@@ -13,6 +13,7 @@ import {accelKeys, shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
 import {laptopDevice, readSwitch, writeSwitch} from './lib/desktop/laptop.js';
 import {helperInstalled} from './lib/chargeLimit.js';
 import {swapGroup} from './lib/prefsSwap.js';
+import {regionPipInstallRow} from './lib/prefsRegionPip.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -518,7 +519,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             spinRow(s, 'region-pip-size', 'Largest starting size (% of the screen)', 10, 100, 5),
             switchRow(s, 'region-pip-cursor', 'Show the mouse pointer'),
             askRow,
-        ], 'Drag a rectangle over any part of the screen and watch it live in a small window that stays on top like the other picture-in-picture windows. Also in the panel\'s right-click menu. In that window: double-click, F or F11 full screen · Esc leaves full screen, then closes · Q or Ctrl+W closes · wheel, + and − resize, 0 resets · the always-on-top shortcut (Alt+Enter) lets it go · H shows every key. Needs mpv and slop (sudo apt install mpv slop).'));
+            regionPipInstallRow(window),
+        ], 'Drag a rectangle over any part of the screen and watch it live in a small window that stays on top like the other picture-in-picture windows. Also in the panel\'s right-click menu. In that window: double-click, F or F11 full screen · Esc leaves full screen, then closes · Q or Ctrl+W closes · wheel, + and − resize, 0 resets · the always-on-top shortcut (Alt+Enter) lets it go · H shows every key.'));
 
         // Apps whose every window stays on top (also: right-click the app on the taskbar).
         page.add(appListGroup(window, s, 'ontop-apps', {
