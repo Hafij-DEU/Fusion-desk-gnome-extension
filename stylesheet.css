@@ -336,37 +336,37 @@
 }
 /* Details menu: cards (RAM, swap, files in RAM, zram) beside a stats column,
    then a bar with Memory Sweep and the panel chips. */
-.fusion-sysmon-details { font-size: 0.7em; padding: 4px 7px 3px; }
-.fusion-sysmon-pick { font-size: 0.7em; padding: 3px 7px 4px; }
-.fusion-sysmon-body { spacing: 6px; }
-.fusion-sysmon-left, .fusion-sysmon-cards { spacing: 6px; }
+.fusion-sysmon-details { font-size: 0.85em; padding: 6px 9px 4px; }
+.fusion-sysmon-pick { font-size: 0.85em; padding: 4px 9px 6px; }
+.fusion-sysmon-body { spacing: 8px; }
+.fusion-sysmon-left, .fusion-sysmon-cards { spacing: 8px; }
 .fusion-sysmon-card, .fusion-sysmon-stats, .fusion-sysmon-bottom {
     border-radius: 8px;
     background-color: rgba(127, 127, 127, 0.12);
     border: 1px solid rgba(127, 127, 127, 0.16);
 }
-.fusion-sysmon-card { padding: 5px 6px 4px; }
-.fusion-sysmon-zram { padding: 6px 7px; }
+.fusion-sysmon-card { padding: 8px 9px 7px; }
+.fusion-sysmon-zram { padding: 9px 9px; }
 .fusion-sysmon-card:hover, .fusion-sysmon-card:focus { background-color: rgba(127, 127, 127, 0.22); }
-.fusion-sysmon-card-box { spacing: 4px; width: 70px; }
-.fusion-sysmon-card-head { spacing: 4px; }
-.fusion-sysmon-zram-box { spacing: 6px; }
-.fusion-sysmon-zram-col { spacing: 1px; }
+.fusion-sysmon-card-box { spacing: 6px; width: 108px; }
+.fusion-sysmon-card-head { spacing: 6px; }
+.fusion-sysmon-zram-box { spacing: 8px; }
+.fusion-sysmon-zram-col { spacing: 2px; }
 .fusion-sysmon-title { font-weight: bold; }
-.fusion-sysmon-next { icon-size: 9px; color: rgba(127, 127, 127, 1); }
+.fusion-sysmon-next { icon-size: 12px; color: rgba(127, 127, 127, 1); }
 .fusion-sysmon-sub { font-size: 0.88em; font-feature-settings: "tnum"; color: rgba(255, 255, 255, 0.72); }
-.fusion-sysmon-spark { height: 19px; }
-.fusion-sysmon-track { height: 7px; border-radius: 4px; background-color: rgba(127, 127, 127, 0.24); }
-.fusion-sysmon-bar { height: 7px; border-radius: 4px; background-color: #3584e4; }
+.fusion-sysmon-spark { height: 28px; }
+.fusion-sysmon-track { height: 8px; border-radius: 4px; background-color: rgba(127, 127, 127, 0.24); }
+.fusion-sysmon-bar { height: 8px; border-radius: 4px; background-color: #3584e4; }
 .fusion-sysmon-bar.warn { background-color: #f6c343; }
 .fusion-sysmon-bar.hot { background-color: #e5484d; }
 .fusion-sysmon-bar.amber { background-color: #f6b13b; }
-.fusion-sysmon-zram-track { width: 60px; }
+.fusion-sysmon-zram-track { width: 80px; }
 /* Tiles: the colour at low alpha behind the icon in that colour. */
-.fusion-sysmon-tile { width: 15px; height: 15px; border-radius: 4px; }
-.fusion-sysmon-tile.big { width: 21px; height: 21px; border-radius: 6px; }
-.fusion-sysmon-tile-icon { icon-size: 9px; }
-.fusion-sysmon-tile.big .fusion-sysmon-tile-icon { icon-size: 11px; }
+.fusion-sysmon-tile { width: 20px; height: 20px; border-radius: 5px; }
+.fusion-sysmon-tile.big { width: 26px; height: 26px; border-radius: 7px; }
+.fusion-sysmon-tile-icon { icon-size: 12px; }
+.fusion-sysmon-tile.big .fusion-sysmon-tile-icon { icon-size: 14px; }
 .fusion-sysmon-tile.blue { background-color: rgba(53, 132, 228, 0.2); }
 .fusion-sysmon-tile.purple { background-color: rgba(155, 93, 229, 0.2); }
 .fusion-sysmon-tile.green { background-color: rgba(46, 194, 126, 0.2); }
@@ -381,34 +381,34 @@
 .fusion-sysmon-tile.orange .fusion-sysmon-tile-icon { color: #ff7b7f; }
 .fusion-sysmon-tile.teal .fusion-sysmon-tile-icon { color: #5bd3dc; }
 .fusion-sysmon-tile.grey .fusion-sysmon-tile-icon { color: #c0bfc4; }
-.fusion-sysmon-stats { width: 145px; padding: 2px 7px; }
+.fusion-sysmon-stats { width: 200px; padding: 3px 10px; }
 .fusion-sysmon-stat {
-    spacing: 6px;
-    padding: 3px 0;
+    spacing: 8px;
+    padding: 6px 0;
     border-bottom: 1px solid rgba(127, 127, 127, 0.18);
 }
 .fusion-sysmon-stat:last-child { border-bottom-width: 0; }
 .fusion-sysmon-stat-value { font-feature-settings: "tnum"; }
-.fusion-sysmon-key { font-size: 0.92em; }
-.fusion-sysmon-value { font-feature-settings: "tnum"; font-size: 0.92em; }
-.fusion-sysmon-value.fusion-sysmon-big { font-size: 1.75em; font-weight: 800; }
-.fusion-sysmon-bottom { spacing: 7px; padding: 4px 5px; }
+.fusion-sysmon-key { font-size: 1em; }
+.fusion-sysmon-value { font-feature-settings: "tnum"; font-size: 1em; }
+.fusion-sysmon-value.fusion-sysmon-big { font-size: 1.6em; font-weight: 800; }
+.fusion-sysmon-bottom { spacing: 9px; padding: 6px 7px; }
 .fusion-sysmon-sweep {
-    padding: 4px 11px;
-    border-radius: 6px;
+    padding: 6px 14px;
+    border-radius: 7px;
     font-weight: bold;
     background-color: -st-accent-color;
     color: -st-accent-fg-color;
 }
 .fusion-sysmon-sweep:hover, .fusion-sysmon-sweep:focus { background-color: st-lighten(-st-accent-color, 8%); }
 .fusion-sysmon-sweep-box { spacing: 5px; }
-.fusion-sysmon-sweep-icon { icon-size: 9px; }
+.fusion-sysmon-sweep-icon { icon-size: 12px; }
 .fusion-sysmon-divider { width: 1px; margin: 3px 0; background-color: rgba(127, 127, 127, 0.3); }
-.fusion-sysmon-chips { spacing: 3px; }
+.fusion-sysmon-chips { spacing: 4px; }
 .fusion-sysmon-chip {
-    padding: 3px 7px;
-    border-radius: 5px;
-    font-size: 0.9em;
+    padding: 4px 9px;
+    border-radius: 6px;
+    font-size: 0.95em;
     background-color: rgba(127, 127, 127, 0.16);
     border: 1px solid rgba(127, 127, 127, 0.14);
 }
