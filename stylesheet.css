@@ -334,27 +334,110 @@
     font-weight: bold;
     min-width: 2.9em;
 }
-.fusion-sysmon-menu .popup-menu-content { min-width: 250px; }
-.fusion-sysmon-details,
-.fusion-sysmon-pick { padding: 4px 14px; }
-.fusion-sysmon-rows { spacing: 5px; }
-.fusion-sysmon-row { spacing: 16px; }
-.fusion-sysmon-key { font-size: 0.88em; }
+/* Details menu: cards (RAM, swap, files in RAM, zram) beside a stats column,
+   then a bar with Memory Sweep and the panel chips. */
+.fusion-sysmon-details { font-size: 0.7em; padding: 4px 7px 3px; }
+.fusion-sysmon-pick { font-size: 0.7em; padding: 3px 7px 4px; }
+.fusion-sysmon-body { spacing: 6px; }
+.fusion-sysmon-left, .fusion-sysmon-cards { spacing: 6px; }
+.fusion-sysmon-card, .fusion-sysmon-stats, .fusion-sysmon-bottom {
+    border-radius: 8px;
+    background-color: rgba(127, 127, 127, 0.12);
+    border: 1px solid rgba(127, 127, 127, 0.16);
+}
+.fusion-sysmon-card { padding: 5px 6px 4px; }
+.fusion-sysmon-zram { padding: 6px 7px; }
+.fusion-sysmon-card:hover, .fusion-sysmon-card:focus { background-color: rgba(127, 127, 127, 0.22); }
+.fusion-sysmon-card-box { spacing: 4px; width: 70px; }
+.fusion-sysmon-card-head { spacing: 4px; }
+.fusion-sysmon-zram-box { spacing: 6px; }
+.fusion-sysmon-zram-col { spacing: 1px; }
+.fusion-sysmon-title { font-weight: bold; }
+.fusion-sysmon-next { icon-size: 9px; color: rgba(127, 127, 127, 1); }
+.fusion-sysmon-sub { font-size: 0.88em; font-feature-settings: "tnum"; color: rgba(255, 255, 255, 0.72); }
+.fusion-sysmon-spark { height: 19px; }
+.fusion-sysmon-track { height: 7px; border-radius: 4px; background-color: rgba(127, 127, 127, 0.24); }
+.fusion-sysmon-bar { height: 7px; border-radius: 4px; background-color: #3584e4; }
+.fusion-sysmon-bar.warn { background-color: #f6c343; }
+.fusion-sysmon-bar.hot { background-color: #e5484d; }
+.fusion-sysmon-bar.amber { background-color: #f6b13b; }
+.fusion-sysmon-zram-track { width: 60px; }
+/* Tiles: the colour at low alpha behind the icon in that colour. */
+.fusion-sysmon-tile { width: 15px; height: 15px; border-radius: 4px; }
+.fusion-sysmon-tile.big { width: 21px; height: 21px; border-radius: 6px; }
+.fusion-sysmon-tile-icon { icon-size: 9px; }
+.fusion-sysmon-tile.big .fusion-sysmon-tile-icon { icon-size: 11px; }
+.fusion-sysmon-tile.blue { background-color: rgba(53, 132, 228, 0.2); }
+.fusion-sysmon-tile.purple { background-color: rgba(155, 93, 229, 0.2); }
+.fusion-sysmon-tile.green { background-color: rgba(46, 194, 126, 0.2); }
+.fusion-sysmon-tile.amber { background-color: rgba(245, 158, 11, 0.2); }
+.fusion-sysmon-tile.orange { background-color: rgba(229, 72, 77, 0.2); }
+.fusion-sysmon-tile.teal { background-color: rgba(31, 181, 193, 0.2); }
+.fusion-sysmon-tile.grey { background-color: rgba(127, 127, 127, 0.2); }
+.fusion-sysmon-tile.blue .fusion-sysmon-tile-icon { color: #62a0ea; }
+.fusion-sysmon-tile.purple .fusion-sysmon-tile-icon { color: #c091f0; }
+.fusion-sysmon-tile.green .fusion-sysmon-tile-icon { color: #57e389; }
+.fusion-sysmon-tile.amber .fusion-sysmon-tile-icon { color: #f8b84e; }
+.fusion-sysmon-tile.orange .fusion-sysmon-tile-icon { color: #ff7b7f; }
+.fusion-sysmon-tile.teal .fusion-sysmon-tile-icon { color: #5bd3dc; }
+.fusion-sysmon-tile.grey .fusion-sysmon-tile-icon { color: #c0bfc4; }
+.fusion-sysmon-stats { width: 145px; padding: 2px 7px; }
+.fusion-sysmon-stat {
+    spacing: 6px;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.18);
+}
+.fusion-sysmon-stat:last-child { border-bottom-width: 0; }
+.fusion-sysmon-stat-value { font-feature-settings: "tnum"; }
+.fusion-sysmon-key { font-size: 0.92em; }
 .fusion-sysmon-value { font-feature-settings: "tnum"; font-size: 0.92em; }
-.fusion-sysmon-pick-box { spacing: 6px; }
-.fusion-sysmon-chips { spacing: 4px; }
+.fusion-sysmon-value.fusion-sysmon-big { font-size: 1.75em; font-weight: 800; }
+.fusion-sysmon-bottom { spacing: 7px; padding: 4px 5px; }
+.fusion-sysmon-sweep {
+    padding: 4px 11px;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: -st-accent-color;
+    color: -st-accent-fg-color;
+}
+.fusion-sysmon-sweep:hover, .fusion-sysmon-sweep:focus { background-color: st-lighten(-st-accent-color, 8%); }
+.fusion-sysmon-sweep-box { spacing: 5px; }
+.fusion-sysmon-sweep-icon { icon-size: 9px; }
+.fusion-sysmon-divider { width: 1px; margin: 3px 0; background-color: rgba(127, 127, 127, 0.3); }
+.fusion-sysmon-chips { spacing: 3px; }
 .fusion-sysmon-chip {
-    padding: 3px 10px;
-    border-radius: 99px;
-    font-size: 0.85em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 0.9em;
     background-color: rgba(127, 127, 127, 0.16);
+    border: 1px solid rgba(127, 127, 127, 0.14);
 }
 .fusion-sysmon-chip:hover { background-color: rgba(127, 127, 127, 0.28); }
-.fusion-sysmon-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; }
+.fusion-sysmon-chip:checked { background-color: -st-accent-color; color: -st-accent-fg-color; border-color: transparent; }
 .fusion-sysmon-light .fusion-sysmon-key,
 .fusion-sysmon-light .fusion-sysmon-value,
-.fusion-sysmon-light .fusion-sysmon-chip { color: #000000; }
+.fusion-sysmon-light .fusion-sysmon-chip { color: #1f1f23; }
+.fusion-sysmon-light .fusion-sysmon-sub { color: rgba(0, 0, 0, 0.6); }
 .fusion-sysmon-light .fusion-sysmon-chip:checked { color: -st-accent-fg-color; }
+.fusion-sysmon-light .fusion-sysmon-card,
+.fusion-sysmon-light .fusion-sysmon-stats,
+.fusion-sysmon-light .fusion-sysmon-bottom {
+    background-color: rgba(255, 255, 255, 0.78);
+    border-color: rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.fusion-sysmon-light .fusion-sysmon-card:hover,
+.fusion-sysmon-light .fusion-sysmon-card:focus { background-color: rgba(255, 255, 255, 0.95); }
+.fusion-sysmon-light .fusion-sysmon-chip { background-color: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.08); }
+.fusion-sysmon-light .fusion-sysmon-chip:hover { background-color: rgba(0, 0, 0, 0.1); }
+.fusion-sysmon-light .fusion-sysmon-chip:checked { background-color: -st-accent-color; border-color: transparent; }
+.fusion-sysmon-light .fusion-sysmon-tile.blue .fusion-sysmon-tile-icon { color: #1c71d8; }
+.fusion-sysmon-light .fusion-sysmon-tile.purple .fusion-sysmon-tile-icon { color: #813d9c; }
+.fusion-sysmon-light .fusion-sysmon-tile.green .fusion-sysmon-tile-icon { color: #26a269; }
+.fusion-sysmon-light .fusion-sysmon-tile.amber .fusion-sysmon-tile-icon { color: #c77c02; }
+.fusion-sysmon-light .fusion-sysmon-tile.orange .fusion-sysmon-tile-icon { color: #d12f2f; }
+.fusion-sysmon-light .fusion-sysmon-tile.teal .fusion-sysmon-tile-icon { color: #0e8a94; }
+.fusion-sysmon-light .fusion-sysmon-tile.grey .fusion-sysmon-tile-icon { color: #5e5c64; }
 
 .fusion-clip-menu .popup-menu-content { width: 380px; }
 .fusion-clip-search { border-radius: 99px; padding: 6px 12px; }

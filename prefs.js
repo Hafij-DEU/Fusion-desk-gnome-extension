@@ -12,7 +12,7 @@ import {PRESETS, applyPreset} from './lib/presets.js';
 import {accelKeys, shortcutsGroup, withShortcut} from './lib/prefsShortcuts.js';
 import {laptopDevice, readSwitch, writeSwitch} from './lib/desktop/laptop.js';
 import {helperInstalled} from './lib/chargeLimit.js';
-import {swapGroup} from './lib/prefsSwap.js';
+import {memorySweepGroup} from './lib/prefsMemorySweep.js';
 import {regionPipInstallRow} from './lib/prefsRegionPip.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
@@ -348,7 +348,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         window.add(page);
     }
 
-    /** Battery, charging, swap, status icons, keep awake and windows that stay on top. */
+    /** Battery, charging, Memory Sweep, status icons, keep awake and windows that stay on top. */
     _addSystemPage(window, s) {
         const page = new Adw.PreferencesPage({title: 'System', icon_name: 'battery-good-symbolic'});
         const usbCharging = this._usbChargingRow();
@@ -358,7 +358,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             ...(usbCharging ? [usbCharging] : []),
         ], 'Coloured fill: green when full or charging (with a bolt), accent when normal, orange when low, red when almost empty.'));
         page.add(this._chargeLimitGroup(s));
-        page.add(swapGroup(window, this.path));
+        page.add(memorySweepGroup(window));
         page.add(group('Keep awake', [
             switchRow(s, 'caffeine-visible', 'Caffeine toggle', 'In Quick Settings: keeps the screen awake and blocks suspend'),
         ]));

@@ -157,7 +157,7 @@ Click a section to expand it.
   - power mode and charging modes
 - **Charge limit** (default 90%) stops charging at the level you choose. [How it works ↓](#charge-limit)
 - **Charge phones while asleep or off** (laptops with an always-on USB port, e.g. IdeaPads): the USB port stays powered while the laptop sleeps or is shut down. How fast a phone charges is fixed by the port's hardware; no software can raise it.
-- **Swap and zram:** set the zram size and compression and the swap file size, and turn zswap on or off (for when zram is off; with both on, memory is compressed twice). Applying asks for your password. **Install and remove** lists the terminal commands to install or remove zram-tools, the swap file and Fusion's zswap setting, each with a copy button.
+- **Memory Sweep:** one button installs [Memory Sweep](https://github.com/Hafij-DEU/memory-sweep), the RAM analyzer that also sets up zram, the swap file and zswap. Once installed, the same button opens it.
 
 </details>
 
@@ -167,7 +167,7 @@ Click a section to expand it.
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, Telegram, and players whose mini window is titled like "Player — Picture in picture" or "… - PiP") stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
 - **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top). <kbd>Alt</kbd>+<kbd>Enter</kbd> keeps any focused window on top; press it again to let it go.
-- System monitor: CPU, RAM, temperature, network.
+- System monitor: CPU, RAM, temperature, network in the panel. Its menu shows RAM, swap, files in RAM and zram as cards with history graphs, a stats column (CPU, load, temperature, network, uptime), and a button into Memory Sweep; click a card to open that page of Memory Sweep.
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
 - **Desktop files**, in two styles:
@@ -250,7 +250,7 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | Move the panel, change its height, opacity or make it float | **Panel** → Panel |
 | Reorder or hide panel items | **Panel** → Elements |
 | Show the battery as its own button, set a charge limit | **System** → Battery / Charge limit |
-| Change zram, the swap file or zswap | **System** → Swap and zram |
+| Install or open Memory Sweep (zram, swap file, zswap) | **System** → Memory Sweep |
 | Pick a preset, glass style, material or opacity | **Appearance** → Style presets / Glass |
 | Change colours, the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Accent gradient / Wallpaper |
 | Add the search box and Task View | **Taskbar** → Search and Task View |
