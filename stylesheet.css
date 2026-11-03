@@ -1060,25 +1060,3 @@
     padding: 8px 18px;
     font-size: 14px;
 }
-
-/* Live captions (lib/captions.js) */
-.fusion-captions {
-    background-color: rgba(28, 28, 28, 0.7);
-    border-radius: 12px;
-    padding: 8px 20px 14px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    spacing: 2px;
-}
-.fusion-captions-title { color: rgba(255, 255, 255, 0.6); font-size: 12px; }
-.fusion-captions-grip { icon-size: 14px; color: rgba(255, 255, 255, 0.45); margin-right: 6px; }
-.fusion-captions-head:hover .fusion-captions-grip,
-.fusion-captions-head:hover .fusion-captions-title { color: rgba(255, 255, 255, 0.85); }
-.fusion-captions-close {
-    border-radius: 999px;
-    padding: 4px;
-    color: rgba(255, 255, 255, 0.7);
-}
-.fusion-captions-close:hover { background-color: rgba(255, 255, 255, 0.12); color: #ffffff; }
-.fusion-captions-close StIcon { icon-size: 14px; }
-.fusion-captions-text { color: #ffffff; font-weight: 500; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
-.fusion-captions-text.dim { color: rgba(255, 255, 255, 0.6); }

@@ -14,7 +14,7 @@ import {laptopDevice, readSwitch, writeSwitch} from './lib/desktop/laptop.js';
 import {helperInstalled} from './lib/chargeLimit.js';
 import {memorySweepGroup} from './lib/prefsMemorySweep.js';
 import {regionPipInstallRow} from './lib/prefsRegionPip.js';
-import {captionsGroup, screenTextGroup} from './lib/prefsScreenText.js';
+import {screenTextGroup} from './lib/prefsScreenText.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
 
 const BOXES = ['left', 'center', 'right'];
@@ -386,7 +386,6 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(status);
         this._addOnTopGroups(page, window, s);
         page.add(screenTextGroup(window, s));
-        page.add(captionsGroup(window, s, this.path));
         page.add(group('Behaviour', [
             switchRow(s, 'tweak-focus-attention', 'Bring apps that ask for attention to the front',
                 'Instead of the “… is ready” notification, for example when a link opens in a browser'),

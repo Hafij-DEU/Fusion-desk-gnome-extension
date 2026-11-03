@@ -12,7 +12,6 @@ import {TrayOverflow} from './lib/trayOverflow.js';
 import {PipOnTop} from './lib/pip.js';
 import {RegionPip} from './lib/regionPip.js';
 import {ScreenText} from './lib/ocr.js';
-import {LiveCaptions} from './lib/captions.js';
 import {WindowTitle} from './lib/windowTitle.js';
 import {Workspaces} from './lib/workspaces.js';
 import {MediaControls} from './lib/media.js';
@@ -71,7 +70,6 @@ const MODULES = {
     // Super+Alt+P: picture-in-picture of a screen area (lib/linux-pip).
     regionpip: {cls: RegionPip, visible: null, keys: ['region-pip-hotkey']},
     ocr: {cls: ScreenText, visible: null, keys: ['ocr-hotkey']},
-    captions: {cls: LiveCaptions, visible: null, keys: ['captions-hotkey']},
     // Other apps' tray icons in the status-icon colour.
     traytint: {cls: TrayTint, visible: null, keys: ['tray-app-icons']},
     // Wallpaper blurs while windows are open on its monitor.
