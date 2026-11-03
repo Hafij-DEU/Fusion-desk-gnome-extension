@@ -43,6 +43,7 @@
     <key name="region-pip-size" type="i"><range min="10" max="100"/><default>60</default><summary>Largest starting size of the screen area picture-in-picture, in % of the screen</summary></key>
     <key name="region-pip-cursor" type="b"><default>true</default><summary>Show the mouse pointer in the screen area picture-in-picture</summary></key>
     <key name="ocr-hotkey" type="s"><default>'&lt;Super&gt;&lt;Shift&gt;t'</default><summary>Shortcut that copies the text of a screen area (empty = off)</summary></key>
+    <key name="ocr-choose-text" type="b"><default>true</default><summary>After picking a screen area, choose the words to copy (false = copy all its text at once)</summary></key>
     <key name="ocr-languages" type="s"><default>'eng+tur'</default><summary>Languages read in a screen area, as tesseract codes joined by + (e.g. eng+tur+ben)</summary></key>
     <key name="captions-hotkey" type="s"><default>'&lt;Super&gt;&lt;Control&gt;l'</default><summary>Shortcut that turns live captions on or off (empty = off)</summary></key>
     <key name="captions-source" type="s"><choices><choice value="system"/><choice value="mic"/></choices><default>'system'</default><summary>Live captions listen to the computer's sound (system) or the microphone (mic)</summary></key>

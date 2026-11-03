@@ -1027,6 +1027,32 @@
 /* Text from a screen area (lib/ocr.js) */
 .fusion-ocr-shade { background-color: rgba(0, 0, 0, 0.45); }
 .fusion-ocr-box { border: 2px solid #ffffff; }
+.fusion-ocr-dim { background-color: rgba(0, 0, 0, 0.5); }
+.fusion-ocr-word.selected { background-color: rgba(53, 132, 228, 0.45); }
+.fusion-ocr-bar {
+    background-color: rgba(32, 32, 32, 0.95);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 4px;
+    spacing: 2px;
+}
+.fusion-ocr-button, .fusion-ocr-menu-item {
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.fusion-ocr-button > StBoxLayout, .fusion-ocr-menu-item > StBoxLayout { spacing: 8px; }
+.fusion-ocr-button:hover, .fusion-ocr-button:focus,
+.fusion-ocr-menu-item:hover, .fusion-ocr-menu-item:focus { background-color: rgba(255, 255, 255, 0.12); }
+.fusion-ocr-menu {
+    background-color: rgba(44, 44, 44, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 4px;
+    min-width: 200px;
+}
+.fusion-ocr-accel { color: rgba(255, 255, 255, 0.6); padding-left: 24px; }
 .fusion-ocr-hint {
     background-color: rgba(32, 32, 32, 0.92);
     color: #ffffff;
