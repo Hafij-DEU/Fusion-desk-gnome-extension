@@ -3,14 +3,19 @@
 
 Records the sound the computer plays (or the microphone) with pw-record,
 sends the latest few seconds to a private whisper-server on 127.0.0.1
-about once a second and prints the words as JSON lines on stdout:
+about once a second and prints the words as JSON lines on stdout. With
+--translate, a text translator makes them English: DeepL when a key is
+given, then Google's free web translator with --online, and while those
+fail (or without them) NLLB-200 on this computer; whisper itself only when
+there is none of these.
 
   {"status": "loading" | "listening"}
   {"text": "...", "final": false}   the line being spoken, still changing
   {"text": "...", "final": true}    a finished line
   {"error": "..."}                  then it exits
 
-Everything runs on this computer. It stops when stdin closes or on SIGTERM.
+Sound never leaves this computer; with --online or a DeepL key the text
+of the lines is sent to those translators. It stops when stdin closes or on SIGTERM.
 """
 import argparse
 import array
@@ -27,6 +32,7 @@ import sys
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 import wave
@@ -38,9 +44,35 @@ STEP = 0.7                    # seconds of new sound between updates
 MAX_LINE = 9.0                # a line is cut after this many seconds
 END_SILENCE = 0.7             # silence that ends a line
 MIN_SPEECH = 0.4              # less speech than this is ignored
+# Whisper reads 30 s of sound per pass unless told less (50 steps a second).
+# A line is never longer than MAX_LINE, so it reads only that: about ten
+# times faster.
+AUDIO_CTX = int(MAX_LINE * 50) + 50
 
 # What whisper writes for music, noise and silence.
 NOISE = re.compile(r'\[[^\]]*\]|\([^)]*\)|\*[^*]*\*|♪+|♫+')
+TRANSLATE_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fusion-desk-translate')
+ONLINE_RETRY = 60.0           # an online translator that failed rests this long
+ONLINE_PARTIAL_GAP = 2.0      # with no local translator, a line being spoken goes online this seldom
+
+# Whisper code, whisper's name (as verbose_json reports it), NLLB-200 code.
+LANGS = [
+    ('en', 'english', 'eng_Latn'), ('tr', 'turkish', 'tur_Latn'), ('bn', 'bengali', 'ben_Beng'),
+    ('hi', 'hindi', 'hin_Deva'), ('ur', 'urdu', 'urd_Arab'), ('ar', 'arabic', 'arb_Arab'),
+    ('de', 'german', 'deu_Latn'), ('fr', 'french', 'fra_Latn'), ('es', 'spanish', 'spa_Latn'),
+    ('it', 'italian', 'ita_Latn'), ('pt', 'portuguese', 'por_Latn'), ('ru', 'russian', 'rus_Cyrl'),
+    ('fa', 'persian', 'pes_Arab'), ('zh', 'chinese', 'zho_Hans'), ('ja', 'japanese', 'jpn_Jpan'),
+    ('ko', 'korean', 'kor_Hang'), ('nl', 'dutch', 'nld_Latn'), ('pl', 'polish', 'pol_Latn'),
+    ('uk', 'ukrainian', 'ukr_Cyrl'), ('id', 'indonesian', 'ind_Latn'), ('ms', 'malay', 'zsm_Latn'),
+    ('vi', 'vietnamese', 'vie_Latn'), ('th', 'thai', 'tha_Thai'), ('el', 'greek', 'ell_Grek'),
+    ('sv', 'swedish', 'swe_Latn'), ('ro', 'romanian', 'ron_Latn'), ('hu', 'hungarian', 'hun_Latn'),
+    ('cs', 'czech', 'ces_Latn'), ('he', 'hebrew', 'heb_Hebr'), ('az', 'azerbaijani', 'azj_Latn'),
+    ('ta', 'tamil', 'tam_Taml'), ('te', 'telugu', 'tel_Telu'), ('mr', 'marathi', 'mar_Deva'),
+    ('pa', 'punjabi', 'pan_Guru'), ('gu', 'gujarati', 'guj_Gujr'), ('ne', 'nepali', 'npi_Deva'),
+    ('kk', 'kazakh', 'kaz_Cyrl'), ('uz', 'uzbek', 'uzn_Latn'), ('sw', 'swahili', 'swh_Latn'),
+]
+CODE_OF_NAME = {name: code for code, name, _ in LANGS}
+NLLB_OF_CODE = {code: nllb for code, _, nllb in LANGS}
 HALLUCINATIONS = {'thank you.', 'thanks for watching!', 'thank you for watching.', 'you', '.',
                   'subtitles by the amara.org community'}
 
@@ -149,7 +181,7 @@ class Whisper:
         self.url = f'http://127.0.0.1:{self.port}'
         self.proc = subprocess.Popen(
             ['whisper-server', '-m', model, '--host', '127.0.0.1', '--port', str(self.port),
-             '-t', str(threads)],
+             '-t', str(threads), '-ac', str(AUDIO_CTX)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=die_with_parent)
 
     def wait_ready(self, timeout=180):
@@ -165,9 +197,10 @@ class Whisper:
         return False
 
     def transcribe(self, pcm, language, translate, prompt):
+        """(text, language code) of the sound."""
         boundary = uuid.uuid4().hex
-        fields = {'response_format': 'json', 'temperature': '0.0', 'language': language,
-                  'translate': 'true' if translate else 'false'}
+        fields = {'response_format': 'verbose_json', 'temperature': '0.0', 'language': language,
+                  'translate': 'true' if translate else 'false', 'no_timestamps': 'true'}
         if prompt:
             fields['prompt'] = prompt
         body = io.BytesIO()
@@ -181,7 +214,166 @@ class Whisper:
         req = urllib.request.Request(self.url + '/inference', data=body.getvalue(),
                                      headers={'Content-Type': f'multipart/form-data; boundary={boundary}'})
         with urllib.request.urlopen(req, timeout=60) as r:
-            return clean(json.load(r).get('text', ''))
+            answer = json.load(r)
+        return clean(answer.get('text', '')), CODE_OF_NAME.get(answer.get('language'), language)
+
+
+class LocalTranslator:
+    """NLLB-200 in its own process (fusion-desk-translate, with the translator folder's Python)."""
+
+    def __init__(self, folder, threads):
+        self.proc = subprocess.Popen(
+            [os.path.join(folder, 'venv', 'bin', 'python3'), '-I', TRANSLATE_SCRIPT,
+             '--model', os.path.join(folder, 'nllb'), '--threads', str(threads)],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+            text=True, bufsize=1, preexec_fn=die_with_parent)
+        self.ready = threading.Event()
+        self.failed = None
+        threading.Thread(target=self._load, daemon=True).start()
+
+    def _load(self):
+        line = self.proc.stdout.readline()
+        try:
+            self.failed = json.loads(line).get('error') if line else 'the translator stopped'
+        except ValueError:
+            self.failed = 'the translator did not load'
+        self.ready.set()
+
+    def usable(self, wait):
+        """Loaded and running; waits for the loading only when told to."""
+        return self.ready.wait(120 if wait else 0) and not self.failed and self.proc.poll() is None
+
+    def __call__(self, text, lang):
+        source = NLLB_OF_CODE.get(lang)
+        if not source:
+            raise ValueError(f'no translator for language {lang}')
+        self.proc.stdin.write(json.dumps({'text': text, 'from': source}, ensure_ascii=False) + '\n')
+        answer = json.loads(self.proc.stdout.readline() or '{"error": "the translator stopped"}')
+        if 'error' in answer:
+            raise ValueError(answer['error'])
+        return answer['text']
+
+
+class DeepL:
+    """DeepL's text API. The key comes on stdin (from the login keyring), never on the command line."""
+
+    def __init__(self, key):
+        self.key = key
+        host = 'api-free.deepl.com' if self.key.endswith(':fx') else 'api.deepl.com'
+        self.url = f'https://{host}/v2/translate'
+
+    def __call__(self, text, lang):
+        # The source language is left to DeepL: whisper's guess is often wrong.
+        req = urllib.request.Request(
+            self.url, data=json.dumps({'text': [text], 'target_lang': 'EN-US'}).encode(),
+            headers={'Authorization': f'DeepL-Auth-Key {self.key}', 'Content-Type': 'application/json'})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return json.load(r)['translations'][0]['text']
+
+
+class Google:
+    """Google's free web translator (what its browser pages use; no key, may be rate-limited).
+
+    Two addresses: when Google blocks a network on one (HTTP 429), the
+    other often still answers.
+    """
+
+    URLS = ['https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl=en',
+            'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t']
+
+    def __call__(self, text, lang):
+        error = None
+        for url in self.URLS:
+            req = urllib.request.Request(
+                url, data=urllib.parse.urlencode({'q': text}).encode(),
+                headers={'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'})
+            try:
+                with urllib.request.urlopen(req, timeout=5) as r:
+                    answer = json.load(r)
+            except (urllib.error.URLError, OSError, ValueError) as e:
+                error = e
+                continue
+            if 'client=gtx' in url:   # [[["English", "original", ...], ...], ...]
+                return ''.join(part[0] for part in answer[0] if part and part[0])
+            first = answer[0]         # [["English", "tr"]] or ["English"]
+            return first[0] if isinstance(first, list) else first
+        raise error
+
+
+class Captions(threading.Thread):
+    """Prints the lines, translated into English first when a translator is there.
+
+    Translating runs beside the speech model, so it adds no wait to it; a
+    line still being spoken is dropped when a newer one is waiting.
+    Finished lines go to the first online translator that works; lines
+    being spoken go to the translator on this computer (online only every
+    few seconds when there is none), which is quicker and spares the online
+    quota. An online translator that fails rests for a minute.
+    """
+
+    def __init__(self, online, local):
+        super().__init__(daemon=True)
+        self.online, self.local = online, local
+        self.resting = {}          # engine: monotonic time it may be used again
+        self.cond = threading.Condition()
+        self.queue = []
+        self.last_online_partial = 0.0
+        self.cache = {}
+
+    def put(self, text, final, lang):
+        if not (self.online or self.local):
+            emit(text=text, final=final)
+            return
+        with self.cond:
+            if self.queue and not self.queue[-1][1]:
+                self.queue.pop()
+            self.queue.append((text, final, lang))
+            self.cond.notify()
+
+    def run(self):
+        while True:
+            with self.cond:
+                while not self.queue:
+                    self.cond.wait()
+                text, final, lang = self.queue.pop(0)
+            if text and lang != 'en':
+                text = self.translate(text, final, lang)
+                if text is None:
+                    continue
+            emit(text=text, final=final)
+
+    def translate(self, text, final, lang):
+        """English for `text`; None to skip a line being spoken."""
+        if (text, final) in self.cache:
+            return self.cache[(text, final)]
+        now = time.monotonic()
+        online = [e for e in self.online if self.resting.get(e, 0) <= now]
+        local = self.local
+        tries = []
+        if online and (final or not (local and local.usable(wait=False))):
+            if not final and now - self.last_online_partial < ONLINE_PARTIAL_GAP:
+                return None
+            tries += online
+        if local:
+            tries.append(local)
+        for engine in tries:
+            # Still loading: a finished line waits for it, a line being spoken is skipped.
+            if engine is local and not local.usable(wait=final):
+                return text if final else None
+            try:
+                out = engine(text, lang)
+            except (urllib.error.URLError, OSError, ValueError, KeyError, IndexError, TypeError) as e:
+                print(f'fusion-desk-captions: {type(engine).__name__}: {e}', file=sys.stderr, flush=True)
+                if engine is not local:
+                    self.resting[engine] = time.monotonic() + ONLINE_RETRY
+                continue
+            if engine is not local and not final:
+                self.last_online_partial = now
+            if len(self.cache) > 50:
+                self.cache.clear()
+            self.cache[(text, final)] = out
+            return out
+        return text
 
 
 def main():
@@ -190,6 +382,10 @@ def main():
     ap.add_argument('--source', choices=['system', 'mic'], default='system')
     ap.add_argument('--language', default='auto')
     ap.add_argument('--translate', action='store_true')
+    ap.add_argument('--translator-dir', help='folder with venv/ and nllb/ (translator on this computer)')
+    ap.add_argument('--deepl-key-stdin', action='store_true',
+                    help='the first line of stdin is a DeepL API key (may be empty)')
+    ap.add_argument('--online', action='store_true', help="also use Google's free web translator")
     ap.add_argument('--threads', type=int, default=min(4, os.cpu_count() or 4))
     ap.add_argument('--file', help=argparse.SUPPRESS)
     ap.add_argument('--threshold', type=float, default=180.0, help='loudness that counts as sound')
@@ -218,6 +414,7 @@ def main():
 
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
+    key = sys.stdin.readline().strip() if args.deepl_key_stdin else ''
     # The shell closes stdin when it stops the captions (or goes away).
     threading.Thread(target=lambda: (sys.stdin.read(), stop()), daemon=True).start()
 
@@ -227,6 +424,18 @@ def main():
     if not whisper.wait_ready():
         emit(error='the speech model did not load')
         stop()
+    online, local = [], None
+    if args.translate and key:
+        online.append(DeepL(key))
+    if args.translate and args.online:
+        online.append(Google())
+    if args.translate and args.translator_dir:
+        local = LocalTranslator(args.translator_dir, args.threads)
+        children.append(local.proc)
+    # Whisper translates by itself only when no text translator is there.
+    whisper_translates = args.translate and not (online or local)
+    out = Captions(online, local)
+    out.start()
     rec = Recorder(args.source, args.file)
     children.append(rec.proc)
     rec.start()
@@ -256,7 +465,7 @@ def main():
                 start = end - int(0.3 * BPS)
                 rec.forget(start)
             if last_partial:
-                emit(text='', final=False)
+                out.put('', False, 'en')
                 last_partial = ''
             continue
         # Start the line just before the first sound.
@@ -272,22 +481,22 @@ def main():
                 break
             trailing += 1
         length = len(pcm) / BPS
+        last = min(len(frames), int(MAX_LINE * 10))
         cut = None
-        if trailing * 0.1 >= END_SILENCE:
+        if trailing * 0.1 >= END_SILENCE and len(frames) - trailing + 2 <= last:
             cut = len(pcm) - (trailing - 2) * FRAME * 2
         elif length >= MAX_LINE:
-            # Cut at the quietest moment of the last 3 seconds, not mid-word.
-            lo = max(0, len(frames) - 30)
-            q = min(range(lo, len(frames) - 3), key=lambda i: frames[i], default=len(frames) - 1)
+            # Cut at the quietest moment of the line's last 3 seconds, not mid-word.
+            q = min(range(max(0, last - 30), last - 3), key=lambda i: frames[i], default=last - 1)
             cut = (q + 1) * FRAME * 2
         try:
             if cut is None:
-                text = whisper.transcribe(pcm, args.language, args.translate, last_final)
+                text, lang = whisper.transcribe(pcm, args.language, whisper_translates, last_final)
                 if text != last_partial and text != last_final:
-                    emit(text=text, final=False)
+                    out.put(text, False, lang)
                     last_partial = text
                 continue
-            text = whisper.transcribe(pcm[:cut], args.language, args.translate, last_final)
+            text, lang = whisper.transcribe(pcm[:cut], args.language, whisper_translates, last_final)
         except (urllib.error.URLError, OSError, ValueError) as e:
             if whisper.proc.poll() is not None:
                 emit(error='the speech model stopped')
@@ -297,10 +506,10 @@ def main():
         start += cut
         rec.forget(start)
         if text and text != last_final:
-            emit(text=text, final=True)
+            out.put(text, True, lang)
             last_final = text
         elif last_partial:
-            emit(text='', final=False)
+            out.put('', False, 'en')
         last_partial = ''
 
 

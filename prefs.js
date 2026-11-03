@@ -386,7 +386,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
         page.add(status);
         this._addOnTopGroups(page, window, s);
         page.add(screenTextGroup(window, s));
-        page.add(captionsGroup(window, s));
+        page.add(captionsGroup(window, s, this.path));
         page.add(group('Behaviour', [
             switchRow(s, 'tweak-focus-attention', 'Bring apps that ask for attention to the front',
                 'Instead of the “… is ready” notification, for example when a link opens in a browser'),

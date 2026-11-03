@@ -49,8 +49,12 @@
     <key name="captions-source" type="s"><choices><choice value="system"/><choice value="mic"/></choices><default>'system'</default><summary>Live captions listen to the computer's sound (system) or the microphone (mic)</summary></key>
     <key name="captions-language" type="s"><default>'auto'</default><summary>Spoken language for live captions (whisper code, or auto)</summary></key>
     <key name="captions-translate" type="b"><default>true</default><summary>Translate live captions into English</summary></key>
+    <key name="captions-online" type="b"><default>true</default><summary>Translate live captions online (DeepL with a saved key, else Google's free translator); the translator on this computer takes over when they fail</summary></key>
+    <key name="captions-deepl" type="b"><default>false</default><summary>A DeepL API key is saved in the login keyring (set by the settings)</summary></key>
     <key name="captions-model" type="s"><default>'auto'</default><summary>Speech model for live captions: auto (best installed), turbo, medium, small, base or tiny</summary></key>
     <key name="captions-position" type="s"><choices><choice value="bottom"/><choice value="top"/></choices><default>'bottom'</default><summary>Where the live captions bar is shown</summary></key>
+    <key name="captions-place" type="(dd)"><default>(-1.0, -1.0)</default><summary>Where the live captions bar was dragged to, as shares (0 to 1) of the free room across and down; negative = use captions-position</summary></key>
+    <key name="captions-opacity" type="i"><range min="20" max="100"/><default>70</default><summary>How solid the live captions background is, in percent (the text stays solid)</summary></key>
     <key name="captions-size" type="i"><range min="14" max="48"/><default>24</default><summary>Text size of live captions in pixels</summary></key>
     <key name="ontop-apps" type="as"><default>[]</default><summary>Apps (desktop ids) whose windows always stay above other windows</summary></key>
     <key name="pip-extra-titles" type="as"><default>[]</default><summary>Extra window titles that count as picture-in-picture (exact title, any case)</summary></key>
