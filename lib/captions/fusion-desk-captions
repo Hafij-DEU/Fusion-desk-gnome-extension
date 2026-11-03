@@ -54,6 +54,11 @@ NOISE = re.compile(r'\[[^\]]*\]|\([^)]*\)|\*[^*]*\*|♪+|♫+')
 TRANSLATE_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fusion-desk-translate')
 ONLINE_RETRY = 60.0           # an online translator that failed rests this long
 ONLINE_PARTIAL_GAP = 2.0      # with no local translator, a line being spoken goes online this seldom
+SLOW = 4.0                    # seconds per update above which the model cannot keep up
+# Finding the spoken language costs a second pass over the sound and the
+# slower detailed answer (several seconds on built-in graphics), so with
+# 'auto' it is found once and checked again only this often.
+DETECT_AGAIN = 30.0
 
 # Whisper code, whisper's name (as verbose_json reports it), NLLB-200 code.
 LANGS = [
@@ -197,9 +202,10 @@ class Whisper:
         return False
 
     def transcribe(self, pcm, language, translate, prompt):
-        """(text, language code) of the sound."""
+        """(text, language code) of the sound; language 'auto' finds it (slower)."""
         boundary = uuid.uuid4().hex
-        fields = {'response_format': 'verbose_json', 'temperature': '0.0', 'language': language,
+        fields = {'response_format': 'verbose_json' if language == 'auto' else 'json',
+                  'temperature': '0.0', 'language': language,
                   'translate': 'true' if translate else 'false', 'no_timestamps': 'true'}
         if prompt:
             fields['prompt'] = prompt
@@ -376,6 +382,16 @@ class Captions(threading.Thread):
         return text
 
 
+def timed(passes, took, began):
+    """Note how long an update took; say once when the model is too slow to keep up."""
+    passes += 1
+    if passes > 1 and len(took) < 2:
+        took.append(time.monotonic() - began)
+        if len(took) == 2 and sum(took) / 2 > SLOW:
+            emit(status='slow', seconds=round(sum(took) / 2, 1))
+    return passes
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('--model', required=True)
@@ -424,6 +440,11 @@ def main():
     if not whisper.wait_ready():
         emit(error='the speech model did not load')
         stop()
+    # The graphics card's first pass is several seconds slower: do it while loading.
+    try:
+        whisper.transcribe(bytes(BPS), 'auto', False, '')
+    except (urllib.error.URLError, OSError, ValueError):
+        pass
     online, local = [], None
     if args.translate and key:
         online.append(DeepL(key))
@@ -445,6 +466,10 @@ def main():
     checked = 0
     last_partial = ''
     last_final = ''
+    took = []          # seconds per update, after the first (the graphics card warms up)
+    spoken = None if args.language == 'auto' else args.language
+    detected = 0.0     # when the spoken language was last found
+    passes = 0
     while True:
         time.sleep(0.05)
         if rec.proc.poll() is not None:
@@ -489,14 +514,23 @@ def main():
             # Cut at the quietest moment of the line's last 3 seconds, not mid-word.
             q = min(range(max(0, last - 30), last - 3), key=lambda i: frames[i], default=last - 1)
             cut = (q + 1) * FRAME * 2
+        began = time.monotonic()
+        detect = args.language == 'auto' and (spoken is None or (cut is not None and began - detected > DETECT_AGAIN))
+        language = 'auto' if detect else spoken
         try:
             if cut is None:
-                text, lang = whisper.transcribe(pcm, args.language, whisper_translates, last_final)
+                text, lang = whisper.transcribe(pcm, language, whisper_translates, last_final)
+                if detect and text and lang != 'auto':
+                    spoken, detected = lang, began
                 if text != last_partial and text != last_final:
                     out.put(text, False, lang)
                     last_partial = text
+                passes = timed(passes, took, began)
                 continue
-            text, lang = whisper.transcribe(pcm[:cut], args.language, whisper_translates, last_final)
+            text, lang = whisper.transcribe(pcm[:cut], language, whisper_translates, last_final)
+            if detect and text and lang != 'auto':
+                spoken, detected = lang, began
+            passes = timed(passes, took, began)
         except (urllib.error.URLError, OSError, ValueError) as e:
             if whisper.proc.poll() is not None:
                 emit(error='the speech model stopped')
