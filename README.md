@@ -167,6 +167,8 @@ Click a section to expand it.
 - **Hidden icons arrow** (^): other apps' tray icons tuck away behind an arrow, like Windows. Click an icon to open its app, right-click for its menu, and pin the ones you want on the taskbar under **Taskbar icons**.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, Telegram, and players whose mini window is titled like "Player — Picture in picture" or "… - PiP") stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
 - **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top). <kbd>Alt</kbd>+<kbd>Enter</kbd> keeps any focused window on top; press it again to let it go.
+- **Text from a screen area** (<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>, or the panel's right-click menu): drag a rectangle over any part of the screen, even a picture, a video or a locked PDF, and its text is copied to the clipboard. Small text is enlarged before reading, so it comes out right. Reads English and Turkish by default; more languages in Settings → System. Needs `tesseract-ocr` (the Install button in Settings does it).
+- **Live captions** (<kbd>Super</kbd>+<kbd>Ctrl</kbd>+<kbd>L</kbd>, or the panel's right-click menu): a caption bar on top of every window shows what is said in any sound the computer plays (videos, calls, meetings) or in the microphone. **Translate into English** turns Turkish, German, Bengali or any other speech into English captions; off, the words are shown as spoken. Pick a speech model in Settings → System → Live captions: *Best for translating* (539 MB) or *Best* (574 MB) give the most accurate captions, *Fast* suits slower computers. Needs `whisper.cpp`.
 - System monitor: CPU, RAM, temperature, network in the panel. Its menu shows RAM, swap, files in RAM and zram as cards with history graphs, a stats column (CPU, load, temperature, network, uptime), and a button into Memory Sweep; click a card to open that page of Memory Sweep.
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
@@ -206,6 +208,8 @@ Click a section to expand it.
 | <kbd>Super</kbd>+<kbd>V</kbd> | Clipboard history (off by default) | Widgets |
 | <kbd>Ctrl</kbd>+<kbd>V</kbd> | Sent for you when you pick a clipboard entry (Paste on select) | Widgets |
 | <kbd>Alt</kbd>+<kbd>O</kbd> | Hide or show the desktop icons or collections | Desktop |
+| <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd> | Copy the text in a screen area (<kbd>Esc</kbd> cancels) | System |
+| <kbd>Super</kbd>+<kbd>Ctrl</kbd>+<kbd>L</kbd> | Live captions on or off | System |
 
 An extra start menu shortcut (for example <kbd>Super</kbd>+<kbd>Space</kbd>) can be set in **Settings → Start Menu → Keyboard**.
 
@@ -289,6 +293,13 @@ Changing the charging mode needs administrator rights. **Set up** asks for your 
 **Remove** takes both out again.
 
 ## FAQ
+
+<details>
+<summary><b>Live captions are slow or wrong</b></summary>
+
+Choose the spoken language instead of **Detect automatically**, and use a bigger speech model (Settings → System → Live captions → Speech models). *Best for translating* is the one to use with **Translate into English**. The captions translate only into English; to see Turkish captions of Turkish speech, pick Turkish and turn translating off.
+
+</details>
 
 <details>
 <summary><b>Nothing happens after enabling it</b></summary>
@@ -387,6 +398,7 @@ Log out and back in to load the build.
 - **Clipboard history** is kept in memory. With **Remember after restart** (on by default), it is also stored unencrypted in `~/.cache/fusion-desk/clipboard.json` (mode 0600). Copied images are saved in `~/.local/share/fusion-desk/clipboard-images` (mode 0600) and deleted when they leave the history; turn **Keep copied images** off to record text only.
   - Entries that password managers mark as secret are never recorded.
   - Use **Private mode** before copying other passwords.
+- **Text from a screen area** and **live captions** run on this computer. The picture of the area is deleted once it is read; the sound is kept in memory only for the few seconds being captioned. No picture, sound or text is sent anywhere. Speech models download from Hugging Face only when you click **Download**.
 - **Web search** runs only when you pick that result. The URL is configurable.
 - **Organize Desktop** only lists your Desktop folder. It opens, shows or trashes a file only when you ask.
 - **Themes**: if you pick an accent colour, icon or cursor theme on the Appearance page, Fusion Desk switches GNOME's setting while it runs. Yours comes back when you choose "Keep mine" or turn the extension off.

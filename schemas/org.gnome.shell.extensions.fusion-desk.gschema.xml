@@ -42,6 +42,15 @@
     <key name="region-pip-fps" type="i"><range min="1" max="120"/><default>30</default><summary>Frames per second of the screen area picture-in-picture</summary></key>
     <key name="region-pip-size" type="i"><range min="10" max="100"/><default>60</default><summary>Largest starting size of the screen area picture-in-picture, in % of the screen</summary></key>
     <key name="region-pip-cursor" type="b"><default>true</default><summary>Show the mouse pointer in the screen area picture-in-picture</summary></key>
+    <key name="ocr-hotkey" type="s"><default>'&lt;Super&gt;&lt;Shift&gt;t'</default><summary>Shortcut that copies the text of a screen area (empty = off)</summary></key>
+    <key name="ocr-languages" type="s"><default>'eng+tur'</default><summary>Languages read in a screen area, as tesseract codes joined by + (e.g. eng+tur+ben)</summary></key>
+    <key name="captions-hotkey" type="s"><default>'&lt;Super&gt;&lt;Control&gt;l'</default><summary>Shortcut that turns live captions on or off (empty = off)</summary></key>
+    <key name="captions-source" type="s"><choices><choice value="system"/><choice value="mic"/></choices><default>'system'</default><summary>Live captions listen to the computer's sound (system) or the microphone (mic)</summary></key>
+    <key name="captions-language" type="s"><default>'auto'</default><summary>Spoken language for live captions (whisper code, or auto)</summary></key>
+    <key name="captions-translate" type="b"><default>true</default><summary>Translate live captions into English</summary></key>
+    <key name="captions-model" type="s"><default>'auto'</default><summary>Speech model for live captions: auto (best installed), turbo, medium, small, base or tiny</summary></key>
+    <key name="captions-position" type="s"><choices><choice value="bottom"/><choice value="top"/></choices><default>'bottom'</default><summary>Where the live captions bar is shown</summary></key>
+    <key name="captions-size" type="i"><range min="14" max="48"/><default>24</default><summary>Text size of live captions in pixels</summary></key>
     <key name="ontop-apps" type="as"><default>[]</default><summary>Apps (desktop ids) whose windows always stay above other windows</summary></key>
     <key name="pip-extra-titles" type="as"><default>[]</default><summary>Extra window titles that count as picture-in-picture (exact title, any case)</summary></key>
     <key name="overflow-visible" type="b"><default>true</default><summary>Show other apps' tray icons behind a "show hidden icons" arrow</summary></key>

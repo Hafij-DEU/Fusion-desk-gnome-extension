@@ -1023,3 +1023,33 @@
 .fusion-sm-card-folder { padding: 6px; }
 .fusion-sm-group-heading { padding: 10px 6px 2px; }
 .fusion-sm-recent-list { spacing: 2px; }
+
+/* Text from a screen area (lib/ocr.js) */
+.fusion-ocr-shade { background-color: rgba(0, 0, 0, 0.45); }
+.fusion-ocr-box { border: 2px solid #ffffff; }
+.fusion-ocr-hint {
+    background-color: rgba(32, 32, 32, 0.92);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 14px;
+}
+
+/* Live captions (lib/captions.js) */
+.fusion-captions {
+    background-color: rgba(28, 28, 28, 0.92);
+    border-radius: 12px;
+    padding: 8px 20px 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    spacing: 2px;
+}
+.fusion-captions-title { color: rgba(255, 255, 255, 0.6); font-size: 12px; }
+.fusion-captions-close {
+    border-radius: 999px;
+    padding: 4px;
+    color: rgba(255, 255, 255, 0.7);
+}
+.fusion-captions-close:hover { background-color: rgba(255, 255, 255, 0.12); color: #ffffff; }
+.fusion-captions-close StIcon { icon-size: 14px; }
+.fusion-captions-text { color: #ffffff; font-weight: 500; }
+.fusion-captions-text.dim { color: rgba(255, 255, 255, 0.6); }
