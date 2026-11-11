@@ -157,7 +157,7 @@ Click a section to expand it.
   - power mode and charging modes
 - **Charge limit** (default 90%) stops charging at the level you choose. [How it works ↓](#charge-limit)
 - **Charge phones while asleep or off** (laptops with an always-on USB port, e.g. IdeaPads): the USB port stays powered while the laptop sleeps or is shut down. How fast a phone charges is fixed by the port's hardware; no software can raise it.
-- **Memory Sweep:** one button installs [Memory Sweep](https://github.com/Hafij-DEU/memory-sweep), the RAM analyzer that also sets up zram, the swap file and zswap. Once installed, the same button opens it.
+- **Task Manager:** one button installs [Harbor Task Manager](https://github.com/Hafij-DEU/harbor): apps and processes, performance graphs, Memory Sweep (what fills your RAM) and the zram, swap file and zswap settings. Once installed, the same button opens it.
 
 </details>
 
@@ -168,7 +168,7 @@ Click a section to expand it.
 - **Picture-in-picture on top**: every app's picture-in-picture window (Firefox, Chrome, Brave, Edge, Opera, Telegram, and players whose mini window is titled like "Player — Picture in picture" or "… - PiP") stays above other windows and on every workspace. It's automatic; add your own titles for apps that name it differently.
 - **Always on top apps**: pick apps whose windows always stay above the rest (Settings → System, or right-click an app on the taskbar → Always on top). <kbd>Alt</kbd>+<kbd>Enter</kbd> keeps any focused window on top; press it again to let it go.
 - **Text from a screen area** (<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>, or the panel's right-click menu): drag a rectangle over any part of the screen, even a picture, a video or a locked PDF. The area then freezes with its words lit up: drag over the words you want (or click one) and press **Copy text** or <kbd>Ctrl</kbd>+<kbd>C</kbd>, or press **Copy all text**. Right-click for Copy text and Select all (<kbd>Ctrl</kbd>+<kbd>A</kbd>); <kbd>Esc</kbd> closes. Turn off **Choose the words to copy** in Settings to copy all the text at once. Small text is enlarged before reading, so it comes out right. Reads English and Turkish by default; more languages in Settings → System. Needs `tesseract-ocr` (the Install button in Settings does it).
-- System monitor: CPU, RAM, temperature, network in the panel. Its menu shows RAM, swap, files in RAM and zram as cards with history graphs, a stats column (CPU, load, temperature, network, uptime), and a button into Memory Sweep; click a card to open that page of Memory Sweep.
+- System monitor: CPU, RAM, temperature, network in the panel. Its menu shows RAM, swap, files in RAM and zram as cards with history graphs, a stats column (CPU, load, temperature, network, uptime), and a button into Harbor Task Manager; click a card to open that page of Task Manager (Memory, Swap, Files in memory, Memory optimization).
 - Clipboard history for text and images, with an optional Super+V shortcut. Click an entry and it is pasted straight into the window you were in (Ctrl+Shift+V in terminals). Copied images are saved as files and stay in the history, so you can paste them again later or copy their file path with the link button.
 - Media controls, custom clock, Caffeine with a timer, workspaces, window title, screenshot button, show-desktop strip.
 - **Desktop files**, in two styles:
@@ -252,7 +252,7 @@ Settings pages: **Panel · Appearance · Taskbar · Start Menu · Desktop · Wid
 | Move the panel, change its height, opacity or make it float | **Panel** → Panel |
 | Reorder or hide panel items | **Panel** → Elements |
 | Show the battery as its own button, set a charge limit | **System** → Battery / Charge limit |
-| Install or open Memory Sweep (zram, swap file, zswap) | **System** → Memory Sweep |
+| Install or open Harbor Task Manager (processes, zram, swap file, zswap) | **System** → Task Manager |
 | Pick a preset, glass style, material or opacity | **Appearance** → Style presets / Glass |
 | Change colours, the gradient, accent icons or wallpaper blur | **Appearance** → Colours / Accent gradient / Wallpaper |
 | Add the search box and Task View | **Taskbar** → Search and Task View |

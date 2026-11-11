@@ -553,8 +553,6 @@
 .fusion-tools-bar { height: 5px; border-radius: 99px; background-color: rgba(127, 127, 127, 0.25); }
 .fusion-tools-bar-fill { height: 5px; border-radius: 99px; background-color: -st-accent-color; }
 .fusion-tools-bar-fill.full { background-color: #e5484d; }
-.fusion-tools-end { border-radius: 99px; padding: 5px; }
-.fusion-tools-end:hover { background-color: rgba(229, 72, 77, 0.85); color: white; }
 
 .fusion-flyout-item { spacing: 10px; }
 .fusion-flyout .popup-menu-content { min-width: 280px; }
