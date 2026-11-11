@@ -335,7 +335,7 @@
     min-width: 2.9em;
 }
 /* Details menu: cards (RAM, swap, files in RAM, zram) beside a stats column,
-   then a bar with Memory Sweep and the panel chips. */
+   then a bar with Task Manager and the panel chips. */
 .fusion-sysmon-details { font-size: 0.85em; padding: 6px 9px 4px; }
 .fusion-sysmon-pick { font-size: 0.85em; padding: 4px 9px 6px; }
 .fusion-sysmon-body { spacing: 8px; }
