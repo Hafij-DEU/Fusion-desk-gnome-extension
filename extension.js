@@ -35,6 +35,7 @@ import {ChargeLimit} from './lib/chargeLimit.js';
 import {DesktopFeatures} from './lib/desktop/index.js';
 import {watchSystemStyle} from './lib/style.js';
 import {cleanupGlass} from './lib/glass.js';
+import {PortalShortcuts} from './lib/portalShortcuts.js';
 import {TaskView, SearchButton} from './lib/searchTaskView.js';
 import {ControlCentreButton, LauncherButton} from './lib/desktop/panelButtons.js';
 
@@ -198,6 +199,15 @@ export default class FusionDeskExtension extends Extension {
             this._features?.destroy();
             this._features = null;
         }
+        // App shortcuts from the Global Shortcuts portal keep working while
+        // the start menu, launcher or overview is open.
+        try {
+            this._portalShortcuts = new PortalShortcuts();
+        } catch (e) {
+            console.error('Fusion Desk: portal shortcuts failed', e);
+            this._portalShortcuts?.destroy();
+            this._portalShortcuts = null;
+        }
         this._startFusion();
     }
 
@@ -232,6 +242,8 @@ export default class FusionDeskExtension extends Extension {
         this._pending = null;
         this._features?.destroy();
         this._features = null;
+        this._portalShortcuts?.destroy();
+        this._portalShortcuts = null;
         cleanupGlass();
     }
 
