@@ -236,6 +236,7 @@
       <choices><choice value="fusion"/><choice value="deepin"/><choice value="windows"/><choice value="centered"/></choices>
       <default>'fusion'</default><summary>Last applied style preset (fusion = Classic, deepin = Studio, windows = Workbench, centered = Centered)</summary>
     </key>
+    <key name="settings-button" type="b"><default>true</default><summary>Harbor Settings button between the start button and the search button (only while win11-settings is installed)</summary></key>
     <!-- Search box and Task View buttons -->
     <key name="windows-search" type="s">
       <choices><choice value="BOX"/><choice value="ICON"/><choice value="HIDDEN"/></choices>

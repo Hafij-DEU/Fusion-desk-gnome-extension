@@ -37,6 +37,7 @@ import {watchSystemStyle} from './lib/style.js';
 import {cleanupGlass} from './lib/glass.js';
 import {PortalShortcuts} from './lib/portalShortcuts.js';
 import {TaskView, SearchButton} from './lib/searchTaskView.js';
+import {SettingsButton} from './lib/settingsButton.js';
 import {ControlCentreButton, LauncherButton} from './lib/desktop/panelButtons.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
@@ -59,6 +60,8 @@ const MODULES = {
     overflow: {cls: TrayOverflow, visible: 'overflow-visible', keys: ['panel-position']},
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
     // Buttons of optional features, placed around the start button (see extraElements()).
+    // Harbor Settings app (only while installed), right after the start button.
+    settingsapp: {cls: SettingsButton, visible: 'settings-button', keys: []},
     winsearch: {cls: SearchButton, visible: null, searchTaskView: true, keys: ['windows-search', 'windows-extras-in-fusion']},
     taskview: {cls: TaskView, visible: 'windows-task-view', searchTaskView: true, keys: ['windows-extras-in-fusion']},
     dlauncher: {cls: LauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
@@ -327,6 +330,7 @@ export default class FusionDeskExtension extends Extension {
         const leftEdge = [];
         // Standalone battery right after the system menu.
         const afterQuick = this._settings.get_boolean('battery-standalone') ? ['battery'] : [];
+        afterMenu.push('settingsapp');
         if (this.searchTaskViewOn)
             afterMenu.push('winsearch', 'taskview');
         if (this.featureOn('launcher') && !this.launcherOnStartButton)
