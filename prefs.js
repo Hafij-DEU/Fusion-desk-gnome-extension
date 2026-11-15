@@ -240,7 +240,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             switchRow(s, 'taskbar-preview-close-middle', 'Middle-click a preview closes the window'),
         ], 'Right-click an icon for the app menu (pin / unpin, windows, always on top, quit).'));
         page.add(group('Search and Task View', [
-            switchRow(s, 'settings-button', 'Settings button', 'Harbor Settings between the start button and Search (only while it is installed)'),
+            switchRow(s, 'settings-button', 'Settings on the taskbar', 'Harbor Settings first on the taskbar, after the apps button (only while it is installed)'),
             switchRow(s, 'windows-extras-in-fusion', 'Search and Task View buttons', 'Right after the start button, with rounded hover tiles'),
             ...dependsOnSwitch(s, 'windows-extras-in-fusion', [
                 comboRow(s, 'windows-search', 'Search', ['BOX', 'ICON', 'HIDDEN'], ['Search box', 'Icon only', 'Hidden']),

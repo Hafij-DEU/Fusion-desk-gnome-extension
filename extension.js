@@ -37,7 +37,6 @@ import {watchSystemStyle} from './lib/style.js';
 import {cleanupGlass} from './lib/glass.js';
 import {PortalShortcuts} from './lib/portalShortcuts.js';
 import {TaskView, SearchButton} from './lib/searchTaskView.js';
-import {SettingsButton} from './lib/settingsButton.js';
 import {ControlCentreButton, LauncherButton} from './lib/desktop/panelButtons.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
@@ -46,7 +45,7 @@ const MODULES = {
     menu: {cls: StartMenu, visible: 'menu-visible',
         keys: ['menu-icon', 'menu-label', 'super-key', 'menu-button-', 'menu-hotkey', 'menu-runner-hotkey', 'deepin-start', 'icons-follow-accent']},
     apps: {cls: AppsButton, visible: 'apps-visible', keys: ['taskbar-icon-size', 'apps-icon', 'icons-follow-accent']},
-    taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor']},
+    taskbar: {cls: Taskbar, visible: 'taskbar-visible', keys: ['taskbar-', 'multi-monitor', 'settings-button']},
     title: {cls: WindowTitle, visible: 'title-visible', keys: []},
     workspaces: {cls: Workspaces, visible: 'workspaces-visible', keys: []},
     media: {cls: MediaControls, visible: 'media-visible', keys: ['media-']},
@@ -61,7 +60,6 @@ const MODULES = {
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
     // Buttons of optional features, placed around the start button (see extraElements()).
     // Harbor Settings app (only while installed), right after the start button.
-    settingsapp: {cls: SettingsButton, visible: 'settings-button', keys: ['menu-button-icon-size', 'icons-follow-accent']},
     winsearch: {cls: SearchButton, visible: null, searchTaskView: true, keys: ['windows-search', 'windows-extras-in-fusion']},
     taskview: {cls: TaskView, visible: 'windows-task-view', searchTaskView: true, keys: ['windows-extras-in-fusion']},
     dlauncher: {cls: LauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
@@ -330,7 +328,6 @@ export default class FusionDeskExtension extends Extension {
         const leftEdge = [];
         // Standalone battery right after the system menu.
         const afterQuick = this._settings.get_boolean('battery-standalone') ? ['battery'] : [];
-        afterMenu.push('settingsapp');
         if (this.searchTaskViewOn)
             afterMenu.push('winsearch', 'taskview');
         if (this.featureOn('launcher') && !this.launcherOnStartButton)
