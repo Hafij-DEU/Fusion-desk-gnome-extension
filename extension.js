@@ -61,7 +61,7 @@ const MODULES = {
     desktop: {cls: ShowDesktop, visible: 'desktop-visible', keys: []},
     // Buttons of optional features, placed around the start button (see extraElements()).
     // Harbor Settings app (only while installed), right after the start button.
-    settingsapp: {cls: SettingsButton, visible: 'settings-button', keys: ['menu-button-icon-size']},
+    settingsapp: {cls: SettingsButton, visible: 'settings-button', keys: ['menu-button-icon-size', 'icons-follow-accent']},
     winsearch: {cls: SearchButton, visible: null, searchTaskView: true, keys: ['windows-search', 'windows-extras-in-fusion']},
     taskview: {cls: TaskView, visible: 'windows-task-view', searchTaskView: true, keys: ['windows-extras-in-fusion']},
     dlauncher: {cls: LauncherButton, visible: null, feature: 'launcher', keys: ['deepin-launcher-icon', 'deepin-start', 'panel-height']},
