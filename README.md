@@ -96,7 +96,7 @@ Click a section to expand it.
 
 - Top or bottom, any height and opacity. **Floating** (rounded, with a gap from the screen edges) or full width.
 - **Pills** style groups the tray, clock and system monitor into rounded blocks, or choose **Flat**.
-- Pinned and running apps, grouped or one button per window. Window previews, indicator styles, and click / middle-click / scroll actions.
+- Pinned and running apps, grouped or one button per window. Drag icons to reorder them, or right-click → Move left / Move right; drop an app from the app grid to pin it. Window previews, indicator styles, and click / middle-click / scroll actions.
 - **Intellihide** with edge-pressure reveal, dynamic opacity, and panels on every monitor.
 - **Element layout**: show, hide, reorder and place every item left, centre or right.
 - A busy right side never squeezes items into "…": the taskbar moves aside instead.
