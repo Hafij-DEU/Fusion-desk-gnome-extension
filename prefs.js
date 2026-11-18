@@ -479,6 +479,10 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
                 spinRow(s, 'window-blur-strength', 'Blur strength', 10, 100, 5, 'Percent'),
             ]),
         ], 'Full-screen windows stay solid. Off while Blur my Shell is on.'));
+        page.add(group('Harbor apps', [
+            switchRow(s, 'harbor-glass-blur', 'Blur behind Harbor apps',
+                'Harbor Files, Task Manager and Settings with see-through glass show the desktop blurred behind them. Off: they stay solid'),
+        ]));
         // The defaults list several terminals; only the installed ones are shown.
         page.add(appListGroup(window, s, 'window-blur-apps', {title: 'Apps with blurred windows', hideMissing: true}));
     }

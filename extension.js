@@ -30,7 +30,7 @@ import {WallpaperBlur} from './lib/wallpaperBlur.js';
 import {OverviewBlur} from './lib/overviewBlur.js';
 import {AddToDesktopMenus} from './lib/addToDesktop.js';
 import {Tweaks} from './lib/tweaks.js';
-import {WindowBlur} from './lib/windowBlur.js';
+import {HarborBlur, WindowBlur} from './lib/windowBlur.js';
 import {ChargeLimit} from './lib/chargeLimit.js';
 import {DesktopFeatures} from './lib/desktop/index.js';
 import {watchSystemStyle} from './lib/style.js';
@@ -82,6 +82,8 @@ const MODULES = {
     addtodesktop: {cls: AddToDesktopMenus, visible: 'add-to-desktop', keys: []},
     // Blurred, see-through windows for the chosen apps.
     windowblur: {cls: WindowBlur, visible: 'window-blur', keys: ['window-blur-']},
+    // Blur behind Harbor apps, which draw their own see-through glass.
+    harborblur: {cls: HarborBlur, visible: 'harbor-glass-blur', keys: ['glass-style']},
     // Attention focus, workspace popup, animation speed.
     tweaks: {cls: Tweaks, visible: null, keys: ['tweak-']},
     // Stops charging at the chosen level (needs the one-time charge helper setup).

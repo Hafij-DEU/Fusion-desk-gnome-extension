@@ -33,6 +33,7 @@
     <key name="window-blur-apps" type="as"><default>['org.gnome.Ptyxis.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Console.desktop']</default><summary>Apps (desktop ids) whose windows are blurred and see-through</summary></key>
     <key name="window-blur-opacity" type="i"><range min="50" max="100"/><default>85</default><summary>Opacity of blurred windows in percent</summary></key>
     <key name="window-blur-strength" type="i"><range min="10" max="100"/><default>50</default><summary>Blur strength behind blurred windows in percent</summary></key>
+    <key name="harbor-glass-blur" type="b"><default>true</default><summary>Blur the desktop behind Harbor apps (Files, Task Manager, Settings); Harbor turns see-through only while this runs</summary></key>
     <key name="tweak-focus-attention" type="b"><default>false</default><summary>Bring apps that ask for attention to the front instead of showing an "is ready" notification</summary></key>
     <key name="tweak-workspace-popup" type="b"><default>true</default><summary>Show the workspace switcher popup when switching workspaces</summary></key>
     <key name="tweak-animation-speed" type="s"><default>'NORMAL'</default><summary>Speed of every shell animation: FAST, NORMAL or SLOW</summary></key>
