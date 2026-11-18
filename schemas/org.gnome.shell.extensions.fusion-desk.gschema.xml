@@ -86,8 +86,8 @@
       <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, launcher and control centre): blur, lighter top, bright top edge</summary>
     </key>
     <key name="glass-style" type="s">
-      <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/></choices>
-      <default>'FROSTED'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark) or halo (glow in the middle)</summary>
+      <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/><choice value="GLOW"/></choices>
+      <default>'FROSTED'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark), halo (glow in the middle) or glow (smoked glass with coloured light shining through)</summary>
     </key>
     <key name="glass-material" type="s">
       <choices><choice value="GLASS"/><choice value="GLOSS"/></choices>
@@ -101,6 +101,12 @@
     <key name="glass-glare" type="b"><default>true</default><summary>Light reflections in the corners of glass surfaces</summary></key>
     <key name="glass-shadow" type="b"><default>false</default><summary>Soft shadow under glass surfaces</summary></key>
     <key name="glass-light-follows" type="b"><default>false</default><summary>A soft light spot follows the pointer over glass surfaces</summary></key>
+    <key name="glass-style-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the glass style shading and Glow lights (percent, 100 = normal)</summary></key>
+    <key name="glass-shine-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the gloss shine band (percent, 100 = normal)</summary></key>
+    <key name="glass-rim-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the rim highlight (percent, 100 = normal)</summary></key>
+    <key name="glass-glare-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the corner glare (percent, 100 = normal)</summary></key>
+    <key name="glass-shadow-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the soft shadow (percent, 100 = normal)</summary></key>
+    <key name="glass-light-strength" type="i"><range min="0" max="200"/><default>100</default><summary>Strength of the light that follows the pointer (percent, 100 = normal)</summary></key>
     <key name="wallpaper-blur" type="b"><default>true</default><summary>Blur the wallpaper while windows are open; sharp when the desktop is empty</summary></key>
     <key name="wallpaper-blur-strength" type="i">
       <range min="5" max="100"/>

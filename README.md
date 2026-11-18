@@ -133,7 +133,7 @@ Click a section to expand it.
 <summary><b>✨ Glass and colours</b></summary>
 
 - **Glass effect** (off / soft / strong) on the taskbar, start menu, Quick Settings, calendar, every panel menu, control centre and launcher.
-- **Six styles**: Clear, Frosted, Gel, Tinted, Smoke, Halo.
+- **Seven styles**: Clear, Frosted, Gel, Tinted, Smoke, Halo, and Glow (smoked glass with coloured light shining through). Harbor Settings › Personalisation › Glass effects edits the same settings (its *Global* scope) and can give Harbor apps the same glass.
 - **Two materials**: clear glass (subtle shine) or gloss (strong polished shine and bevel).
 - **Opacity**: below 100% the desktop shows through, blurred.
 - **Dark mode** surfaces get a dark gradient with weaker shine, so bright wallpapers don't wash them out.

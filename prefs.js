@@ -62,7 +62,8 @@ function listThemes(kind) {
 
 // Glass, colours and wallpaper back to the shipped look (Appearance → Reset look).
 const LOOK_KEYS = ['panel-theme', 'glass-effect', 'glass-material', 'glass-style', 'glass-opacity', 'glass-rim',
-    'glass-glare', 'glass-shadow', 'glass-light-follows', 'accent-gradient', 'accent-gradient-style',
+    'glass-glare', 'glass-shadow', 'glass-light-follows', 'glass-style-strength', 'glass-shine-strength', 'glass-rim-strength', 'glass-glare-strength', 'glass-shadow-strength', 'glass-light-strength',
+    'accent-gradient', 'accent-gradient-style',
     'accent-gradient-strength', 'icons-follow-accent', 'tray-app-icons', 'wallpaper-blur', 'wallpaper-blur-strength'];
 
 export default class FusionDeskPrefs extends ExtensionPreferences {
@@ -154,8 +155,8 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             comboRow(s, 'glass-effect', 'Glass effect', ['OFF', 'SOFT', 'STRONG'], ['Off (solid)', 'Soft', 'Strong']),
             ...dependsOn(s, ['glass-effect'], () => s.get_string('glass-effect') !== 'OFF', [
                 comboRow(s, 'glass-material', 'Material', ['GLASS', 'GLOSS'], ['Clear glass (subtle shine)', 'Gloss (strong shine, bevel)']),
-                comboRow(s, 'glass-style', 'Glass style', ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO'],
-                    ['Clear', 'Frosted', 'Gel', 'Tinted', 'Smoke', 'Halo']),
+                comboRow(s, 'glass-style', 'Glass style', ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO', 'GLOW'],
+                    ['Clear', 'Frosted', 'Gel', 'Tinted', 'Smoke', 'Halo', 'Glow (coloured light)']),
                 spinRow(s, 'glass-opacity', 'Opacity', 10, 100, 5, 'Percent; below 100 the desktop shows blurred through them'),
                 switchRow(s, 'glass-rim', 'Rim highlight', 'Thin light edge; a sharp bevel with gloss'),
                 switchRow(s, 'glass-glare', 'Corner glare', 'Light reflections in the corners'),
