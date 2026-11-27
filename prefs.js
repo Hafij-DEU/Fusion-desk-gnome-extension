@@ -156,7 +156,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             ...dependsOn(s, ['glass-effect'], () => s.get_string('glass-effect') !== 'OFF', [
                 comboRow(s, 'glass-material', 'Material', ['GLASS', 'GLOSS'], ['Clear glass (subtle shine)', 'Gloss (strong shine, bevel)']),
                 comboRow(s, 'glass-style', 'Glass style', ['CLEAR', 'FROSTED', 'GEL', 'TINTED', 'SMOKE', 'HALO', 'GLOW', 'PLANNER'],
-                    ['Clear', 'Frosted', 'Gel', 'Tinted', 'Smoke', 'Halo', 'Glow (coloured light)']),
+                    ['Clear', 'Frosted', 'Gel', 'Tinted', 'Smoke', 'Halo', 'Glow (coloured light)', 'Lumina Glass']),
                 spinRow(s, 'glass-opacity', 'Opacity', 10, 100, 5, 'Percent; below 100 the desktop shows blurred through them'),
                 switchRow(s, 'glass-rim', 'Rim highlight', 'Thin light edge; a sharp bevel with gloss'),
                 switchRow(s, 'glass-glare', 'Corner glare', 'Light reflections in the corners'),
