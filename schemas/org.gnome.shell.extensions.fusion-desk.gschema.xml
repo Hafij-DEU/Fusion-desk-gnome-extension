@@ -87,7 +87,7 @@
       <default>'STRONG'</default><summary>Glossy glass look everywhere (taskbar, start menu, popups, launcher and control centre): blur, lighter top, bright top edge</summary>
     </key>
     <key name="glass-style" type="s">
-      <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/><choice value="GLOW"/></choices>
+      <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/><choice value="GLOW"/><choice value="PLANNER"/></choices>
       <default>'FROSTED'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark), halo (glow in the middle) or glow (smoked glass with coloured light shining through)</summary>
     </key>
     <key name="glass-material" type="s">
