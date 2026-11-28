@@ -16,6 +16,8 @@ import {taskManagerGroup} from './lib/prefsTaskManager.js';
 import {regionPipInstallRow} from './lib/prefsRegionPip.js';
 import {screenTextGroup} from './lib/prefsScreenText.js';
 import {readSnapshot, restoreSnapshot, saveSnapshot, savedLabel} from './lib/snapshot.js';
+import {restorePointsGroup} from './lib/prefsRestorePoints.js';
+import {autoPoint} from './lib/restorePoints.js';
 
 const BOXES = ['left', 'center', 'right'];
 const BOX_LABELS = ['Left', 'Center', 'Right'];
@@ -86,6 +88,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
     _addPanelPage(window, s) {
         const page = new Adw.PreferencesPage({title: 'Panel', icon_name: 'view-grid-symbolic'});
         page.add(this._mySetupGroup(window, s));
+        page.add(restorePointsGroup(window, s));
         page.add(group('Panel', [
             comboRow(s, 'panel-position', 'Position', ['BOTTOM', 'TOP'], ['Bottom', 'Top']),
             comboRow(s, 'panel-style', 'Style', ['PILLS', 'FLAT'], ['Pills (grouped, modern)', 'Flat']),
@@ -584,6 +587,7 @@ export default class FusionDeskPrefs extends ExtensionPreferences {
             dialog.present(window);
         });
         restore.connect('clicked', () => {
+            autoPoint(s, 'Before restoring My setup');
             if (restoreSnapshot(s))
                 toast('Your setup is back');
         });

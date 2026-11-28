@@ -38,6 +38,7 @@ import {cleanupGlass} from './lib/glass.js';
 import {PortalShortcuts} from './lib/portalShortcuts.js';
 import {TaskView, SearchButton} from './lib/searchTaskView.js';
 import {ControlCentreButton, LauncherButton} from './lib/desktop/panelButtons.js';
+import {dailyPoint} from './lib/restorePoints.js';
 
 // Modules that own a panel actor. `keys` are setting prefixes that force a rebuild.
 const MODULES = {
@@ -127,6 +128,12 @@ const LAYOUT_KEYS = ['layout', 'activities-visible', 'panel-', 'pill-', 'hide-ov
 export default class FusionDeskExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
+        // One automatic restore point a day, once the session has settled.
+        this._dailyPointId = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 60, () => {
+            this._dailyPointId = 0;
+            dailyPoint(this._settings);
+            return GLib.SOURCE_REMOVE;
+        });
         // State that survives module rebuilds (e.g. clipboard history, timers).
         this.state = {};
         this._running = false;
@@ -266,6 +273,10 @@ export default class FusionDeskExtension extends Extension {
     }
 
     disable() {
+        if (this._dailyPointId) {
+            GLib.source_remove(this._dailyPointId);
+            this._dailyPointId = 0;
+        }
         global.settings.disconnectObject(this);
         if (this._running)
             this._stop();

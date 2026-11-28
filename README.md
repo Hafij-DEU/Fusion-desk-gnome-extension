@@ -195,6 +195,17 @@ Click a section to expand it.
 
 **Settings → Panel → My setup → Save** stores every Fusion Desk setting in `~/.config/fusion-desk/my-setup.json`. If anything changes later (an update, a reset, a wrong click), **Restore** brings it all back in one click. It's also in the panel's right-click menu under **Style → Restore my setup**. The file is outside GNOME's settings database, so it survives `dconf reset` and reinstalls.
 
+## Restore points
+
+**Settings → Panel → Restore points** keeps several snapshots of every Fusion Desk setting plus the shared glass look (the `~/.config/harbor/glass*` files that Harbor, App Hub, Astra, SysMic and Extendo follow).
+
+- **Create** makes a named point. Fusion Desk also makes one a day, and one before a style preset, a My setup restore or a restore. It keeps the 15 newest automatic points; points you make yourself stay until you delete them.
+- **Restore** brings a point back in one click. The toast has **Undo**, which goes back to how things were just before.
+- **Export** saves a point to a `.json` file. On another PC, **Import…** adds it to the list; then press **Restore**. Settings that point to files (for example a custom start icon image) need those files on the new PC too.
+- From the panel: right-click → **Style → Restore “…”** brings back the newest point you made or imported.
+
+The points live in `~/.config/fusion-desk/restore-points/`, one JSON file each.
+
 ## Keyboard shortcuts
 
 | Shortcut | Action | Setting |
