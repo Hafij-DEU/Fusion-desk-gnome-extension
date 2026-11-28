@@ -90,6 +90,16 @@
       <choices><choice value="CLEAR"/><choice value="FROSTED"/><choice value="GEL"/><choice value="TINTED"/><choice value="SMOKE"/><choice value="HALO"/><choice value="GLOW"/><choice value="PLANNER"/></choices>
       <default>'FROSTED'</default><summary>Glass variant: clear, frosted (milky, more blur), gel (bright candy top), tinted (accent glass), smoke (dark), halo (glow in the middle) or glow (smoked glass with coloured light shining through)</summary>
     </key>
+    <key name="glass-lumina" type="s">
+      <choices><choice value="CALM"/><choice value="COLOURFUL"/></choices>
+      <default>'CALM'</default><summary>Lumina Glass look: calm indigo glass or colourful (a faint tint and one accent hue)</summary>
+    </key>
+    <key name="glass-lumina-colours" type="s">
+      <choices><choice value="AURORA"/><choice value="SUNSET"/><choice value="OCEAN"/><choice value="CANDY"/><choice value="FOREST"/><choice value="ACCENT"/><choice value="CUSTOM"/></choices>
+      <default>'AURORA'</default><summary>Lumina Colourful colour set (ACCENT = the system accent colour, CUSTOM = glass-lumina-colour)</summary>
+    </key>
+    <key name="glass-lumina-colour" type="s"><default>'#8b5cf6'</default><summary>Lumina Colourful custom colour (#rrggbb)</summary></key>
+    <key name="glass-lumina-intensity" type="i"><range min="20" max="100"/><default>70</default><summary>Lumina Colourful colour intensity (percent)</summary></key>
     <key name="glass-material" type="s">
       <choices><choice value="GLASS"/><choice value="GLOSS"/></choices>
       <default>'GLASS'</default><summary>Glass material: clear glass (subtle shine) or gloss (strong polished shine and bevel)</summary>
